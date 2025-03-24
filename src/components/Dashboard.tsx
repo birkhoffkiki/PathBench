@@ -217,7 +217,7 @@ import { TaskTable } from "@/components/tables/TaskTable";
 import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardTable } from "@/components/tables/LeaderboardTable"
-import { useRouter } from "next/router";
+
 
 const PARTNERS = [
   {
@@ -243,7 +243,6 @@ export function Dashboard() {
   // States for selections
   const [selectedMetric, setSelectedMetric] = useState<string>("AUC");
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>();
-  const {basepath} = useRouter();
 
   return (
     <div className="container mx-auto py-6">
@@ -252,7 +251,7 @@ export function Dashboard() {
           {/* <h1 className="text-4xl font-bold tracking-tight">PathBench</h1> */}
           <div className="mb-2">
             <Image 
-              src={`${basepath}/images/pathbench.svg`}
+              src="/images/pathbench.svg"
               alt="PathBench Logo"
               width={300}
               height={300}
@@ -283,7 +282,7 @@ export function Dashboard() {
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
               <Image 
-                src={`${basepath}/${partner.logo}`}
+                src={partner.logo}
                 alt={partner.name}
                 width={250}
                 height={250}
