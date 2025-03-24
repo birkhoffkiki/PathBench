@@ -20,11 +20,6 @@ const nextConfig = {
   // 自动根据环境设置prefix
   assetPrefix: process.env.NODE_ENV === 'production' ? '/PathBench/' : '',
   basePath: process.env.NODE_ENV === 'production' ? '/PathBench' : '',
-  
-  // 添加环境变量
-  env: {
-    NEXT_PUBLIC_BASE_PATH: process.env.NODE_ENV === 'production' ? '/PathBench' : '',
-  },
 }
 
 module.exports = nextConfig
