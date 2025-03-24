@@ -18,8 +18,8 @@ const nextConfig = {
   },
 
   // 自动根据环境设置prefix
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/PathBench/' : '',
-  basePath: process.env.NODE_ENV === 'production' ? '/PathBench' : '',
+  assetPrefix: '/PathBench/',
+  basePath: '/PathBench',
 }
 
 module.exports = nextConfig
