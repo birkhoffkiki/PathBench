@@ -5,9 +5,10 @@
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack -p 9000",
     "build": "next build",
-    "start": "npx serve@latest out",
+    "export": "next export",
+    "start": "npx serve@latest out -p 9000",
     "lint": "next lint",
-    "deploy": "gh-pages -d build"
+    "deploy": "next build && next export"
   },
 
   "dependencies": {

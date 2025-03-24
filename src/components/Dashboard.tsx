@@ -224,7 +224,7 @@ const PARTNERS = [
     id: 1,
     name: "",
     url: "https://hkustsmartlab.github.io/",
-    logo: "/images/smartlab.png",
+    logo: "/images/smartlab.svg",
     bgColor: "bg-white-50" // 新增品牌色背景
 
   },
