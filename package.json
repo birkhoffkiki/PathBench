@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack -p 9000",
-    "build": "cross-env NODE_ENV=production next build",
+    "build": "next build",
     "export": "next export",
     "start": "npx serve@latest out -p 9000",
     "lint": "next lint",
