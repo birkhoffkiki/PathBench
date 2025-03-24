@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "Perineural-Gastric-YN3",
+        "name": "Perineural Invasion Detection for Gastric Cancer",
+        "organId": "Gastric",
+        "cases": 319,
+        "wsis": 319,
+        "level": "Patient",
+        "cohort": "External",
+        "taskType": "classification",
+        "datasetSource": "YN3",
+        "datasetSource_full": "The Third Affiliated Hospital of Kunming Medical University in Yunnan",
+        "description": "The morphological presence of Perineural Invasion (PNI) often indicates a more aggressive tumor and poorer survival rates. This dataset includes 319 cases (112 positive and 207 negative).",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.6072,
+                    0.6072,
+                    0.6072,
+                    0.6072,
+                    0.6072
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.7117,
+                    0.7117,
+                    0.7117,
+                    0.7117,
+                    0.7117
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.745,
+                    0.745,
+                    0.745,
+                    0.745,
+                    0.745
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.7583,
+                    0.7583,
+                    0.7583,
+                    0.7583,
+                    0.7583
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.7596,
+                    0.7596,
+                    0.7596,
+                    0.7596,
+                    0.7596
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.735,
+                    0.735,
+                    0.735,
+                    0.735,
+                    0.735
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "Perineural-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.7657,
+                    0.7657,
+                    0.7657,
+                    0.7657,
+                    0.7657
+                ]
+            }
+        }
+    ]
+}

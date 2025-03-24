@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "CK5_Status-Breast-ZJ1",
+        "name": "CK5 Status Prediction for Breast Cancer",
+        "organId": "Breast",
+        "cases": 961,
+        "wsis": 961,
+        "level": "Patient",
+        "cohort": "Internal",
+        "taskType": "classification",
+        "datasetSource": "ZJ1",
+        "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
+        "description": "There are 753 negative cases and 208 positive cases.",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7397,
+                    0.7397,
+                    0.7397,
+                    0.7397,
+                    0.7397
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7387,
+                    0.7387,
+                    0.7387,
+                    0.7387,
+                    0.7387
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.79,
+                    0.79,
+                    0.79,
+                    0.79,
+                    0.79
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7977,
+                    0.7977,
+                    0.7977,
+                    0.7977,
+                    0.7977
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.8037,
+                    0.8037,
+                    0.8037,
+                    0.8037,
+                    0.8037
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7662,
+                    0.7662,
+                    0.7662,
+                    0.7662,
+                    0.7662
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "Internal",
+            "taskId": "CK5_Status-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.8146,
+                    0.8146,
+                    0.8146,
+                    0.8146,
+                    0.8146
+                ]
+            }
+        }
+    ]
+}

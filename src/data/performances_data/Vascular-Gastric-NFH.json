@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "Vascular-Gastric-NFH",
+        "name": "Vascular Invasion Detection for Gastric Cancer",
+        "organId": "Gastric",
+        "cases": 395,
+        "wsis": 395,
+        "level": "Patient",
+        "cohort": "Internal",
+        "taskType": "classification",
+        "datasetSource": "NFH",
+        "datasetSource_full": "NanFang Hospital",
+        "description": "This dataset comprises 197 positive cases and 198 negative cases.",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.6247,
+                    0.6247,
+                    0.6247,
+                    0.6247,
+                    0.6247
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7566,
+                    0.7566,
+                    0.7566,
+                    0.7566,
+                    0.7566
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7654,
+                    0.7654,
+                    0.7654,
+                    0.7654,
+                    0.7654
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7892,
+                    0.7892,
+                    0.7892,
+                    0.7892,
+                    0.7892
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7128,
+                    0.7128,
+                    0.7128,
+                    0.7128,
+                    0.7128
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7661,
+                    0.7661,
+                    0.7661,
+                    0.7661,
+                    0.7661
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "Internal",
+            "taskId": "Vascular-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7973,
+                    0.7973,
+                    0.7973,
+                    0.7973,
+                    0.7973
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "PathSubtype-Gastric-NFH",
+        "name": "Pathological Subtyping for Gastric Cancer",
+        "organId": "Gastric",
+        "cases": 385,
+        "wsis": 385,
+        "level": "Slide",
+        "cohort": "External",
+        "taskType": "classification",
+        "datasetSource": "NFH",
+        "datasetSource_full": "NanFang Hospital",
+        "description": "It includes 166 slides of Tubular Stomach Adenocarcinoma, 163 slides of Signet Ring Cell Carcinoma of the Stomach and 66 slides of Stomach Adenocarcinoma.",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.519,
+                    0.519,
+                    0.519,
+                    0.519,
+                    0.519
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.5915,
+                    0.5915,
+                    0.5915,
+                    0.5915,
+                    0.5915
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.5816,
+                    0.5816,
+                    0.5816,
+                    0.5816,
+                    0.5816
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.5854,
+                    0.5854,
+                    0.5854,
+                    0.5854,
+                    0.5854
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.6366,
+                    0.6366,
+                    0.6366,
+                    0.6366,
+                    0.6366
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.5737,
+                    0.5737,
+                    0.5737,
+                    0.5737,
+                    0.5737
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "PathSubtype-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.6202,
+                    0.6202,
+                    0.6202,
+                    0.6202,
+                    0.6202
+                ]
+            }
+        }
+    ]
+}

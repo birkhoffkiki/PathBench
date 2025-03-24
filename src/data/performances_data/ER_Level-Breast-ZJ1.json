@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "ER_Level-Breast-ZJ1",
+        "name": "ER Level Prediction for Breast Cancer",
+        "organId": "Breast",
+        "cases": 1548,
+        "wsis": 1548,
+        "level": "Patient",
+        "cohort": "Internal",
+        "taskType": "classification",
+        "datasetSource": "ZJ1",
+        "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
+        "description": "There are 499 cases of level 0, 268 cases of level 1, 421 cases of level 2 and 360 cases of level 3.",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7013,
+                    0.7013,
+                    0.7013,
+                    0.7013,
+                    0.7013
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7625,
+                    0.7625,
+                    0.7625,
+                    0.7625,
+                    0.7625
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.783,
+                    0.783,
+                    0.783,
+                    0.783,
+                    0.783
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7892,
+                    0.7892,
+                    0.7892,
+                    0.7892,
+                    0.7892
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7858,
+                    0.7858,
+                    0.7858,
+                    0.7858,
+                    0.7858
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7846,
+                    0.7846,
+                    0.7846,
+                    0.7846,
+                    0.7846
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "Internal",
+            "taskId": "ER_Level-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.802,
+                    0.802,
+                    0.802,
+                    0.802,
+                    0.802
+                ]
+            }
+        }
+    ]
+}

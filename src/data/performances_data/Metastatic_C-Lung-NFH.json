@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "Metastatic_C-Lung-NFH",
+        "name": "Metastasis Detection for Lung Cancer",
+        "organId": "Lung",
+        "cases": 705,
+        "wsis": 705,
+        "level": "Patient",
+        "cohort": "Internal",
+        "taskType": "classification",
+        "datasetSource": "NFH",
+        "datasetSource_full": "NanFang Hospital",
+        "description": "It aims to identify if the tumor is metastatic (314 cases) or primary (391 cases).",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.9044,
+                    0.9044,
+                    0.9044,
+                    0.9044,
+                    0.9044
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.9652,
+                    0.9652,
+                    0.9652,
+                    0.9652,
+                    0.9652
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.9696,
+                    0.9696,
+                    0.9696,
+                    0.9696,
+                    0.9696
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.9659,
+                    0.9659,
+                    0.9659,
+                    0.9659,
+                    0.9659
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.9809,
+                    0.9809,
+                    0.9809,
+                    0.9809,
+                    0.9809
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.977,
+                    0.977,
+                    0.977,
+                    0.977,
+                    0.977
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "Internal",
+            "taskId": "Metastatic_C-Lung-NFH",
+            "metrics": {
+                "AUC": [
+                    0.9878,
+                    0.9878,
+                    0.9878,
+                    0.9878,
+                    0.9878
+                ]
+            }
+        }
+    ]
+}

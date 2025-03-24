@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "MolSubtype-Breast-ZJ1",
+        "name": "Molecular Subtyping for Breast Cancer",
+        "organId": "Breast",
+        "cases": 2045,
+        "wsis": 2045,
+        "level": "Patient",
+        "cohort": "External",
+        "taskType": "classification",
+        "datasetSource": "ZJ1",
+        "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
+        "description": "It consists of 585 Triple-Negative Breast Cancer (TNBC), 292 HER2, 307 LumA and 861 LumB.",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.5891,
+                    0.5891,
+                    0.5891,
+                    0.5891,
+                    0.5891
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7109,
+                    0.7109,
+                    0.7109,
+                    0.7109,
+                    0.7109
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7244,
+                    0.7244,
+                    0.7244,
+                    0.7244,
+                    0.7244
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7844,
+                    0.7844,
+                    0.7844,
+                    0.7844,
+                    0.7844
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7918,
+                    0.7918,
+                    0.7918,
+                    0.7918,
+                    0.7918
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7013,
+                    0.7013,
+                    0.7013,
+                    0.7013,
+                    0.7013
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "MolSubtype-Breast-ZJ1",
+            "metrics": {
+                "AUC": [
+                    0.7946,
+                    0.7946,
+                    0.7946,
+                    0.7946,
+                    0.7946
+                ]
+            }
+        }
+    ]
+}

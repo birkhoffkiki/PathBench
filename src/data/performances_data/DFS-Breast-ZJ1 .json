@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "DFS-Breast-ZJ1 ",
+        "name": "Disease-free Survival Prediction for Breast Cancer",
+        "organId": "Breast",
+        "cases": 454,
+        "wsis": 454,
+        "level": "Patient",
+        "cohort": "External",
+        "taskType": "survival prediction",
+        "datasetSource": "ZJ1 ",
+        "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
+        "description": "Disease-free Survival Prediction for Breast Cancer",
+        "evaluationMetrics": [
+            "CIndex"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5556,
+                    0.5556,
+                    0.5556,
+                    0.5556,
+                    0.5556
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5491,
+                    0.5491,
+                    0.5491,
+                    0.5491,
+                    0.5491
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.585,
+                    0.585,
+                    0.585,
+                    0.585,
+                    0.585
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5548,
+                    0.5548,
+                    0.5548,
+                    0.5548,
+                    0.5548
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5539,
+                    0.5539,
+                    0.5539,
+                    0.5539,
+                    0.5539
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5367,
+                    0.5367,
+                    0.5367,
+                    0.5367,
+                    0.5367
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "DFS-Breast-ZJ1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5959,
+                    0.5959,
+                    0.5959,
+                    0.5959,
+                    0.5959
+                ]
+            }
+        }
+    ]
+}

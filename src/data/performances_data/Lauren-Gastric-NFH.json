@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "Lauren-Gastric-NFH",
+        "name": "Lauren Subtyping for Gastric Cancer",
+        "organId": "Gastric",
+        "cases": 388,
+        "wsis": 388,
+        "level": "Slide",
+        "cohort": "External",
+        "taskType": "classification",
+        "datasetSource": "NFH",
+        "datasetSource_full": "NanFang Hospital",
+        "description": "Lauren subtyping is a common classification system for gastric cancer based on morphology, which typically divides tumors into Diffuse-type, Intestinal-type and Mixed-type. we collected 388 slides from NanFang Hospital (NFH), consisting of 159 slides of Diffuse-type, 102 slides of Intestinal-type and 127 slides of Mixed-type. ",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.5933,
+                    0.5933,
+                    0.5933,
+                    0.5933,
+                    0.5933
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7076,
+                    0.7076,
+                    0.7076,
+                    0.7076,
+                    0.7076
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7005,
+                    0.7005,
+                    0.7005,
+                    0.7005,
+                    0.7005
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.6807,
+                    0.6807,
+                    0.6807,
+                    0.6807,
+                    0.6807
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.6989,
+                    0.6989,
+                    0.6989,
+                    0.6989,
+                    0.6989
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7232,
+                    0.7232,
+                    0.7232,
+                    0.7232,
+                    0.7232
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "Lauren-Gastric-NFH",
+            "metrics": {
+                "AUC": [
+                    0.7307,
+                    0.7307,
+                    0.7307,
+                    0.7307,
+                    0.7307
+                ]
+            }
+        }
+    ]
+}

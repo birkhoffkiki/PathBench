@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/24",
+        "id": "Vascular-Gastric-YN3",
+        "name": "Vascular Invasion Detection for Gastric Cancer",
+        "organId": "Gastric",
+        "cases": 319,
+        "wsis": 319,
+        "level": "Patient",
+        "cohort": "External",
+        "taskType": "classification",
+        "datasetSource": "YN3",
+        "datasetSource_full": "The Third Affiliated Hospital of Kunming Medical University in Yunnan",
+        "description": "This dataset contains 122 positive and 197 negative cases.",
+        "evaluationMetrics": [
+            "AUC"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.6149,
+                    0.6149,
+                    0.6149,
+                    0.6149,
+                    0.6149
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.6404,
+                    0.6404,
+                    0.6404,
+                    0.6404,
+                    0.6404
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.6689,
+                    0.6689,
+                    0.6689,
+                    0.6689,
+                    0.6689
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.7178,
+                    0.7178,
+                    0.7178,
+                    0.7178,
+                    0.7178
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.6259,
+                    0.6259,
+                    0.6259,
+                    0.6259,
+                    0.6259
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.6749,
+                    0.6749,
+                    0.6749,
+                    0.6749,
+                    0.6749
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "Vascular-Gastric-YN3",
+            "metrics": {
+                "AUC": [
+                    0.7249,
+                    0.7249,
+                    0.7249,
+                    0.7249,
+                    0.7249
+                ]
+            }
+        }
+    ]
+}
