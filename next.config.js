@@ -1,23 +1,30 @@
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   output: 'export',
+//   // basePath: '/PathBench',
+//   images: {
+//     unoptimized: true,
+//   },
+// };
+
+// module.exports = nextConfig;
+
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: '/PathBench',
   images: {
     unoptimized: true,
   },
-  // async headers() {
-  //   return [
-  //     {
-  //       source: '/static/js/:path*',
-  //       headers: [
-  //         {
-  //           key: 'Cache-Control',
-  //           value: 'public, max-age=31536000, immutable',
-  //         },
-  //       ],
-  //     },
-  //   ];
-  // },
-};
 
-module.exports = nextConfig;
+  // 自动根据环境设置prefix
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/PathBench/' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/PathBench' : '',
+  
+  // 添加环境变量
+  env: {
+    NEXT_PUBLIC_BASE_PATH: process.env.NODE_ENV === 'production' ? '/PathBench' : '',
+  },
+}
+
+module.exports = nextConfig
