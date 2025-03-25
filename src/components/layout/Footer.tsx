@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { VisionCarousel } from "./VisionCarousel";
-import {basePath} from "../../../next.config";
+import { PartnersScroller } from "./PartnersScroller";
 
 // 合作医院
 const PARTNERS = [
@@ -21,7 +20,6 @@ const PARTNERS = [
     width: 220,
     height: 150,
   },
-
   {
     name: "",
     logo: '/images/zhangshanliuyuan.png',
@@ -67,7 +65,7 @@ export function Footer() {
       {/* 底部内容容器 */}
       <div className="w-full">
         <div className="flex flex-col gap-8 w-full">
-        <VisionCarousel />
+          <VisionCarousel />
 
           <Card className="shadow-none w-full">
             <CardContent className="p-6 w-full">
@@ -122,46 +120,18 @@ export function Footer() {
             </CardContent>
           </Card>
         </div>
-        {/*logo*/}
-        <div className="w-full">
+        
+        {/* 合作伙伴部分 - 自动滚动版本 */}
+        <div className="w-full my-8">
           <Card className="shadow-none rounded-none border-x-0 border-t-0">
             <CardContent className="container mx-auto p-4">
-              <h3 className="text-xl font-bold mb-4">Collaborators</h3>
-
-              {/* 修改为水平弹性布局容器 */}
-              <div className="flex flex-row flex-wrap gap-4">
-                {PARTNERS.map((partner) => (
-                  <a
-                    key={partner.url}
-                    href={partner.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-2 hover:bg-gray-50/50 
-                           transition-colors p-2 rounded-md border
-                            flex-grow-0 flex-shrink-0"
-                  >
-                    {/* Logo容器保持原有设置 */}
-                    <div className="relative flex-shrink-0" style={{ width: partner.width, height: partner.height }}>
-                      <Image
-                        src={`${basePath}/${partner.logo}`}
-                        // src={partner.logo}
-                        alt={`${partner.name} logo`}
-                        fill
-                      />
-                    </div>
-                    <span className="text-sm font-medium whitespace-nowrap">
-                      {partner.name}
-                    </span>
-                  </a>
-                ))}
-              </div>
+              <PartnersScroller partners={PARTNERS} speed={25} />
             </CardContent>
           </Card>
         </div>
 
-
         {/* 版权信息 */}
-        <div className="flex justify-center mt-8 pb-6">
+        <div className="flex justify-center mt-4 pb-6">
           <p className="text-xs text-muted-foreground">
             © {new Date().getFullYear()} SmartLab, Hong Kong University of Science and Technology — All Rights Reserved
           </p>

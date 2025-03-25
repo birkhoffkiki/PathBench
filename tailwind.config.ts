@@ -9,6 +9,16 @@ export default {
   ],
   theme: {
     extend: {
+      // 添加滚动动画的关键帧和动画定义
+      keyframes: {
+        scroll: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-33.333%)' },
+        },
+      },
+      animation: {
+        scroll: 'scroll 30s linear infinite',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'},
         

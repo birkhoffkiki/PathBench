@@ -17,7 +17,7 @@ const visionData: VisionSlide[] = [
       "Diverse, global datasets: Cover the top-10 cancers in collaboration with hospitals around the world.",
       "Strict privacy guardrails: No public data leaks—models are evaluated securely without raw data exposure."
     ],
-    icon: <Network className="w-5 h-5 text-blue-500/70" /> // 使用网络图标代表复杂性和互联
+    icon: <Network className="w-5 h-5 text-blue-500/70" /> 
   },
   {
     title: "Rigorous, Reproducible Science",
@@ -25,7 +25,7 @@ const visionData: VisionSlide[] = [
       "Combat randomness: 10 validation runs with varied seeds.",
       "Standardized framework: All models tested under identical hardware, preprocessing, and task settings."
     ],
-    icon: <FlaskConical className="w-5 h-5 text-emerald-500/70" /> // 使用实验烧瓶图标代表科学性
+    icon: <FlaskConical className="w-5 h-5 text-emerald-500/70" />
   },
   {
     title: "Transparency Drives Progress",
@@ -33,7 +33,7 @@ const visionData: VisionSlide[] = [
       "Dynamic, interactive leaderboards: Filter models by organ, task, metrics.",
       "Community-driven updates: Benchmarks evolve with new clinical challenges (e.g., rare diseases, novel biomarkers)."
     ],
-    icon: <LineChart className="w-5 h-5 text-purple-500/70" /> // 使用图表图标代表透明度和进展
+    icon: <LineChart className="w-5 h-5 text-purple-500/70" />
   }
 ];
 
@@ -46,7 +46,7 @@ export function VisionCarousel() {
 
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % visionData.length);
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [isAutoPlaying]);
@@ -70,24 +70,31 @@ export function VisionCarousel() {
           To create the world's most rigorous, clinically grounded benchmark for pathology foundation models—free from bias, noise, and shortcuts.
         </div>
 
-        {/* 轮播部分 */}
-        <div className="relative h-[200px] overflow-hidden">
-          {/* 导航按钮 */}
-          <button
-            onClick={prevSlide}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-primary/5 hover:bg-primary/10 rounded-full p-2 transition-all"
-          >
-            <ChevronLeft className="w-6 h-6 text-primary/70" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-primary/5 hover:bg-primary/10 rounded-full p-2 transition-all"
-          >
-            <ChevronRight className="w-6 h-6 text-primary/70" />
-          </button>
+        {/* 整个轮播组件容器 - 增加高度以适应原始字体大小 */}
+        <div className="relative h-[280px] flex items-center">
+          {/* 导航按钮 - 位于内容区域外部 */}
+          <div className="absolute left-0 top-0 bottom-0 flex items-center z-30">
+            <button
+              onClick={prevSlide}
+              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1.5 transition-all shadow-md ml-1"
+              aria-label="Previous slide"
+            >
+              <ChevronLeft className="w-5 h-5 text-primary/80" />
+            </button>
+          </div>
+          
+          <div className="absolute right-0 top-0 bottom-0 flex items-center z-30">
+            <button
+              onClick={nextSlide}
+              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1.5 transition-all shadow-md mr-1"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-5 h-5 text-primary/80" />
+            </button>
+          </div>
 
-          {/* 轮播内容 */}
-          <div className="relative h-full">
+          {/* 轮播内容 - 有明确的左右边距 */}
+          <div className="relative w-full h-[230px] overflow-hidden mx-8">
             {visionData.map((slide, index) => (
               <div
                 key={index}
@@ -122,7 +129,7 @@ export function VisionCarousel() {
           </div>
 
           {/* 指示器 */}
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2 z-20">
+          <div className="absolute bottom-1 left-0 right-0 flex justify-center space-x-2 z-20">
             {visionData.map((_, index) => (
               <button
                 key={index}
@@ -136,7 +143,7 @@ export function VisionCarousel() {
                     ? "bg-primary/70 w-6" 
                     : "bg-primary/20 hover:bg-primary/40"
                 )}
-                aria-label={`Slide ${index + 1}`}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
@@ -145,4 +152,3 @@ export function VisionCarousel() {
     </Card>
   );
 };
-
