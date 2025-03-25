@@ -504,26 +504,6 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
 
   const selectedTask = selectedTaskId ? getTaskById(selectedTaskId) : undefined;
 
-  // 添加图表事件处理
-  const onChartReady = (echarts: any) => {
-    // 监听数据区域缩放事件
-    echarts.on('dataZoom', (params: any) => {
-      const zoomRatio = (params.end - params.start) / 100;
-      // 根据缩放比例动态调整字体大小
-      const newFontSize = Math.max(8, Math.min(16, Math.floor(12 / zoomRatio)));
-
-      echarts.setOption({
-        series: chartOptions.series?.map((s: any) => ({
-          ...s,
-          label: {
-            ...s.label,
-            fontSize: newFontSize
-          }
-        }))
-      });
-    });
-  };
-
   return (
     <Card className="w-full h-[600px]">
       <CardHeader className="space-y-1">
@@ -543,7 +523,6 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
             width: 'auto',
             height: 'auto'
           }}
-          onChartReady={onChartReady}
           notMerge={true}
         />
       </CardContent>
