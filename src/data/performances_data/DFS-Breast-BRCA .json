@@ -13,7 +13,7 @@
         "datasetSource_full": "TCGA-BRCA ",
         "description": "Overall Survival Prediction for Breast Cancer",
         "evaluationMetrics": [
-            "CIndex"
+            "C-Index"
         ]
     },
     "data": [
@@ -22,7 +22,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5504,
                     0.5504,
                     0.5504,
@@ -36,7 +36,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.6368,
                     0.6368,
                     0.6368,
@@ -50,7 +50,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.6357,
                     0.6357,
                     0.6357,
@@ -64,7 +64,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.6695,
                     0.6695,
                     0.6695,
@@ -78,7 +78,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.6494,
                     0.6494,
                     0.6494,
@@ -92,7 +92,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.6298,
                     0.6298,
                     0.6298,
@@ -106,7 +106,7 @@
             "cohort": "Internal",
             "taskId": "DFS-Breast-BRCA ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.6663,
                     0.6663,
                     0.6663,

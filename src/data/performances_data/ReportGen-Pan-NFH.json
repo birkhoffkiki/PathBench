@@ -2,8 +2,8 @@
     "taskinfo": {
         "updateTime": "2025/03/25",
         "id": "ReportGen-Pan-NFH",
-        "name": "Report Generation for Pan-cancer",
-        "organId": "Pan-cancer",
+        "name": "Report Generation for Pan-Cancer",
+        "organId": "Pan-Cancer",
         "cases": 250,
         "wsis": 250,
         "level": "Patient",
@@ -11,7 +11,7 @@
         "TaskType": "Report Generation",
         "datasetSource": "NFH",
         "datasetSource_full": "NanFang Hospital",
-        "description": "Report Generation for Pan-cancer",
+        "description": "Report Generation for Pan-Cancer",
         "evaluationMetrics": [
             "BLEU",
             "METEOR",

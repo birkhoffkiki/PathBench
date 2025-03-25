@@ -48,8 +48,8 @@ export function PieDataDistributionChart() {
     const pieSeries: PieSeriesOption = {
       name: "WSIs Distribution",
       type: "pie",
-      radius: ["40%", "70%"],
-      center: ["60%", "50%"],
+      radius: ["45%", "75%"],
+      center: ["65%", "60%"],
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 10,
@@ -76,7 +76,8 @@ export function PieDataDistributionChart() {
     return {
       title: {
         text: "WSI Distribution by Organ",
-        left: "right",
+        top: '4.5%',
+        left: "center",
         z: 0,
       },
       tooltip: {
@@ -86,10 +87,14 @@ export function PieDataDistributionChart() {
       },
       legend: {
         orient: "vertical",
-        left: 10,
-        top: "middle",
+        left: 5,
+        top: '42.5%',
         type: "scroll",
         z: 0,
+        textStyle: {
+          fontSize: 14, 
+          color: '#333', 
+        },
       },
       series: [pieSeries],
     };

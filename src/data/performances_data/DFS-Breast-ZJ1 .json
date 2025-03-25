@@ -13,7 +13,7 @@
         "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
         "description": "Disease-free Survival Prediction for Breast Cancer",
         "evaluationMetrics": [
-            "CIndex"
+            "C-Index"
         ]
     },
     "data": [
@@ -22,7 +22,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5556,
                     0.5556,
                     0.5556,
@@ -36,7 +36,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5491,
                     0.5491,
                     0.5491,
@@ -50,7 +50,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.585,
                     0.585,
                     0.585,
@@ -64,7 +64,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5548,
                     0.5548,
                     0.5548,
@@ -78,7 +78,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5539,
                     0.5539,
                     0.5539,
@@ -92,7 +92,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5367,
                     0.5367,
                     0.5367,
@@ -106,7 +106,7 @@
             "cohort": "External",
             "taskId": "DFS-Breast-ZJ1 ",
             "metrics": {
-                "CIndex": [
+                "C-Index": [
                     0.5959,
                     0.5959,
                     0.5959,

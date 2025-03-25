@@ -52,8 +52,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Organ Distribution",
         type: "pie",
-        radius: ["40%", "70%"], // Donut chart
-        center: ["60%", "50%"],
+        radius: ["45%", "75%"], // Donut chart
+        center: ["65%", "60%"],
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -80,7 +80,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       return {
         title: {
           text: "Task Distribution by Organ",
-          left: "right",
+          top: '4.5%',
+          left: "center",
         },
         tooltip: {
           trigger: "item",
@@ -88,9 +89,14 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         },
         legend: {
           orient: "vertical",
-          left: 10,
-          top: "middle",
+          left: 5,
+          top: '42.5%',
           type: "scroll",
+          z: 0,
+          textStyle: {
+            fontSize: 14, 
+            color: '#333', 
+          },
         },
         series: [pieSeries],
       };
@@ -114,8 +120,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Task Type Distribution",
         type: "pie",
-        radius: ["40%", "70%"],
-        center: ["60%", "50%"],
+        radius: ["45%", "75%"],
+        center: ["70%", "60%"],
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -142,6 +148,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       return {
         title: {
           text: "Task Distribution by Type",
+          top: '4.5%',
           left: "center",
         },
         tooltip: {
@@ -150,9 +157,14 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         },
         legend: {
           orient: "vertical",
-          left: 10,
-          top: "middle",
+          left: 0,
+          top: '42.5%',
           type: "scroll",
+          z: 0,
+          textStyle: {
+            fontSize: 14, 
+            color: '#333', 
+          },
         },
         series: [pieSeries],
       };

@@ -27,9 +27,9 @@ const PARTNERS = [
   {
     id: 1,
     name: "",
-    url: "https://hkustsmartlab.github.io/",
+    url: "https://smartlab.cse.ust.hk/",
     logo: "/images/smartlab.svg",
-    bgColor: "bg-white-50" // 新增品牌色背景
+    bgColor: "bg-white-50"
 
   },
   {

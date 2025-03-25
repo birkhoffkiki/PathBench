@@ -23,8 +23,8 @@ export function LeaderboardTable() {
   const getMetricsArray = (performance: Performance | null | undefined, taskType: string) => {
     if (!performance) return null;
     if (taskType === 'Classification') return performance.metrics['AUC'];
-    if (taskType === 'OS Prediction') return performance.metrics['CIndex'];
-    if (taskType === 'DFS Prediction') return performance.metrics['CIndex'];
+    if (taskType === 'OS Prediction') return performance.metrics['C-Index'];
+    if (taskType === 'DFS Prediction') return performance.metrics['C-Index'];
     if (taskType === 'Report Generation') return performance.metrics['BLEU'];
     return null;
   };
