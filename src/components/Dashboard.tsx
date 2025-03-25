@@ -217,6 +217,7 @@ import { TaskTable } from "@/components/tables/TaskTable";
 import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardTable } from "@/components/tables/LeaderboardTable"
+import {basePath} from "../../next.config"
 
 
 const PARTNERS = [
@@ -251,7 +252,7 @@ export function Dashboard() {
           {/* <h1 className="text-4xl font-bold tracking-tight">PathBench</h1> */}
           <div className="mb-2">
             <Image 
-              src="/images/pathbench.svg"
+              src={`${basePath}/images/pathbench.svg`}
               alt="PathBench Logo"
               width={300}
               height={300}
@@ -282,7 +283,7 @@ export function Dashboard() {
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
               <Image 
-                src={partner.logo}
+                src={`${basePath}/${partner.logo}`}
                 alt={partner.name}
                 width={250}
                 height={250}

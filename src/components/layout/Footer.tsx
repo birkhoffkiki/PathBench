@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { VisionCarousel } from "./VisionCarousel";
+import {basePath} from "../../../next.config";
 
 // 合作医院
 const PARTNERS = [
@@ -135,7 +136,8 @@ export function Footer() {
                     {/* Logo容器保持原有设置 */}
                     <div className="relative flex-shrink-0" style={{ width: partner.width, height: partner.height }}>
                       <Image
-                        src={partner.logo}
+                        src={`${basePath}/${partner.logo}`}
+                        // src={partner.logo}
                         alt={`${partner.name} logo`}
                         fill
                       />
