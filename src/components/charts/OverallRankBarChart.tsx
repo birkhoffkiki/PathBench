@@ -6,8 +6,6 @@ import React, { useMemo } from "react";
 import ReactECharts from "echarts-for-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { EChartsOption } from "echarts";
-import type {DefaultLabelFormatterCallbackParams} from "echarts"
-import type {TooltipComponentFormatterCallbackParams} from "echarts"
 
 interface PerformanceBarChartProps {
   selectedMetric?: string;
@@ -92,8 +90,11 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
 
     // Color generation function
     const getColor = (index: number, total: number) => {
-      const hue = 240 - (index / (total - 1)) * 240;
-      return `hsl(${hue}, 70%, 50%)`;
+      const colors = [
+        '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
+        '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#6e7074'
+      ];
+      return colors[index % colors.length];
     };
 
     // Prepare heatmap data
@@ -110,10 +111,16 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
     const barData = modelStats.map((model, index) => ({
       value: model.averageRank,
       itemStyle: {
-        color: getColor(index, modelStats.length)
+        color: getColor(index, modelStats.length),
+        borderRadius: [4, 4, 0, 0], // Rounded top corners
+        borderColor: 'rgba(0,0,0,0.1)',
+        borderWidth: 1,
+        shadowBlur: 3,
+        shadowColor: 'rgba(0,0,0,0.2)',
+        opacity: 0.9
       },
       tooltip: {
-        formatter: `${model.name}\nAverage Rank: ${model.averageRank.toFixed(2)}\nTasks: ${model.taskCount}/${tasks.length}`
+        formatter: `${model.name}\nAverage Rank: ${model.averageRank.toFixed(2)} from ${tasks.length} Tasks`
       }
     }));
 
@@ -121,7 +128,11 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       title: {
         text: `Model Rankings (${selectedMetric})`,
         left: "center",
-        top: 5
+        top: 10,
+        textStyle: {
+          fontSize: 20,
+          fontWeight: 'bold'
+        }
       },
       tooltip: {
         position: 'top',
@@ -134,24 +145,23 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
             return `${modelName}<br/>${taskName}<br/>Rank: ${rank}`;
           } else {
             const model = modelStats[params.dataIndex];
-            return `${model.name}<br/>Average Rank: ${params.value.toFixed(2)}<br/>Tasks: ${model.taskCount}/${tasks.length}`;
+            return `${model.name}<br/>Average Rank: ${params.value.toFixed(2)}`;
           }
+        },
+        textStyle: {
+          fontSize: 15
         }
       },
       grid: [{
         left: '8%',
         right: '8%',
-        // top: '15%',    // 为上方标题留出空间
-        top: 100,
-        // height: '25%'  // barplot 占据25%的高度
-        height: 300,
+        top: 120,
+        height: 350,
       }, {
         left: '8%',
         right: '8%',
-        // top: '48%',    // 在 barplot 下方留出一些间距
-        top: 450,
-        bottom: '8%'  // heatmap 占据45%的高度
-        // height: 40,
+        top: 520,
+        bottom: '8%'
       }],
       xAxis: [{
         type: 'category',
@@ -161,7 +171,7 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         axisLabel: {
           rotate: 45,
           interval: 0,
-          fontSize: 10,
+          fontSize: 16,
           align: 'left'
         }
       }, {
@@ -176,6 +186,10 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       yAxis: [{
         type: 'value',
         name: 'Average Rank',
+        nameTextStyle: {
+          fontSize: 16,
+          fontWeight: 'bold'
+        },
         nameLocation: 'middle',
         nameGap: 40,
         inverse: false,
@@ -220,10 +234,10 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter: (params: any) => {
               const model = modelStats[params.dataIndex];
-              return `${params.value.toFixed(2)}\n(${model.taskCount}/${tasks.length})`;
+              return `${params.value.toFixed(2)}`;
             },
             rotate: 0,
-            fontSize: 10
+            fontSize: 16
           },
           xAxisIndex: 0,
           yAxisIndex: 0,
