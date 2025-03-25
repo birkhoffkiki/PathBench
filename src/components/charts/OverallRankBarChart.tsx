@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEvaluation } from "@/context/EvaluationContext";
@@ -10,7 +9,6 @@ import type { EChartsOption } from "echarts";
 interface PerformanceBarChartProps {
   selectedMetric?: string;
 }
-
 
 export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps) {
   const {
@@ -47,8 +45,6 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         };
       })
       .sort((a, b) => a.name.localeCompare(b.name));
-
-
 
     // Calculate rankings and average rank for each model
     const modelStats = filteredModels.map(model => {
@@ -107,22 +103,30 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       });
     });
 
-    // Prepare bar chart data
-    const barData = modelStats.map((model, index) => ({
-      value: model.averageRank,
-      itemStyle: {
-        color: getColor(index, modelStats.length),
-        borderRadius: [4, 4, 0, 0], // Rounded top corners
-        borderColor: 'rgba(0,0,0,0.1)',
-        borderWidth: 1,
-        shadowBlur: 3,
-        shadowColor: 'rgba(0,0,0,0.2)',
-        opacity: 0.9
-      },
-      tooltip: {
-        formatter: `${model.name}\nAverage Rank: ${model.averageRank.toFixed(2)} from ${tasks.length} Tasks`
-      }
-    }));
+    // Calculate the maximum possible rank
+    const totalModels = filteredModels.length;
+    
+    // Prepare bar chart data using inverted values (totalModels - averageRank)
+    const barData = modelStats.map((model, index) => {
+      // Create a display value that's inverse of the average rank
+      // Higher bar = better rank (lower number)
+      const displayValue = totalModels - model.averageRank + 1;
+      
+      return {
+        value: displayValue > 0 ? displayValue : 0, // Ensure we don't get negative values
+        itemStyle: {
+          color: getColor(index, modelStats.length),
+          borderRadius: [4, 4, 0, 0], // Rounded top corners
+          borderColor: 'rgba(0,0,0,0.1)',
+          borderWidth: 1,
+          shadowBlur: 3,
+          shadowColor: 'rgba(0,0,0,0.2)',
+          opacity: 0.9
+        },
+        // Store the original value for tooltips and labels
+        originalRank: model.averageRank
+      };
+    });
 
     return {
       title: {
@@ -136,7 +140,6 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       },
       tooltip: {
         position: 'top',
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formatter: (params: any) => {
           if (params.seriesType === 'heatmap') {
             const modelName = modelStats[params.data[0]].name;
@@ -145,7 +148,8 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
             return `${modelName}<br/>${taskName}<br/>Rank: ${rank}`;
           } else {
             const model = modelStats[params.dataIndex];
-            return `${model.name}<br/>Average Rank: ${params.value.toFixed(2)}`;
+            // Use the original rank value for the tooltip
+            return `${model.name}<br/>Average Rank: ${model.averageRank.toFixed(2)}`;
           }
         },
         textStyle: {
@@ -172,7 +176,8 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
           rotate: 45,
           interval: 0,
           fontSize: 16,
-          align: 'left'
+          align: 'left',
+          padding: [10, 0, 0, 0]
         }
       }, {
         type: 'category',
@@ -186,30 +191,46 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       yAxis: [{
         type: 'value',
         name: 'Average Rank',
+        nameLocation: 'middle',
+        nameGap: 45,
         nameTextStyle: {
           fontSize: 16,
           fontWeight: 'bold'
         },
-        nameLocation: 'middle',
-        nameGap: 40,
         inverse: false,
         gridIndex: 0,
         axisLabel: {
-          formatter: '{value}'
+          fontSize: 16,
+          // Display labels as a function of the actual axis value
+          formatter: function(value: number) {
+            // Convert back to rank for display
+            const rankValue = totalModels - value + 1;
+            return rankValue.toFixed(1);
+          }
+        },
+        splitLine: {
+          lineStyle: {
+            type: 'dashed',
+            color: '#ddd'
+          }
         }
       }, {
         type: 'category',
         name: 'Tasks',
         nameLocation: 'middle',
-        nameGap: 40,
+        nameGap: 50,
+        nameTextStyle: {  
+          fontSize: 18,
+          fontWeight: 'bold'
+        },
         data: tasks.map(t => t.name),
         gridIndex: 1,
         axisLabel: {
-          show: false  // 隐藏标签
+          show: false
         },
         axisTick: {
-          show: false  // 隐藏刻度线
-        }
+          show: false
+        },
       }],
       visualMap: {
         min: 1,
@@ -217,8 +238,11 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         calculable: true,
         orient: 'vertical',
         left: 'right',
-        // bottom: '2%',
         top: 340,
+        textStyle: {
+          fontSize: 16
+        },
+        // Updated color scheme
         inRange: {
           color: ['#f6eff7', '#bdc9e1', '#67a9cf', '#02818a']
         }
@@ -230,33 +254,41 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
           data: barData,
           label: {
             show: true,
-            position: 'insideBottom',
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            position: 'bottom',
+            distance: -25,
             formatter: (params: any) => {
               const model = modelStats[params.dataIndex];
-              return `${params.value.toFixed(2)}`;
+              return `${model.averageRank.toFixed(2)}`;
             },
             rotate: 0,
             fontSize: 16
           },
           xAxisIndex: 0,
           yAxisIndex: 0,
-          // barMaxWidth: 20
         },
         {
           name: 'Rankings',
           type: 'heatmap',
           data: heatmapData.map(([x, y, v]) => [y, x, v]),
+          itemStyle: {
+            borderWidth: 1,
+            borderColor: 'rgba(255,255,255,0.6)',  // Add borders between cells
+          },
           label: {
             show: true,
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter: (params: any) => params.data[2],
-            fontSize: 10
+            fontSize: 16,
+            fontWeight: 'bold',
+            color: '#000',  // Fixed color to solve TypeScript error
+            textBorderColor: 'rgba(255,255,255,0.5)',  // Add text border for better contrast
+            textBorderWidth: 2
           },
           emphasis: {
             itemStyle: {
               shadowBlur: 10,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+              borderWidth: 2,
+              borderColor: '#ffffff'
             }
           },
           xAxisIndex: 1,
@@ -271,18 +303,16 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
     selectedMetric,
   ]);
 
-
-  // 动态计算容器高度
+  // 动态计算容器高度 - 调整以适应更大的单元格
   const containerHeight = useMemo(() => {
     const tasks = [...new Set(getFilteredPerformances().map(p => p.taskId))];
-    const minHeightPerTask = 40;
+    const minHeightPerTask = 50;  // 增加每个任务的高度，从40px到50px
     const totalTaskHeight = tasks.length * minHeightPerTask;
-    return Math.max(800, totalTaskHeight + 400); // 最小高度800px
+    return Math.max(800, totalTaskHeight + 450); // 增加底部空间
   }, [getFilteredPerformances]);
 
-
   return (
-    <Card className="w-full overflow-hidden"> {/* 添加 overflow-hidden */}
+    <Card className="w-full overflow-hidden">
       <CardHeader>
         <CardTitle>Model Ranking Analysis</CardTitle>
         <CardDescription>
@@ -290,10 +320,10 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         </CardDescription>
       </CardHeader>
       <CardContent
-        className="overflow-auto" // 添加 overflow-auto
+        className="overflow-auto"
         style={{
-          height: `calc(100vh - 200px)`, // 使用视口高度减去头部空间
-          maxHeight: `${containerHeight - 100}px`,  // 保持最大高度限制
+          height: `calc(100vh - 200px)`,
+          maxHeight: `${containerHeight - 100}px`,
         }}
       >
         <ReactECharts
@@ -301,7 +331,7 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
           style={{
             height: "100%",
             width: "100%",
-            minHeight: `${containerHeight - 100}px` // 确保图表有最小高度
+            minHeight: `${containerHeight - 100}px`
           }}
           opts={{ renderer: "svg" }}
         />
