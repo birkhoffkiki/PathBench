@@ -2,7 +2,8 @@
 
 import { useEvaluation } from "@/context/EvaluationContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 interface MetricSelectorProps {
   value: string;
@@ -19,18 +20,16 @@ export function MetricSelector({ value, onChange }: MetricSelectorProps) {
         <CardTitle className="text-sm font-medium">Select Metric</CardTitle>
       </CardHeader>
       <CardContent>
-        <Select value={value} onValueChange={onChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select a metric" />
-          </SelectTrigger>
-          <SelectContent>
-            {metrics.map(metric => (
-              <SelectItem key={metric} value={metric}>
+        <RadioGroup value={value} onValueChange={onChange} className="flex flex-col gap-2">
+          {metrics.map(metric => (
+            <div key={metric} className="flex items-center space-x-2 py-1">
+              <RadioGroupItem value={metric} id={`metric-${metric}`} />
+              <Label htmlFor={`metric-${metric}`} className="cursor-pointer">
                 {metric.replace('_', ' ')}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
       </CardContent>
     </Card>
   );

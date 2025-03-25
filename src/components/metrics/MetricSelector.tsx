@@ -1,7 +1,8 @@
 "use client";
 
 import { useEvaluation } from "@/context/EvaluationContext";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import React, { useMemo } from "react";
 
 interface MetricSelectorProps {
@@ -55,24 +56,20 @@ export function MetricSelector({
       <label htmlFor="metric-selector" className="block text-sm font-medium mb-2">
         Select Metric
       </label>
-      <Select value={selectedMetric} onValueChange={handleChange}>
-        <SelectTrigger id="metric-selector" className="w-full">
-          <SelectValue placeholder="Select a metric" />
-        </SelectTrigger>
-        <SelectContent>
-          {availableMetrics.length === 0 ? (
-            <SelectItem value="none" disabled>
-              No metrics available
-            </SelectItem>
-          ) : (
-            availableMetrics.map((metric) => (
-              <SelectItem key={metric} value={metric}>
+      {availableMetrics.length === 0 ? (
+        <p className="text-sm text-gray-500">No metrics available</p>
+      ) : (
+        <RadioGroup value={selectedMetric} onValueChange={handleChange} className="flex flex-col gap-2">
+          {availableMetrics.map((metric) => (
+            <div key={metric} className="flex items-center space-x-2 py-1">
+              <RadioGroupItem value={metric} id={`metric-${metric}`} />
+              <Label htmlFor={`metric-${metric}`} className="cursor-pointer">
                 {formatMetricName(metric)}
-              </SelectItem>
-            ))
-          )}
-        </SelectContent>
-      </Select>
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      )}
     </div>
   );
 }
