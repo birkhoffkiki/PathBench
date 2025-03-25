@@ -193,7 +193,7 @@ export function Dashboard() {
         </TabsContent>
       </Tabs>
       {/* Human Body Visualization here, between Tabs and Footer */}
-      <HumanBodyVisualization basePath={basePath} />
+      {/* <HumanBodyVisualization basePath={basePath} /> */}
       <Footer />
     </div>
   );
