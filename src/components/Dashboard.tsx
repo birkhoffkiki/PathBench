@@ -21,6 +21,7 @@ import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardTable } from "@/components/tables/LeaderboardTable"
 import {basePath} from "../../next.config"
+import { HumanBodyVisualization } from "@/components/datasets/HumanBodyVisualization";
 
 
 const PARTNERS = [
@@ -98,8 +99,6 @@ export function Dashboard() {
           ))}
         </div>
       </header>
-
-
 
       <Tabs defaultValue="overview">
 
@@ -193,7 +192,8 @@ export function Dashboard() {
           </div>
         </TabsContent>
       </Tabs>
-
+      {/* Human Body Visualization here, between Tabs and Footer */}
+      <HumanBodyVisualization basePath={basePath} />
       <Footer />
     </div>
   );

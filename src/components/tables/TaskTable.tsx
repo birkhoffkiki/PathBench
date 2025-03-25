@@ -112,7 +112,7 @@ import { useState } from "react";
 import { ChevronUp, ChevronDown } from "lucide-react"; // You'll need to install lucide-react
 
 interface TaskTableProps {
-  onSelectTask: (taskId: string) => void;
+  onSelectTask: (taskId: string | undefined) => void;
   selectedTaskId?: string;
 }
 
@@ -252,14 +252,20 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
                   <TableCell>{task.wsis || 'N/A'}</TableCell>
                   <TableCell>{task.updateTime || 'N/A'}</TableCell>
                   <TableCell className="text-right">
-                    <Button
-                      variant={isSelected ? "default" : "ghost"}
-                      size="sm"
-                      onClick={() => onSelectTask(task.id)}
-                    >
-                      {isSelected ? "Selected" : "Select"}
-                    </Button>
-                  </TableCell>
+                  <Button
+                    variant={isSelected ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => {
+                      if (isSelected) {
+                        onSelectTask(undefined); // Deselect the task when already selected
+                      } else {
+                        onSelectTask(task.id); // Select the task when not selected
+                      }
+                    }}
+                  >
+                    View
+                  </Button>
+                </TableCell>
                 </TableRow>
               );
             })}
