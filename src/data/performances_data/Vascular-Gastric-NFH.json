@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "Vascular-Gastric-NFH",
         "name": "Vascular Invasion Detection for Gastric Cancer",
         "organId": "Gastric",
@@ -8,7 +8,7 @@
         "wsis": 395,
         "level": "Patient",
         "cohort": "Internal",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "NFH",
         "datasetSource_full": "NanFang Hospital",
         "description": "This dataset comprises 197 positive cases and 198 negative cases.",

@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "PR_Status-Breast-ZJ1",
         "name": "PR Status Prediction for Breast Cancer",
         "organId": "Breast",
@@ -8,7 +8,7 @@
         "wsis": 1556,
         "level": "Patient",
         "cohort": "External",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "ZJ1",
         "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
         "description": "There are 623 negative cases and 933 positive cases.",

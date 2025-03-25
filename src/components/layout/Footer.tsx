@@ -33,7 +33,7 @@ const PARTNERS = [
     name: "",
     logo: '/images/zszl.png',
     url: "https://www.sysucc.org.cn/",
-    width: 360,
+    width: 130,
     height: 150,
   },
   {
@@ -47,6 +47,13 @@ const PARTNERS = [
     name: "",
     logo: '/images/zfy.png',
     url: "https://www.zy91.com/",
+    width: 150,
+    height: 150, 
+  },
+  {
+    name: "",
+    logo: '/images/ynzl.png',
+    url: "https://www.ynszlyy.com/",
     width: 150,
     height: 150, 
   },

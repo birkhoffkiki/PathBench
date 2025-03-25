@@ -80,7 +80,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       return {
         title: {
           text: "Task Distribution by Organ",
-          left: "center",
+          left: "right",
         },
         tooltip: {
           trigger: "item",

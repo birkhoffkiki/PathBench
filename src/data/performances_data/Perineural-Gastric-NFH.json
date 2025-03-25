@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "Perineural-Gastric-NFH",
         "name": "Perineural Invasion Detection for Gastric Cancer",
         "organId": "Gastric",
@@ -8,7 +8,7 @@
         "wsis": 396,
         "level": "Patient",
         "cohort": "Internal",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "NFH",
         "datasetSource_full": "NanFang Hospital",
         "description": "The morphological presence of Perineural Invasion (PNI) often indicates a more aggressive tumor and poorer survival rates. This dataset consists of 255 positive and 141 negative cases.",

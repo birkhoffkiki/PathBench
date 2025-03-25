@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "PathSubtype-Gastric-YN3",
         "name": "Pathological Subtyping for Gastric Cancer",
         "organId": "Gastric",
@@ -8,7 +8,7 @@
         "wsis": 315,
         "level": "Slide",
         "cohort": "External",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "YN3",
         "datasetSource_full": "The Third Affiliated Hospital of Kunming Medical University in Yunnan",
         "description": "It comprises 82 slides of Signet Ring Cell Carcinoma of the Stomach and 233 slides of Stomach Adenocarcinoma.",

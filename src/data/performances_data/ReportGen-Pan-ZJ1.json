@@ -1,0 +1,121 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/25",
+        "id": "ReportGen-Pan-ZJ1",
+        "name": "Report Generation for Pan-cancer",
+        "organId": "Pan-cancer",
+        "cases": 250,
+        "wsis": 250,
+        "level": "Patient",
+        "cohort": "External",
+        "TaskType": "Report Generation",
+        "datasetSource": "ZJ1",
+        "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
+        "description": "Report Generation for Pan-cancer",
+        "evaluationMetrics": [
+            "BLEU",
+            "METEOR",
+            "ROUGE-L"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.2215,
+                    0.2215,
+                    0.2215,
+                    0.2215,
+                    0.2215
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.1951,
+                    0.1951,
+                    0.1951,
+                    0.1951,
+                    0.1951
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.2658,
+                    0.2658,
+                    0.2658,
+                    0.2658,
+                    0.2658
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.265,
+                    0.265,
+                    0.265,
+                    0.265,
+                    0.265
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.2668,
+                    0.2668,
+                    0.2668,
+                    0.2668,
+                    0.2668
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.2639,
+                    0.2639,
+                    0.2639,
+                    0.2639,
+                    0.2639
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "ReportGen-Pan-ZJ1",
+            "metrics": {
+                "BLEU": [
+                    0.2858,
+                    0.2858,
+                    0.2858,
+                    0.2858,
+                    0.2858
+                ]
+            }
+        }
+    ]
+}

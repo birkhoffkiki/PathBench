@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "Metastatic_F-Lung-NFH",
         "name": "Metastasis Detection and Primary Site Prediction for Lung Cancer",
         "organId": "Lung",
@@ -8,7 +8,7 @@
         "wsis": 705,
         "level": "Patient",
         "cohort": "Internal",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "NFH",
         "datasetSource_full": "NanFang Hospital",
         "description": "It is performed to predict the primary site of metastatic cancer. The primary sites include six distinct classes: LUAD (391 cases), breast (55 cases), colon (186 cases), kidney (25 cases), liver (34 cases), and carcinoma of unknown primary (CUP, 14 cases).",

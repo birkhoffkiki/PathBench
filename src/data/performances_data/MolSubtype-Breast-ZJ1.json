@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "MolSubtype-Breast-ZJ1",
         "name": "Molecular Subtyping for Breast Cancer",
         "organId": "Breast",
@@ -8,7 +8,7 @@
         "wsis": 2045,
         "level": "Patient",
         "cohort": "External",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "ZJ1",
         "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
         "description": "It consists of 585 Triple-Negative Breast Cancer (TNBC), 292 HER2, 307 LumA and 861 LumB.",

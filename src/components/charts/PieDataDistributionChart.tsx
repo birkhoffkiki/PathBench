@@ -6,6 +6,7 @@ import ReactECharts from "echarts-for-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { EChartsOption, PieSeriesOption } from "echarts";
 
+
 export function PieDataDistributionChart() {
   const {
     allTasks,
@@ -40,6 +41,9 @@ export function PieDataDistributionChart() {
       };
     });
 
+    //  WSI总数
+    const totalWsis = Object.values(organWsisCounts).reduce((sum, count) => sum + count, 0);
+
     // 创建饼图系列
     const pieSeries: PieSeriesOption = {
       name: "WSIs Distribution",
@@ -72,7 +76,7 @@ export function PieDataDistributionChart() {
     return {
       title: {
         text: "WSI Distribution by Organ",
-        left: "center",
+        left: "right",
         z: 0,
       },
       tooltip: {

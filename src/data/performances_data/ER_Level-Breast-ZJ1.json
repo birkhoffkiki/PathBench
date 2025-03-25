@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "ER_Level-Breast-ZJ1",
         "name": "ER Level Prediction for Breast Cancer",
         "organId": "Breast",
@@ -8,7 +8,7 @@
         "wsis": 1548,
         "level": "Patient",
         "cohort": "Internal",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "ZJ1",
         "datasetSource_full": "The First Affiliated Hospital of Zhejiang University School of Medicine",
         "description": "There are 499 cases of level 0, 268 cases of level 1, 421 cases of level 2 and 360 cases of level 3.",

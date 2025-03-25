@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "Metastatic_C-Lung-NFH",
         "name": "Metastasis Detection for Lung Cancer",
         "organId": "Lung",
@@ -8,7 +8,7 @@
         "wsis": 705,
         "level": "Patient",
         "cohort": "Internal",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "NFH",
         "datasetSource_full": "NanFang Hospital",
         "description": "It aims to identify if the tumor is metastatic (314 cases) or primary (391 cases).",

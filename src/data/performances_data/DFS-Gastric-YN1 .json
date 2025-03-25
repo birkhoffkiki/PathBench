@@ -1,0 +1,119 @@
+{
+    "taskinfo": {
+        "updateTime": "2025/03/25",
+        "id": "DFS-Gastric-YN1 ",
+        "name": "Disease-free Survival Prediction for Gastric Cancer",
+        "organId": "Gastric",
+        "cases": 260,
+        "wsis": 260,
+        "level": "Patient",
+        "cohort": "External",
+        "TaskType": "DFS Prediction",
+        "datasetSource": "YN1 ",
+        "datasetSource_full": "The First Affiliated Hospital of Kunming Medical University in Yunnan",
+        "description": "Disease-free Survival Prediction for Gastric Cancer",
+        "evaluationMetrics": [
+            "CIndex"
+        ]
+    },
+    "data": [
+        {
+            "modelId": "ResNet50",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5037,
+                    0.5037,
+                    0.5037,
+                    0.5037,
+                    0.5037
+                ]
+            }
+        },
+        {
+            "modelId": "PLIP",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5277,
+                    0.5277,
+                    0.5277,
+                    0.5277,
+                    0.5277
+                ]
+            }
+        },
+        {
+            "modelId": "CONCH",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.481,
+                    0.481,
+                    0.481,
+                    0.481,
+                    0.481
+                ]
+            }
+        },
+        {
+            "modelId": "UNI",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5737,
+                    0.5737,
+                    0.5737,
+                    0.5737,
+                    0.5737
+                ]
+            }
+        },
+        {
+            "modelId": "CHIEF",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.504,
+                    0.504,
+                    0.504,
+                    0.504,
+                    0.504
+                ]
+            }
+        },
+        {
+            "modelId": "Prov-GigaPath",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.4935,
+                    0.4935,
+                    0.4935,
+                    0.4935,
+                    0.4935
+                ]
+            }
+        },
+        {
+            "modelId": "mSTAR",
+            "cohort": "External",
+            "taskId": "DFS-Gastric-YN1 ",
+            "metrics": {
+                "CIndex": [
+                    0.5775,
+                    0.5775,
+                    0.5775,
+                    0.5775,
+                    0.5775
+                ]
+            }
+        }
+    ]
+}

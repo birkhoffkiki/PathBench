@@ -1,6 +1,6 @@
 {
     "taskinfo": {
-        "updateTime": "2025/03/24",
+        "updateTime": "2025/03/25",
         "id": "Vascular-Gastric-YN3",
         "name": "Vascular Invasion Detection for Gastric Cancer",
         "organId": "Gastric",
@@ -8,7 +8,7 @@
         "wsis": 319,
         "level": "Patient",
         "cohort": "External",
-        "taskType": "classification",
+        "TaskType": "Classification",
         "datasetSource": "YN3",
         "datasetSource_full": "The Third Affiliated Hospital of Kunming Medical University in Yunnan",
         "description": "This dataset contains 122 positive and 197 negative cases.",
