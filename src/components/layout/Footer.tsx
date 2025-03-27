@@ -3,6 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { VisionCarousel } from "./VisionCarousel";
 import { PartnersScroller } from "./PartnersScroller";
+import { useEffect, useRef } from "react";
 
 // 合作医院
 const PARTNERS = [
@@ -59,6 +60,35 @@ const PARTNERS = [
 
 
 export function Footer() {
+  const clustrmapsContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Function to load the script
+    const loadClusterMaps = () => {
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.id = "clustrmaps";
+      script.src = "//clustrmaps.com/map_v2.js?d=qqJm1XKFS90b9VP0V10uugIZder4bxWZ-j_VBVoZCO8&cl=ffffff&w=200&h=150";
+      script.async = true; // Add async attribute
+
+      // Append the script to the container
+      if (clustrmapsContainerRef.current) {
+        clustrmapsContainerRef.current.appendChild(script);
+      }
+    };
+
+    // Load the script after the component has mounted
+    loadClusterMaps();
+
+    // Cleanup function to remove the script when the component unmounts
+    return () => {
+      const script = document.getElementById("clustrmaps");
+      if (script) {
+        script.remove();
+      }
+    };
+  }, []);
+
   return (
     <footer className="w-full mt-12 border-t">
 
@@ -129,6 +159,19 @@ export function Footer() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Clustrmaps script will be loaded here dynamically */}
+        <div
+        ref={clustrmapsContainerRef}
+        style={{
+          width: '200px',
+          height: '150px',
+          overflow: 'hidden',
+          margin: '0 auto', // 添加 margin auto
+        }}
+      >
+        {/* Clustrmaps will be injected here */}
+      </div>
 
         {/* 版权信息 */}
         <div className="flex justify-center mt-4 pb-6">
