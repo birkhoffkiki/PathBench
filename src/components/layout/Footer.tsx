@@ -56,6 +56,13 @@ const PARTNERS = [
     width: 150,
     height: 150, 
   },
+  {
+    name: "",
+    logo: '/images/shandong_hospital.png',
+    url: "https://www.sdhospital.com.cn/",
+    width: 150,
+    height: 150, 
+  },
 ];
 
 
