@@ -3,7 +3,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { VisionCarousel } from "./VisionCarousel";
 import { PartnersScroller } from "./PartnersScroller";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // 合作医院
 const PARTNERS = [
@@ -68,6 +68,9 @@ const PARTNERS = [
 
 export function Footer() {
   const clustrmapsContainerRef = useRef<HTMLDivElement | null>(null);
+  const [buildInfo, setBuildInfo] = useState({
+    buildTimestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || new Date().toISOString().replace('T', ' ').substring(0, 19)
+  });
 
   useEffect(() => {
     // Function to load the script
@@ -177,7 +180,6 @@ export function Footer() {
           margin: '0 auto', // 添加 margin auto
         }}
       >
-        {/* Clustrmaps will be injected here */}
       </div>
 
         {/* 版权信息 */}
@@ -186,6 +188,14 @@ export function Footer() {
             © {new Date().getFullYear()} SmartLab, Hong Kong University of Science and Technology — All Rights Reserved
           </p>
         </div>
+
+        {/* Last updated */}
+      <div className="flex justify-center pb-4">
+        <p className="text-xs text-muted-foreground">
+          Last updated: {buildInfo.buildTimestamp} UTC
+        </p>
+      </div>
+
       </div>
     </footer>
   );

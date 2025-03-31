@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -H 0.0.0.0 --turbopack -p 9000",
+    "prebuild": "node scripts/build_meta.js",
     "build": "next build",
     "export": "next export",
     "start": "npx serve@latest out -p 9000",
