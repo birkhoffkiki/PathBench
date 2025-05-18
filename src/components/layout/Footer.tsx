@@ -26,7 +26,7 @@ const PARTNERS = [
     logo: '/images/zhangshanliuyuan.png',
     url: "https://www.zs6y.com/page/web/pc/index.html#/",
     width: 150,
-    height: 150, 
+    height: 150,
    },
   {
     name: "",
@@ -40,46 +40,57 @@ const PARTNERS = [
     logo: '/images/zhongshanfuyi.png',
     url: "https://www.fahsysu.org.cn/home",
     width: 150,
-    height: 150, 
+    height: 150,
   },
   {
     name: "",
     logo: '/images/zfy.png',
     url: "https://www.zy91.com/",
     width: 150,
-    height: 150, 
+    height: 150,
   },
   {
     name: "",
     logo: '/images/ynzl.png',
     url: "https://www.ynszlyy.com/",
     width: 150,
-    height: 150, 
+    height: 150,
   },
   {
     name: "",
     logo: '/images/shandong_hospital.png',
     url: "https://www.sdhospital.com.cn/",
     width: 150,
-    height: 150, 
+    height: 150,
   },
   {
     name: "",
     logo: '/images/xijing_hospital.png',
     url: "https://www.fmmu.edu.cn/",
     width: 150,
-    height: 150, 
+    height: 150,
   },
 ];
 
 
 export function Footer() {
   const clustrmapsContainerRef = useRef<HTMLDivElement | null>(null);
+  const [currentYear, setCurrentYear] = useState<string>("");
   const [buildInfo, setBuildInfo] = useState({
-    buildTimestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || new Date().toISOString().replace('T', ' ').substring(0, 19)
+    buildTimestamp: process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || ""
   });
 
   useEffect(() => {
+    // Set the current year on the client side only
+    setCurrentYear(new Date().getFullYear().toString());
+
+    // Set the build timestamp on the client side if needed
+    if (!buildInfo.buildTimestamp) {
+      setBuildInfo({
+        buildTimestamp: new Date().toISOString().replace('T', ' ').substring(0, 19)
+      });
+    }
+
     // Function to load the script
     const loadClusterMaps = () => {
       const script = document.createElement("script");
@@ -104,7 +115,7 @@ export function Footer() {
         script.remove();
       }
     };
-  }, []);
+  }, [buildInfo.buildTimestamp]);
 
   return (
     <footer className="w-full mt-12 border-t">
@@ -130,7 +141,7 @@ export function Footer() {
                   <ul className="space-y-1 pl-4 list-disc">
                     <li>🤖 Model evaluation: You could send us your model to evalute its performance on this benchmark. </li>
                     <li>🗃️ Contribute Task: You could contribute data to help expand the tasks of benchmark.</li>
-                  </ul> 
+                  </ul>
                 </div>
               </div>
             </CardContent>
@@ -167,7 +178,7 @@ export function Footer() {
             </CardContent>
           </Card>
         </div>
-        
+
         {/* 合作伙伴部分 - 自动滚动版本 */}
         <div className="w-full my-8">
           <Card className="shadow-none rounded-none border-x-0 border-t-0">
@@ -191,14 +202,14 @@ export function Footer() {
 
         {/* 版权信息 */}
         <div className="flex justify-center mt-4 pb-6">
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} SmartLab, Hong Kong University of Science and Technology — All Rights Reserved
+          <p className="text-xs text-muted-foreground" suppressHydrationWarning>
+            © {currentYear || "2025"} SmartLab, Hong Kong University of Science and Technology — All Rights Reserved
           </p>
         </div>
 
         {/* Last updated */}
       <div className="flex justify-center pb-4">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-muted-foreground" suppressHydrationWarning>
           Last updated: {buildInfo.buildTimestamp} UTC
         </p>
       </div>
