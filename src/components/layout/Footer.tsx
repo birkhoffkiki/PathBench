@@ -63,6 +63,13 @@ const PARTNERS = [
     width: 150,
     height: 150, 
   },
+  {
+    name: "",
+    logo: '/images/xijing_hospital.png',
+    url: "https://www.fmmu.edu.cn/",
+    width: 150,
+    height: 150, 
+  },
 ];
 
 
