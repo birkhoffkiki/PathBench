@@ -199,12 +199,11 @@ export function Footer() {
         <div
           ref={clustrmapsContainerRef}
           style={{
-            width: '150px',
-            height: '120px',
-            overflow: 'hidden',
+            width: '200px',
+            height: '150px',
             margin: '0 auto',
           }}
-          className="sm:w-[200px] sm:h-[150px]"
+          className="flex justify-center items-center"
         >
         </div>
 
