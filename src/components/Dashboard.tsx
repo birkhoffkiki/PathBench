@@ -20,6 +20,8 @@ import { TaskTable } from "@/components/tables/TaskTable";
 import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardTable } from "@/components/tables/LeaderboardTable";
+import { SiArxiv } from 'react-icons/si';
+import { FaGithub } from 'react-icons/fa';
 
 
 
@@ -72,13 +74,38 @@ export function Dashboard() {
               className="h-20 object-contain"
             />
           </div>
-          <p className="text-muted-foreground">
-            Join the World's First Open, Multi-Task, and Multi-Organ Benchmark for Pathology Foundation Models
+          <p className="text-muted-foreground text-sm">
+            A Multi-task, Multi-organ Benchmark for Real-world Clinical Performance Evaluation of Pathology Foundation Models
           </p>
         </div>
 
+        <div className="flex items-center gap-2">
+          {/* arXiv and GitHub links - matching partner logo style */}
+          <a
+            href="https://arxiv.org/abs/2505.20202"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md"
+            title="View arXiv Paper"
+          >
+            <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <SiArxiv className="h-16 w-16 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+            <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+          </a>
 
-        <div className="flex flex-1 justify-end items-center gap-3">
+          <a
+            href="https://github.com/birkhoffkiki/PathBench"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md"
+            title="View GitHub Repository"
+          >
+            <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <FaGithub className="h-16 w-16 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+            <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+          </a>
+
+          {/* Partner logos - smartlab with reduced padding */}
           {PARTNERS.map((partner) => (
             <a
               key={partner.id}
@@ -87,7 +114,7 @@ export function Dashboard() {
               rel="noopener noreferrer"
               className={`
                 group relative
-                p-2 rounded-lg
+                ${partner.id === 1 ? 'p-0' : 'p-2'} rounded-lg
                 transition-all duration-300
                 hover:scale-105 hover:shadow-md
                 ${partner.bgColor}
@@ -98,7 +125,7 @@ export function Dashboard() {
               <Image
                 src={getImagePath(partner.logo)}
                 alt={partner.name}
-                width={250}
+                width={partner.id === 1 ? 100 : 250}
                 height={250}
                 className="h-20 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
               />
