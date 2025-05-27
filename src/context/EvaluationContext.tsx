@@ -74,7 +74,12 @@ export function EvaluationProvider({ children }: { children: React.ReactNode }) 
 
   // Computed values
   const allTaskTypes = useMemo(() => {
-    return Array.from(new Set(tasks.map(task => task.taskType)));
+    // Define custom order for task types
+    const taskTypeOrder = ['Classification', 'DFS Prediction', 'DSS Prediction', 'OS Prediction'];
+    const existingTaskTypes = new Set(tasks.map(task => task.taskType));
+
+    // Return ordered task types that actually exist in the data
+    return taskTypeOrder.filter(taskType => existingTaskTypes.has(taskType));
   }, []);
 
   // Create organs from tasks

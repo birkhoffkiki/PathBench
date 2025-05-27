@@ -29,9 +29,9 @@ export function TaskTypeFilter() {
               />
               <Label
                 htmlFor={`task-type-${taskType}`}
-                className="text-xs sm:text-sm font-normal capitalize leading-tight"
+                className="text-xs sm:text-sm font-normal leading-tight"
               >
-                {taskType.replace('_', ' ')}
+                {taskType}
               </Label>
             </div>
           ))}

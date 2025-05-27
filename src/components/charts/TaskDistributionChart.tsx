@@ -1,7 +1,7 @@
 "use client";
 
 import { useEvaluation } from "@/context/EvaluationContext";
-import React, { useMemo } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { EChartsOption, PieSeriesOption } from "echarts";
@@ -14,6 +14,19 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
   const {
     getFilteredTasks,
   } = useEvaluation();
+
+  // Use React state for responsive design instead of window object
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
 
   const chartOptions = useMemo((): EChartsOption => {
     const filteredTasks = getFilteredTasks();
@@ -50,8 +63,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Organ Distribution",
         type: "pie",
-        radius: ["45%", "75%"], // Donut chart
-        center: ["65%", "60%"],
+        radius: isMobile ? ["35%", "65%"] : ["45%", "75%"], // Donut chart - moderate size
+        center: isMobile ? ["65%", "55%"] : ["60%", "55%"], // Move down for more space from title
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -65,7 +78,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         emphasis: {
           label: {
             show: true,
-            fontSize: 16,
+            fontSize: isMobile ? 14 : 16,
             fontWeight: "bold",
           },
         },
@@ -88,10 +101,11 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
 
         title: {
           text: "Task Distribution by Organ",
-          top: '4.5%',
+          top: isMobile ? '2%' : '1%', // Higher on mobile too
           left: "center",
           textStyle: {
-            fontSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? 14 : 16,
+            fontSize: isMobile ? 14 : 18, // Larger font on desktop
+            fontWeight: 'bold',
           }
         },
         tooltip: {
@@ -99,16 +113,19 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
           formatter: "{a} <br/>{b}: {c} ({d}%)",
         },
         legend: {
-          orient: (typeof window !== 'undefined' && window.innerWidth < 768) ? "horizontal" : "vertical",
-          left: (typeof window !== 'undefined' && window.innerWidth < 768) ? "center" : 5,
-          top: (typeof window !== 'undefined' && window.innerWidth < 768) ? 'bottom' : '42.5%',
-          bottom: (typeof window !== 'undefined' && window.innerWidth < 768) ? 10 : undefined,
+          orient: "vertical",
+          left: isMobile ? 5 : 10,
+          top: isMobile ? '30%' : '30%', // Move down to match pie chart center
+          bottom: undefined,
           type: "scroll",
           z: 0,
           textStyle: {
-            fontSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? 12 : 14,
+            fontSize: isMobile ? 13 : 16, // Larger font for mobile too
             color: '#333',
           },
+          itemWidth: isMobile ? 12 : 16, // Slightly larger icons for mobile
+          itemHeight: isMobile ? 12 : 16,
+          itemGap: isMobile ? 8 : 15, // More spacing for mobile
         },
         series: [pieSeries],
       };
@@ -120,20 +137,21 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         taskTypeCounts[taskType] = (taskTypeCounts[taskType] || 0) + 1;
       });
 
-      // Format data for pie chart
-      const data = Object.entries(taskTypeCounts).map(([taskType, count]) => {
-        return {
-          name: taskType.replace('_', ' '),
-          value: count,
-        };
-      });
+      // Format data for pie chart with custom order
+      const taskTypeOrder = ['Classification', 'DFS Prediction', 'DSS Prediction', 'OS Prediction'];
+      const data = taskTypeOrder
+        .filter(taskType => taskTypeCounts[taskType] > 0) // Only include types that exist
+        .map(taskType => ({
+          name: taskType,
+          value: taskTypeCounts[taskType],
+        }));
 
       // Create pie series
       const pieSeries: PieSeriesOption = {
         name: "Task Type Distribution",
         type: "pie",
-        radius: ["45%", "75%"],
-        center: ["70%", "60%"],
+        radius: isMobile ? ["35%", "65%"] : ["45%", "75%"], // Moderate size for better balance
+        center: isMobile ? ["65%", "55%"] : ["70%", "55%"], // Move down and right for better spacing
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -147,7 +165,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         emphasis: {
           label: {
             show: true,
-            fontSize: 16,
+            fontSize: isMobile ? 14 : 16,
             fontWeight: "bold",
           },
         },
@@ -170,10 +188,11 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
 
         title: {
           text: "Task Distribution by Type",
-          top: '4.5%',
+          top: isMobile ? '2%' : '1%', // Higher on mobile too
           left: "center",
           textStyle: {
-            fontSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? 14 : 16,
+            fontSize: isMobile ? 14 : 18, // Larger font on desktop
+            fontWeight: 'bold',
           }
         },
         tooltip: {
@@ -181,31 +200,34 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
           formatter: "{a} <br/>{b}: {c} ({d}%)",
         },
         legend: {
-          orient: (typeof window !== 'undefined' && window.innerWidth < 768) ? "horizontal" : "vertical",
-          left: (typeof window !== 'undefined' && window.innerWidth < 768) ? "center" : 0,
-          top: (typeof window !== 'undefined' && window.innerWidth < 768) ? 'bottom' : '42.5%',
-          bottom: (typeof window !== 'undefined' && window.innerWidth < 768) ? 10 : undefined,
+          orient: "vertical",
+          left: isMobile ? 5 : 2.5,
+          top: isMobile ? '37.5%' : '37.5%', // Move down to match pie chart center
+          bottom: undefined,
           type: "scroll",
           z: 0,
           textStyle: {
-            fontSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? 12 : 14,
+            fontSize: isMobile ? 13 : 16, // Larger font for mobile too
             color: '#333',
           },
+          itemWidth: isMobile ? 12 : 16, // Slightly larger icons for mobile
+          itemHeight: isMobile ? 12 : 16,
+          itemGap: isMobile ? 8 : 15, // More spacing for mobile
         },
         series: [pieSeries],
       };
     }
-  }, [getFilteredTasks, chartType]);
+  }, [getFilteredTasks, chartType, isMobile]);
 
   return (
-    <Card className="w-full h-[250px] sm:h-[300px]">
-      <CardContent className="h-[250px] sm:h-[300px] p-2 sm:p-6">
+    <Card className="w-full h-[250px] sm:h-[350px]">
+      <CardContent className="h-[250px] sm:h-[350px] p-2 sm:p-6">
         <ReactECharts
           option={chartOptions}
           style={{ height: "100%", width: "100%" }}
           opts={{
             renderer: "svg",
-            devicePixelRatio: (typeof window !== 'undefined' && window.innerWidth < 768) ? 1 : 2
+            devicePixelRatio: isMobile ? 1 : 2
           }}
         />
       </CardContent>
