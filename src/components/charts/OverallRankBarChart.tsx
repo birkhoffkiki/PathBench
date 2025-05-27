@@ -10,6 +10,8 @@ interface PerformanceBarChartProps {
   selectedMetric?: string;
 }
 
+
+
 export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps) {
   const {
     getFilteredPerformances,
@@ -34,11 +36,11 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       };
     }
 
-    // 修改任务名称的生成逻辑
+
     const tasks = [...new Set(filteredPerformances.map(p => p.taskId))]
       .map(id => {
         const task = getTaskById(id);
-        // 合并 task.name 和 task.dataSource
+
         return {
           id,
           name: task ? `${task.name} (${task.datasetSource})` : id
@@ -46,7 +48,7 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       })
       .sort((a, b) => a.name.localeCompare(b.name));
 
-    // Calculate rankings and average rank for each model
+
     const modelStats = filteredModels.map(model => {
       const rankings: number[] = [];
       let totalRank = 0;
@@ -81,10 +83,10 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       };
     });
 
-    // Sort by average rank
+
     modelStats.sort((a, b) => a.averageRank - b.averageRank);
 
-    // Color generation function
+
     const getColor = (index: number, total: number) => {
       const colors = [
         '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
@@ -93,7 +95,7 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       return colors[index % colors.length];
     };
 
-    // Prepare heatmap data
+
     const heatmapData: [number, number, number][] = [];
     modelStats.forEach((model, modelIndex) => {
       model.rankings.forEach((rank, taskIndex) => {
@@ -103,27 +105,23 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       });
     });
 
-    // Calculate the maximum possible rank
+
     const totalModels = filteredModels.length;
-    
-    // Prepare bar chart data using inverted values (totalModels - averageRank)
+
     const barData = modelStats.map((model, index) => {
-      // Create a display value that's inverse of the average rank
-      // Higher bar = better rank (lower number)
       const displayValue = totalModels - model.averageRank + 1;
-      
+
       return {
-        value: displayValue > 0 ? displayValue : 0, // Ensure we don't get negative values
+        value: displayValue > 0 ? displayValue : 0,
         itemStyle: {
           color: getColor(index, modelStats.length),
-          borderRadius: [4, 4, 0, 0], // Rounded top corners
+          borderRadius: [4, 4, 0, 0],
           borderColor: 'rgba(0,0,0,0.1)',
           borderWidth: 1,
           shadowBlur: 3,
           shadowColor: 'rgba(0,0,0,0.2)',
           opacity: 0.9
         },
-        // Store the original value for tooltips and labels
         originalRank: model.averageRank
       };
     });
@@ -140,15 +138,17 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       },
       tooltip: {
         position: 'top',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formatter: (params: any) => {
           if (params.seriesType === 'heatmap') {
-            const modelName = modelStats[params.data[0]].name;
-            const taskName = tasks[params.data[1]].name;
-            const rank = params.data[2];
+            const data = params.data as [number, number, number];
+            const modelName = modelStats[data[0]].name;
+            const taskName = tasks[data[1]].name;
+            const rank = data[2];
             return `${modelName}<br/>${taskName}<br/>Rank: ${rank}`;
           } else {
-            const model = modelStats[params.dataIndex];
-            // Use the original rank value for the tooltip
+            const model = modelStats[params.dataIndex as number];
+
             return `${model.name}<br/>Average Rank: ${model.averageRank.toFixed(2)}`;
           }
         },
@@ -201,9 +201,9 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         gridIndex: 0,
         axisLabel: {
           fontSize: 16,
-          // Display labels as a function of the actual axis value
+
           formatter: function(value: number) {
-            // Convert back to rank for display
+
             const rankValue = totalModels - value + 1;
             return rankValue.toFixed(1);
           }
@@ -219,7 +219,7 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         name: 'Tasks',
         nameLocation: 'middle',
         nameGap: 50,
-        nameTextStyle: {  
+        nameTextStyle: {
           fontSize: 18,
           fontWeight: 'bold'
         },
@@ -242,7 +242,7 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         textStyle: {
           fontSize: 16
         },
-        // Updated color scheme
+
         inRange: {
           color: ['#f6eff7', '#bdc9e1', '#67a9cf', '#02818a']
         }
@@ -256,8 +256,9 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
             show: true,
             position: 'bottom',
             distance: -25,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter: (params: any) => {
-              const model = modelStats[params.dataIndex];
+              const model = modelStats[params.dataIndex as number];
               return `${model.averageRank.toFixed(2)}`;
             },
             rotate: 0,
@@ -272,15 +273,16 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
           data: heatmapData.map(([x, y, v]) => [y, x, v]),
           itemStyle: {
             borderWidth: 1,
-            borderColor: 'rgba(255,255,255,0.6)',  // Add borders between cells
+            borderColor: 'rgba(255,255,255,0.6)',
           },
           label: {
             show: true,
-            formatter: (params: any) => params.data[2],
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            formatter: (params: any) => String((params.data as [number, number, number])[2]),
             fontSize: 16,
             fontWeight: 'bold',
-            color: '#000',  // Fixed color to solve TypeScript error
-            textBorderColor: 'rgba(255,255,255,0.5)',  // Add text border for better contrast
+            color: '#000',
+            textBorderColor: 'rgba(255,255,255,0.5)',
             textBorderWidth: 2
           },
           emphasis: {
@@ -303,12 +305,12 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
     selectedMetric,
   ]);
 
-  // 动态计算容器高度 - 调整以适应更大的单元格
+
   const containerHeight = useMemo(() => {
     const tasks = [...new Set(getFilteredPerformances().map(p => p.taskId))];
-    const minHeightPerTask = 50;  // 增加每个任务的高度，从40px到50px
+    const minHeightPerTask = 50;
     const totalTaskHeight = tasks.length * minHeightPerTask;
-    return Math.max(800, totalTaskHeight + 450); // 增加底部空间
+    return Math.max(800, totalTaskHeight + 450);
   }, [getFilteredPerformances]);
 
   return (

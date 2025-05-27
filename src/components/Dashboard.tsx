@@ -6,12 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ModelFilter } from "@/components/filters/ModelFilter";
 import { TaskTypeFilter } from "@/components/filters/TaskTypeFilter";
 import { OrganFilter } from "@/components/filters/OrganFilter";
-import Image from 'next/image';  // 确保导入的是next/image的Image组件
+import Image from 'next/image';
 
 import { TaskDistributionChart } from "@/components/charts/TaskDistributionChart";
 import { PerformanceBarChart } from "@/components/charts/PerformanceBarChart";
 import { OverallRankBarChart } from "@/components/charts/OverallRankBarChart"
-// import {DataDistributation} from "@/components/charts/DataDistributation"
+
 import { PieDataDistributionChart } from "@/components/charts/PieDataDistributionChart";
 
 import { ModelTable } from "@/components/tables/ModelTable";
@@ -19,15 +19,14 @@ import { MetricSelector } from "@/components/selectors/MetricSelector";
 import { TaskTable } from "@/components/tables/TaskTable";
 import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
-import { LeaderboardTable } from "@/components/tables/LeaderboardTable"
-import {basePath} from "../../next.config"
-import { HumanBodyVisualization } from "@/components/datasets/HumanBodyVisualization";
+import { LeaderboardTable } from "@/components/tables/LeaderboardTable";
+
 
 
 const PARTNERS = [
   {
     id: 1,
-    name: "",
+    name: "smartlab logo",
     url: "https://smartlab.cse.ust.hk/",
     logo: "/images/smartlab.svg",
     bgColor: "bg-white-50"
@@ -35,7 +34,7 @@ const PARTNERS = [
   },
   {
     id: 2,
-    name: "",
+    name: "ust logo",
     url: "https://hkust.edu.hk/",
     logo: "/images/ust_logo.svg",
     bgColor: "bg-white-50"
@@ -45,7 +44,17 @@ const PARTNERS = [
 
 
 export function Dashboard() {
-  // States for selections
+  // Get basePath from environment variable
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
+  // Helper function to construct image paths correctly
+  const getImagePath = (imagePath: string) => {
+    if (basePath) {
+      return `${basePath}${imagePath}`;
+    }
+    return imagePath;
+  };
+
   const [selectedMetric, setSelectedMetric] = useState<string>("AUC");
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>();
 
@@ -53,10 +62,10 @@ export function Dashboard() {
     <div className="container mx-auto py-6">
       <header className="pb-6 mb-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          {/* <h1 className="text-4xl font-bold tracking-tight">PathBench</h1> */}
+
           <div className="mb-2">
-            <Image 
-              src={`${basePath}/images/pathbench.svg`}
+            <Image
+              src={getImagePath("/images/pathbench.svg")}
               alt="PathBench Logo"
               width={300}
               height={300}
@@ -68,7 +77,7 @@ export function Dashboard() {
           </p>
         </div>
 
-        {/* 新增合作机构logo区域*/}
+
         <div className="flex flex-1 justify-end items-center gap-3">
           {PARTNERS.map((partner) => (
             <a
@@ -86,14 +95,14 @@ export function Dashboard() {
               title={`Visit ${partner.name}`}
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <Image 
-                src={`${basePath}/${partner.logo}`}
+              <Image
+                src={getImagePath(partner.logo)}
                 alt={partner.name}
                 width={250}
                 height={250}
                 className="h-20 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
               />
-              {/* 微光效果 */}
+
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
             </a>
           ))}
@@ -137,7 +146,7 @@ export function Dashboard() {
             <TaskDistributionChart chartType="taskType" />
           </div>
 
-          {/* Filters */}
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
 
             <ModelFilter />
@@ -192,8 +201,7 @@ export function Dashboard() {
           </div>
         </TabsContent>
       </Tabs>
-      {/* Human Body Visualization here, between Tabs and Footer */}
-      {/* <HumanBodyVisualization basePath={basePath} /> */}
+
       <Footer />
     </div>
   );

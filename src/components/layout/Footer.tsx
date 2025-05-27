@@ -81,34 +81,26 @@ export function Footer() {
   });
 
   useEffect(() => {
-    // Set the current year on the client side only
     setCurrentYear(new Date().getFullYear().toString());
-
-    // Set the build timestamp on the client side if needed
     if (!buildInfo.buildTimestamp) {
       setBuildInfo({
         buildTimestamp: new Date().toISOString().replace('T', ' ').substring(0, 19)
       });
     }
 
-    // Function to load the script
     const loadClusterMaps = () => {
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.id = "clustrmaps";
       script.src = "//clustrmaps.com/map_v2.js?d=qqJm1XKFS90b9VP0V10uugIZder4bxWZ-j_VBVoZCO8&cl=ffffff&w=200&h=150";
-      script.async = true; // Add async attribute
+      script.async = true;
 
-      // Append the script to the container
       if (clustrmapsContainerRef.current) {
         clustrmapsContainerRef.current.appendChild(script);
       }
     };
 
-    // Load the script after the component has mounted
     loadClusterMaps();
-
-    // Cleanup function to remove the script when the component unmounts
     return () => {
       const script = document.getElementById("clustrmaps");
       if (script) {
@@ -120,7 +112,7 @@ export function Footer() {
   return (
     <footer className="w-full mt-12 border-t">
 
-      {/* 底部内容容器 */}
+
       <div className="w-full">
         <div className="flex flex-col gap-8 w-full">
           <VisionCarousel />
@@ -147,12 +139,12 @@ export function Footer() {
             </CardContent>
           </Card>
 
-          {/* Contact Information */}
+
           <Card className="shadow-none w-full">
             <CardContent className="p-6 w-full">
               <h3 className="text-2xl font-semibold mb-4 text-primary">Contact Information</h3>
 
-              {/* First section - Prof. Chen's info */}
+
               <div className="space-y-3 text-xm text-muted-foreground mb-8">
                 <p className="font-medium text-foreground">Prof. <a href="https://scholar.google.com/citations?user=Z_t5DjwAAAAJ&hl=zh-CN&oi=ao" className="text-primary hover:underline">Hao CHEN</a></p>
                 <div className="space-y-1">
@@ -162,7 +154,7 @@ export function Footer() {
                 </div>
               </div>
 
-              {/* Second section - Mr. Ma's info */}
+
               <div className="space-y-3 text-xm text-muted-foreground mb-8">
                 <p className="font-medium text-foreground">Mr. <a href="https://scholar.google.com/citations?user=VyKdUTUAAAAJ&hl=zh-CN&oi=ao" className="text-primary hover:underline">Jiabo MA (PhD Student)</a></p>
                 <div className="space-y-1">
@@ -171,7 +163,7 @@ export function Footer() {
                 </div>
               </div>
 
-              {/* Third section - Call to action */}
+
               <div className="space-y-3 text-xl text-muted-foreground">
                 <p>If you're interested in evaluating foundation models or contributing datasets, please don't hesitate to reach out. Let's work together to advance the progress of digital and intelligent pathology.</p>
               </div>
@@ -179,7 +171,7 @@ export function Footer() {
           </Card>
         </div>
 
-        {/* 合作伙伴部分 - 自动滚动版本 */}
+
         <div className="w-full my-8">
           <Card className="shadow-none rounded-none border-x-0 border-t-0">
             <CardContent className="container mx-auto p-4">
@@ -188,26 +180,26 @@ export function Footer() {
           </Card>
         </div>
 
-        {/* Clustrmaps script will be loaded here dynamically */}
+
         <div
         ref={clustrmapsContainerRef}
         style={{
           width: '200px',
           height: '150px',
           overflow: 'hidden',
-          margin: '0 auto', // 添加 margin auto
+          margin: '0 auto',
         }}
       >
       </div>
 
-        {/* 版权信息 */}
+
         <div className="flex justify-center mt-4 pb-6">
           <p className="text-xs text-muted-foreground" suppressHydrationWarning>
             © {currentYear || "2025"} SmartLab, Hong Kong University of Science and Technology — All Rights Reserved
           </p>
         </div>
 
-        {/* Last updated */}
+
       <div className="flex justify-center pb-4">
         <p className="text-xs text-muted-foreground" suppressHydrationWarning>
           Last updated: {buildInfo.buildTimestamp} UTC

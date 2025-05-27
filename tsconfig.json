@@ -12,11 +12,9 @@
     "noEmit": false,
     "esModuleInterop": true,
     "module": "esnext",
-    // "moduleResolution": "bundler",
-    "moduleResolution": "node", // 使用 node 作为模块解析策略以确保兼容性
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    // "jsx": "preserve",
     "jsx": "preserve",
     "incremental": true,
     "plugins": [

@@ -18,10 +18,10 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
       console.log("Cannot initialize: missing ref, sapien library, or already initialized");
       return;
     }
-    
+
     console.log("Initializing human body visualization");
     visualizationInitializedRef.current = true;
-    
+
     // 数据保持不变
     const processedData = [
       { key: 'Bladder', fileCount: 0.653, caseCount: 1.056 },
@@ -54,10 +54,10 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
     try {
       // 清空容器以确保没有重复内容
       container.innerHTML = '';
-      
+
       const containerWidth = 850;
       const containerHeight = 500; // 增加高度匹配人体图
-      
+
       window.sapien.createHumanBody({
         title: 'Cases by Major Primary Site',
         selector: container,
@@ -84,7 +84,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             (d?.caseCount || 0) * SCALE_CASE_COUNT
           ).toLocaleString()} cases, ${(d?.fileCount || 0).toLocaleString()} files`,
       });
-      
+
       // 在可视化创建后添加数值标签
       setTimeout(() => {
         // 1. 调整标题字体大小
@@ -97,17 +97,17 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
         const svg = container.querySelector('svg.chart g');
         const bars = container.querySelectorAll('#barGroup rect');
         const labels = container.querySelectorAll('#primarySiteLabels text');
-        
+
         // 3. 移除可能已存在的值标签
         const existingLabels = container.querySelectorAll('.bar-value-label');
         existingLabels.forEach(label => label.remove());
-        
+
         // 4. 计算最大柱长度，用于决定标签位置
         let maxCaseValue = 0;
         processedData.forEach(d => {
           maxCaseValue = Math.max(maxCaseValue, d.caseCount);
         });
-        
+
         if (svg && bars.length > 0) {
           // 5. 添加数值标签
           processedData.forEach((d, i) => {
@@ -117,16 +117,16 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
               const barX = parseFloat(bar.getAttribute('x') || '0');
               const barY = parseFloat(bar.getAttribute('y') || '0');
               const barHeight = parseFloat(bar.getAttribute('height') || '0');
-              
+
               // 数值文本
               const valueText = Math.round(d.caseCount * SCALE_CASE_COUNT).toLocaleString();
-              
+
               // 创建新的文本元素显示数值
               const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-              
+
               // 条件判断：如果柱子足够长，将标签放在柱子内部，否则放在右侧
               const isLongBar = d.caseCount > (maxCaseValue * 0.3);
-              
+
               if (isLongBar) {
                 // 长柱子：白色标签在内部
                 text.textContent = valueText;
@@ -143,16 +143,16 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
                 text.setAttribute('fill', '#444');
                 text.setAttribute('text-anchor', 'start');
               }
-              
+
               text.setAttribute('font-size', '13px');
               text.setAttribute('class', 'bar-value-label');
               text.setAttribute('font-family', 'Arial');
               text.setAttribute('dominant-baseline', 'middle');
-              
+
               svg.appendChild(text);
             }
           });
-          
+
           // 6. 调整标签垂直对齐
           labels.forEach((label, i) => {
             const bar = bars[i] as SVGRectElement;
@@ -167,14 +167,14 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             }
           });
         }
-        
+
         // 7. 调整横轴标签字体大小
         const xAxisLabels = container.querySelectorAll('#xAxisLabels text');
         xAxisLabels.forEach(label => {
           label.setAttribute('font-size', '14px');
           label.setAttribute('fill', '#333');
         });
-        
+
         // 8. 调整图表整体高度
         const chartSvg = container.querySelector('svg.chart');
         if (chartSvg) {
@@ -182,7 +182,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
           chartSvg.setAttribute('viewBox', `0 0 ${containerWidth} 580`);
         }
       }, 100); // 增加延迟以确保元素加载完成
-      
+
       console.log("Human body visualization initialized successfully");
     } catch (error) {
       console.error("Error initializing human body visualization:", error);
@@ -192,16 +192,16 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
   // 处理脚本加载
   const handleSapienLoad = () => {
     console.log("Sapien script loaded");
-    
+
     if (typeof window !== 'undefined') {
       if (window.sapien && !sapienLoadedRef.current) {
         sapienLoadedRef.current = true;
-        
+
         setTimeout(() => {
           if (humanBodyRootRef.current) {
             initVisualization();
           }
-        }, 500); 
+        }, 500);
       }
     }
   };
@@ -212,7 +212,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
       sapienLoadedRef.current = true;
       setTimeout(initVisualization, 100);
     }
-    
+
     const handleResize = () => {
       if (visualizationInitializedRef.current) {
         if (humanBodyRootRef.current) {
@@ -223,7 +223,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
     };
 
     window.addEventListener('resize', handleResize);
-    
+
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -239,7 +239,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             width: 100%;
             overflow: visible;
         }
-        
+
         #human-body-root #human-body-highlights {
             position: relative;
             top: -20px;
@@ -250,7 +250,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             opacity: 0;
             transition: opacity 0.3s ease;
         }
-        
+
         /* 调整柱状图区域 */
         #human-body-root #svgContainer {
             position: absolute;
@@ -258,7 +258,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             width: calc(100% - 280px);
             max-width: 600px;
         }
-        
+
         /* 调整标题和文字 */
         #human-body-root #title {
             position: absolute;
@@ -269,12 +269,12 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             left: 260px !important;
             top: 0 !important;
         }
-        
+
         /* 图表样式优化 */
         #human-body-root .chart g {
             color: rgba(182, 182, 182, 0.93);
         }
-        
+
         /* 优化柱状图文本标签样式 */
         #human-body-root #primarySiteLabels text {
             font-size: 14px !important;
@@ -283,33 +283,33 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             font-family: 'Arial', sans-serif !important;
             dominant-baseline: middle !important;
         }
-        
+
         /* 柱状图横坐标标签样式 */
         #human-body-root #xAxisLabels text {
             font-size: 14px !important;
             fill: rgb(40, 40, 40) !important;
             font-family: 'Arial', sans-serif !important;
         }
-        
+
         /* 优化柱状图样式 */
         #human-body-root #barGroup rect {
             height: 18px !important;
             rx: 2px;
             ry: 2px;
         }
-        
+
         /* 优化数值标签样式 */
         #human-body-root .bar-value-label {
             font-family: 'Arial', sans-serif;
             font-weight: 500;
             pointer-events: none;
         }
-        
+
         /* 让柱子上的值标签更明显 */
         #human-body-root .bar-value-label[fill="white"] {
             text-shadow: 0px 0px 1px rgba(0, 0, 0, 0.3);
         }
-        
+
         /* 保持人体图在左侧位置正确 */
         #human-body-root #human-body-svg-container {
             position: absolute;
@@ -318,12 +318,12 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             width: 260px;
             height: 580px;
         }
-        
+
         /* 图表调整 */
         #svgContainer > svg {
             margin-top: 20px;
         }
-        
+
         /* 保留原有人体图元素的位置定义 */
         #human-body-root #male {
             position: absolute;
@@ -350,7 +350,7 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
             top: 255px;
             left: 111px;
         }
-        
+
         #human-body-root #Head-and-Neck {
             height: 138px;
             width: 102px;
@@ -536,13 +536,13 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
       `}</style>
 
       <h2 className="text-3xl font-bold tracking-tight mb-6">Datasets</h2>
-      
+
       {/* 外部脚本 */}
-      <Script 
-        src="https://cdn.jsdelivr.net/npm/d3@7" 
-        strategy="beforeInteractive"
+      <Script
+        src="https://cdn.jsdelivr.net/npm/d3@7"
+        strategy="afterInteractive"
       />
-      <Script 
+      <Script
         src={`${basePath}/static/js/nci-gdc/sapien/dist/index.umd.js`}
         strategy="afterInteractive"
         onLoad={handleSapienLoad}
@@ -574,8 +574,8 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
         {/* 右侧人体可视化 */}
         <div className="md:col-span-8">
           <div className="w-full overflow-hidden">
-            <div 
-              id="human-body-root" 
+            <div
+              id="human-body-root"
               ref={humanBodyRootRef}
               style={{ minWidth: "850px" }}
             ></div>

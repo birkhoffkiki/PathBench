@@ -1,142 +1,3 @@
-// "use client";
-
-// import { useEvaluation } from "@/context/EvaluationContext";
-// import React, { useMemo } from "react";
-// import ReactECharts from "echarts-for-react";
-// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-// import type { BarSeriesOption, DefaultLabelFormatterCallbackParams, EChartsOption } from "echarts";
-
-
-// interface PerformanceBarChartProps {
-//   selectedMetric?: string;
-//   selectedTaskId?: string;
-// }
-
-
-// export function PerformanceBarChart({ selectedMetric, selectedTaskId }: PerformanceBarChartProps) {
-//   const {
-//     getFilteredPerformances,
-//     getFilteredModels,
-//     getTaskById,
-//     getModelById
-//   } = useEvaluation();
-
-//   const chartOptions = useMemo((): EChartsOption => {
-//     const filteredPerformances = getFilteredPerformances();
-//     const filteredModels = getFilteredModels();
-
-//     // Filter performances for the selected task if provided
-//     const taskPerformances = selectedTaskId
-//       ? filteredPerformances.filter(p => p.taskId === selectedTaskId)
-//       : filteredPerformances;
-
-//     if (taskPerformances.length === 0 || !selectedMetric) {
-//       return {
-//         title: {
-//           text: "No data available",
-//           left: "center",
-//         },
-//         tooltip: {},
-//         xAxis: { type: "category", data: [] },
-//         yAxis: { type: "value" },
-//         series: [],
-//       };
-//     }
-
-//     // Process data for the chart
-//     const taskIds = new Set<string>();
-//     taskPerformances.forEach(p => taskIds.add(p.taskId));
-
-//     const sortedTaskIds = Array.from(taskIds);
-
-//     // Create series for each model
-//     const series: BarSeriesOption[] = filteredModels.map(model => {
-//       const data = sortedTaskIds.map(taskId => {
-//         const performance = taskPerformances.find(
-//           p => p.modelId === model.id && p.taskId === taskId
-//         );
-//         return performance && performance.metrics[selectedMetric]
-//           ? performance.metrics[selectedMetric] // 这是一个数组，例如 [1, 2]
-//           : null;
-//       });
-
-//       return {
-//         name: model.name,
-//         type: "bar",
-//         data: data.map(item => item ? item.reduce((sum, value) => sum + value, 0) / item.length : null), // 计算每个数组的平均值
-//         label: {
-//           show: true,
-//           position: 'top',
-//           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//           formatter: (params: any) => {
-//             const value = params.value; // 获取当前柱子的值
-//             return value !== null && value !== undefined ? value.toFixed(3) : ''; // 显示平均值，保留两位小数
-//           },
-//         },
-//       };
-//     });
-
-//     // Create x-axis categories from task names
-//     const categories = sortedTaskIds.map(taskId => {
-//       const task = getTaskById(taskId);
-//       return task ? task.name : taskId;
-//     });
-
-//     const allValues = series.flatMap(s => s.data).filter(value => value !== null) as number[];
-//     const minValue = Math.min(...allValues);
-//     const maxValue = Math.max(...allValues);
-
-//     // Create chart options
-//     return {
-//       title: {
-//         text: selectedTaskId
-//           ? `${getTaskById(selectedTaskId)?.name} - ${selectedMetric} Performance`
-//           : `${selectedMetric} Performance Across Tasks`,
-//         left: "center",
-//       },
-//       tooltip: {
-//         trigger: "axis",
-//         axisPointer: {
-//           type: "shadow",
-//         },
-//       },
-//       legend: {
-//         data: filteredModels.map(m => m.name),
-//         bottom: 0,
-//         type: "scroll",
-//       },
-//       grid: {
-//         left: "3%",
-//         right: "4%",
-//         bottom: "15%",
-//         top: "15%",
-//         containLabel: true,
-//       },
-//       xAxis: {
-//         type: "category",
-//         data: categories,
-//         axisLabel: {
-//           interval: 0,
-//           width: 120,
-//         },
-//       },
-//       yAxis: {
-//         type: "value",
-//         name: selectedMetric,
-//         min: minValue * 0.9, // 设置 y 轴最小值为数据最小值的 90%
-//         max: maxValue * 1.1, // 设置 y 轴最大值为数据最大值的 110%
-//       },
-//       series,
-//     };
-//   }, [
-//     getFilteredPerformances,
-//     getFilteredModels,
-//     getTaskById,
-//     selectedMetric,
-//     selectedTaskId
-//   ]);
-
-
 "use client";
 
 import { useEvaluation } from "@/context/EvaluationContext";
@@ -150,37 +11,32 @@ interface PerformanceBarChartProps {
   selectedTaskId?: string;
 }
 
+
+
 const formatNumber = (value: number, decimals: number = 3): number => {
   return Number(Math.round(Number(value + 'e' + decimals)) + 'e-' + decimals);
 };
 
 
-// 添加颜色生成工具函数
+
 const generateColors = (count: number): string[] => {
-  // 预定义的基础颜色方案
+
   const baseColors = [
     '#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
     '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc', '#48b8b8'
   ];
 
   if (count <= baseColors.length) {
-    // 如果模型数量小于等于基础颜色数量，直接返回对应数量的颜色
     return baseColors.slice(0, count);
   } else {
-    // 如果模型数量超过基础颜色，生成额外的颜色
     const colors = [...baseColors];
     const generateColor = (index: number): string => {
-      // 使用 HSL 色彩空间生成颜色
-      // H: 色相 (0-360)
-      // S: 饱和度 (0-100%)
-      // L: 亮度 (0-100%)
-      const hue = (index * 137.508) % 360; // 使用黄金角度来分散色相
-      const saturation = 65 + Math.sin(index) * 10; // 60-70% 的饱和度
-      const lightness = 55 + Math.cos(index) * 10;  // 50-60% 的亮度
+      const hue = (index * 137.508) % 360;
+      const saturation = 65 + Math.sin(index) * 10;
+      const lightness = 55 + Math.cos(index) * 10;
       return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
     };
 
-    // 生成额外需要的颜色
     for (let i = baseColors.length; i < count; i++) {
       colors.push(generateColor(i));
     }
@@ -200,10 +56,10 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
     const filteredPerformances = getFilteredPerformances();
     const filteredModels = getFilteredModels();
 
-    // 生成与模型数量相匹配的颜色方案
+
     const colors = generateColors(filteredModels.length);
 
-    // Filter performances for the selected task if provided
+
     const taskPerformances = selectedTaskId
       ? filteredPerformances.filter(p => p.taskId === selectedTaskId)
       : filteredPerformances;
@@ -221,13 +77,13 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
       };
     }
 
-    // Process data for the chart
+
     const taskIds = new Set<string>();
     taskPerformances.forEach(p => taskIds.add(p.taskId));
 
     const sortedTaskIds = Array.from(taskIds);
 
-    // Create series for each model
+
     const series: BarSeriesOption[] = filteredModels.map((model, index) => {
       const data = sortedTaskIds.map(taskId => {
         const performance = taskPerformances.find(
@@ -245,22 +101,22 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
         label: {
           show: true,
           position: 'top',
-          rotate: 90, // 标签旋转90度
-          distance: 5, // 调整标签与柱子的距离
+          rotate: 90,
+          distance: 5,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           formatter: (params: any) => {
             const value = params.value;
-            return value !== null && value !== undefined ? value.toFixed(3) : '';
+            return value !== null && value !== undefined ? (value as number).toFixed(3) : '';
           },
-          fontSize: 12, // 基础字体大小
+          fontSize: 12,
           color: '#000',
           fontWeight: 'normal',
           align: 'left',
           verticalAlign: 'middle'
         },
         itemStyle: {
-          color: colors[index] // 使用对应索引的颜色
+          color: colors[index]
         },
-        // 在 emphasis 中保持一致的颜色，但可以调整透明度
         emphasis: {
           itemStyle: {
             color: colors[index],
@@ -274,7 +130,7 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
       };
     });
 
-    // Create x-axis categories from task names
+
     const categories = sortedTaskIds.map(taskId => {
       const task = getTaskById(taskId);
       return task ? task.name : taskId;
@@ -284,7 +140,7 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
     const minValue = Math.min(...allValues);
     const maxValue = Math.max(...allValues);
 
-    // Create chart options
+
     return {
       color: colors,
       title: {
@@ -310,12 +166,11 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
         textStyle: {
           color: '#333',
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formatter: (params: any) => {
-          if (!Array.isArray(params)) {
-            params = [params];
-          }
+          const paramArray = Array.isArray(params) ? params : [params];
 
-          const categoryName = params[0].axisValue;
+          const categoryName = paramArray[0].axisValue;
           const tooltipContent = [
             `<div style="
               font-weight:bold;
@@ -325,18 +180,20 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
             ">${categoryName}</div>`
           ];
 
-          // 计算最大值和最小值
-          const values = params.map((param: any) => param.value).filter((v: any) => v != null);
+
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const values = paramArray.map((param: any) => param.value).filter((v: any) => v != null) as number[];
           const max = Math.max(...values);
           const min = Math.min(...values);
 
-          params.forEach((param: any) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          paramArray.forEach((param: any) => {
             const value = param.value;
             const formattedValue = value !== null && value !== undefined
-              ? formatNumber(value, 3).toFixed(3)
+              ? formatNumber(value as number, 3).toFixed(3)
               : 'N/A';
 
-            // 为最大值和最小值添加特殊标记
+
             let specialMarker = '';
             if (value === max) specialMarker = ' 📈';
             if (value === min) specialMarker = ' 📉';
@@ -356,7 +213,7 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
             );
           });
 
-          // 添加额外的统计信息
+
           if (values.length > 0) {
             const avg = values.reduce((a: number, b: number) => a + b, 0) / values.length;
             tooltipContent.push(
@@ -450,7 +307,7 @@ export function PerformanceBarChart({ selectedMetric, selectedTaskId }: Performa
       },
       series,
       animation: true,
-      // 添加字体大小自适应配置
+
       media: [
         {
           query: {}, // 默认配置

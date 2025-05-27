@@ -9,7 +9,6 @@ export default {
   ],
   theme: {
     extend: {
-      // 添加滚动动画的关键帧和动画定义
       keyframes: {
         scroll: {
           '0%': { transform: 'translateX(0)' },
@@ -21,7 +20,7 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))'},
-        
+
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

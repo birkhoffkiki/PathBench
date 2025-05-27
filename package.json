@@ -1,5 +1,5 @@
 {
-  "name": "pathology-model-evaluator",
+  "name": "pathbench",
   "version": "0.1.0",
   "private": true,
   "scripts": {
