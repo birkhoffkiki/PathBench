@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { EvaluationProvider } from "@/context/EvaluationContext";
 import { Toaster } from "@/components/ui/sonner";
 import { Inter } from "next/font/google";
@@ -9,7 +9,13 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "PathBench: A compensive benchmark for pathology foundation models with real practical data from the world.",
   description: "An interactive platform for evaluating pathology foundation models across various tasks and organs",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout({

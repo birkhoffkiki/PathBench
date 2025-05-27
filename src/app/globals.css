@@ -72,6 +72,30 @@
     overflow-x: hidden;
     max-width: 100vw;
   }
+
+  /* Desktop optimizations for wider screens */
+  @media (min-width: 1280px) {
+    .desktop-wide-container {
+      max-width: 1600px;
+    }
+
+    /* Better spacing for large screens */
+    .desktop-grid-spacing {
+      gap: 2rem;
+    }
+
+    /* Optimize chart containers for wider screens */
+    .desktop-chart-container {
+      min-height: 400px;
+    }
+  }
+
+  /* Ultra-wide screen optimizations */
+  @media (min-width: 1600px) {
+    .ultrawide-container {
+      max-width: 1800px;
+    }
+  }
 }
 
 @layer base {

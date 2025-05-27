@@ -13,11 +13,21 @@ interface DetailedPerformanceChartProps {
   organ: string;
 }
 
+interface ModelStats {
+  modelName: string;
+  mean: number;
+  std: number;
+  values: number[];
+  min: number;
+  max: number;
+  cohort: string;
+}
+
 interface SingleCohortChartProps {
   taskName: string;
   organ: string;
   cohort: string;
-  modelStats: any[];
+  modelStats: ModelStats[];
   selectedMetric: string;
 }
 
@@ -58,7 +68,7 @@ const SingleCohortChart = memo(function SingleCohortChart({
     const yAxisMax = maxValue + range * 0.1;
 
     // Prepare scatter data (individual fold values)
-    const scatterData: any[] = [];
+    const scatterData: [number, number][] = [];
     modelStats.forEach((modelData, modelIndex) => {
       if (modelData && modelData.values) {
         modelData.values.forEach((value: number) => {
@@ -86,7 +96,7 @@ const SingleCohortChart = memo(function SingleCohortChart({
         borderColor: '#e5e7eb',
         borderWidth: 1,
         textStyle: { color: '#374151' },
-        formatter: function(params: any) {
+        formatter: function(params: unknown) {
           if (Array.isArray(params) && params.length > 0) {
             const dataIndex = params[0].dataIndex;
             const modelData = modelStats[dataIndex];
@@ -228,12 +238,14 @@ const SingleCohortChart = memo(function SingleCohortChart({
         {
           name: 'Error Bars',
           type: 'custom',
-          renderItem: function (params: any, api: any) {
-            const xValue = api.value(0);
-            const yValue = api.value(1);
-            const std = stds[params.dataIndex];
-            const coord = api.coord([xValue, yValue]);
-            const size = api.size([1, std]);
+          renderItem: function (params: unknown, api: unknown) {
+            const apiTyped = api as { value: (index: number) => number; coord: (value: [number, number]) => [number, number]; size: (value: [number, number]) => [number, number] };
+            const paramsTyped = params as { dataIndex: number };
+            const xValue = apiTyped.value(0);
+            const yValue = apiTyped.value(1);
+            const std = stds[paramsTyped.dataIndex];
+            const coord = apiTyped.coord([xValue, yValue]);
+            const size = apiTyped.size([1, std]);
 
             return {
               type: 'group',
@@ -310,7 +322,7 @@ const SingleCohortChart = memo(function SingleCohortChart({
             style={{ height: '100%', width: '100%' }}
             opts={{
               renderer: 'canvas', // Canvas is faster for complex charts
-              devicePixelRatio: window.innerWidth < 768 ? 1 : 2 // Lower pixel ratio on mobile for better performance
+              devicePixelRatio: (typeof window !== 'undefined' && window.innerWidth < 768) ? 1 : 2 // Lower pixel ratio on mobile for better performance
             }}
             notMerge={true}
             lazyUpdate={true}
@@ -363,8 +375,9 @@ export function DetailedPerformanceChart({
     const chartDataArray = [];
     for (const [cohort, cohortPerformances] of cohortGroups.entries()) {
       // Calculate statistics for each model in this cohort
-      const modelStats = cohortPerformances.map((perf: any) => {
-        const values = perf.metrics[selectedMetric];
+      const modelStats = cohortPerformances.map((perf: unknown) => {
+        const perfTyped = perf as { modelID: string; metrics: Record<string, number[]> };
+        const values = perfTyped.metrics[selectedMetric];
         if (!values || values.length === 0) return null;
 
         // Optimize statistical calculations
@@ -382,7 +395,7 @@ export function DetailedPerformanceChart({
         const max = Math.max(...values);
 
         return {
-          modelName: perf.modelID,
+          modelName: perfTyped.modelID,
           mean,
           std,
           values,
@@ -393,7 +406,7 @@ export function DetailedPerformanceChart({
       }).filter(Boolean);
 
       // Sort by mean performance (descending)
-      modelStats.sort((a: any, b: any) => (b?.mean || 0) - (a?.mean || 0));
+      modelStats.sort((a: ModelStats | null, b: ModelStats | null) => (b?.mean || 0) - (a?.mean || 0));
 
       if (modelStats.length > 0) {
         chartDataArray.push({

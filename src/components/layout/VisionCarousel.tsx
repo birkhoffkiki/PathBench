@@ -128,7 +128,7 @@ export function VisionCarousel() {
             ))}
           </div>
 
-          {/* 指示器 */}
+          {/* 指示器 - 线条样式 */}
           <div className="absolute bottom-1 left-0 right-0 flex justify-center space-x-2 z-20">
             {visionData.map((_, index) => (
               <button
@@ -138,11 +138,12 @@ export function VisionCarousel() {
                   setIsAutoPlaying(false);
                 }}
                 className={cn(
-                  "w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 touch-target",
+                  "h-1 rounded-full transition-all duration-300",
                   index === currentSlide
-                    ? "bg-primary/70 w-4 sm:w-6"
-                    : "bg-primary/20 hover:bg-primary/40"
+                    ? "bg-primary/80 w-12"
+                    : "bg-primary/25 hover:bg-primary/45 w-8"
                 )}
+                style={{ minHeight: '4px', minWidth: index === currentSlide ? '48px' : '32px' }}
                 aria-label={`Go to slide ${index + 1}`}
               />
             ))}

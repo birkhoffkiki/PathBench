@@ -374,19 +374,19 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         className="overflow-auto p-2 sm:p-6"
         style={{
           height: `calc(100vh - 150px)`,
-          maxHeight: `${Math.min(containerHeight, window.innerWidth < 768 ? 600 : containerHeight)}px`,
+          maxHeight: `${Math.min(containerHeight, (typeof window !== 'undefined' && window.innerWidth < 768) ? 600 : containerHeight)}px`,
         }}
       >
         <ReactECharts
           option={chartOptions}
           style={{
-            height: `${Math.min(containerHeight - 100, window.innerWidth < 768 ? 500 : containerHeight - 100)}px`,
+            height: `${Math.min(containerHeight - 100, (typeof window !== 'undefined' && window.innerWidth < 768) ? 500 : containerHeight - 100)}px`,
             width: "100%",
-            minHeight: `${Math.min(containerHeight - 100, window.innerWidth < 768 ? 500 : containerHeight - 100)}px`
+            minHeight: `${Math.min(containerHeight - 100, (typeof window !== 'undefined' && window.innerWidth < 768) ? 500 : containerHeight - 100)}px`
           }}
           opts={{
             renderer: "canvas", // Canvas is faster for heatmaps
-            devicePixelRatio: window.innerWidth < 768 ? 1 : 2 // Lower pixel ratio on mobile for better performance
+            devicePixelRatio: (typeof window !== 'undefined' && window.innerWidth < 768) ? 1 : 2 // Lower pixel ratio on mobile for better performance
           }}
           notMerge={true}
           lazyUpdate={true}

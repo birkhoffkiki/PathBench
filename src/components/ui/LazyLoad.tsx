@@ -22,8 +22,24 @@ export function LazyLoad({
   const elementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // 检查是否在客户端环境
+    if (typeof window === 'undefined') {
+      // 在服务端渲染时，直接显示内容
+      setIsVisible(true);
+      setHasLoaded(true);
+      return;
+    }
+
     const element = elementRef.current;
     if (!element) return;
+
+    // 检查 IntersectionObserver 是否可用
+    if (!window.IntersectionObserver) {
+      // 如果不支持 IntersectionObserver，直接显示内容
+      setIsVisible(true);
+      setHasLoaded(true);
+      return;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {

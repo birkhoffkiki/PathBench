@@ -103,6 +103,11 @@ export function Footer() {
     }
 
     const loadClusterMaps = () => {
+      // 检查是否在客户端环境
+      if (typeof window === 'undefined' || typeof document === 'undefined') {
+        return;
+      }
+
       const script = document.createElement("script");
       script.type = "text/javascript";
       script.id = "clustrmaps";
@@ -116,9 +121,11 @@ export function Footer() {
 
     loadClusterMaps();
     return () => {
-      const script = document.getElementById("clustrmaps");
-      if (script) {
-        script.remove();
+      if (typeof document !== 'undefined') {
+        const script = document.getElementById("clustrmaps");
+        if (script) {
+          script.remove();
+        }
       }
     };
   }, [buildInfo.buildTimestamp]);

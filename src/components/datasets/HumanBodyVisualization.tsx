@@ -14,6 +14,11 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
 
   // 定义初始化函数
   const initVisualization = useCallback(() => {
+    // 检查是否在客户端环境
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     if (!humanBodyRootRef.current || !window.sapien || visualizationInitializedRef.current) {
       console.log("Cannot initialize: missing ref, sapien library, or already initialized");
       return;
@@ -55,8 +60,8 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
       // 清空容器以确保没有重复内容
       container.innerHTML = '';
 
-      const containerWidth = window.innerWidth < 768 ? 320 : 850;
-      const containerHeight = window.innerWidth < 768 ? 300 : 500; // 响应式高度匹配人体图
+      const containerWidth = (typeof window !== 'undefined' && window.innerWidth < 768) ? 320 : 850;
+      const containerHeight = (typeof window !== 'undefined' && window.innerWidth < 768) ? 300 : 500; // 响应式高度匹配人体图
 
       window.sapien.createHumanBody({
         title: 'Cases by Major Primary Site',
@@ -64,13 +69,13 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
         width: containerWidth,
         height: containerHeight,
         data: processedData,
-        labelSize: window.innerWidth < 768 ? '12px' : '14px',
+        labelSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? '12px' : '14px',
         primarySiteKey: 'key',
         fileCountKey: 'fileCount',
         caseCountKey: 'caseCount',
         tickInterval: 5,
-        offsetLeft: window.innerWidth < 768 ? 50 : 250,
-        offsetTop: window.innerWidth < 768 ? 20 : 50,
+        offsetLeft: (typeof window !== 'undefined' && window.innerWidth < 768) ? 50 : 250,
+        offsetTop: (typeof window !== 'undefined' && window.innerWidth < 768) ? 20 : 50,
         clickHandler: (e: { key: string }) => {
           console.log("Clicked:", e.key);
         },
@@ -122,7 +127,10 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
               const valueText = Math.round(d.caseCount * SCALE_CASE_COUNT).toLocaleString();
 
               // 创建新的文本元素显示数值
-              const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+              const text = (typeof document !== 'undefined') ?
+                document.createElementNS('http://www.w3.org/2000/svg', 'text') : null;
+
+              if (!text) return;
 
               // 条件判断：如果柱子足够长，将标签放在柱子内部，否则放在右侧
               const isLongBar = d.caseCount > (maxCaseValue * 0.3);
@@ -222,10 +230,14 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+    }
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
     };
   }, [initVisualization]);
 

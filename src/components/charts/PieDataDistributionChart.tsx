@@ -89,7 +89,7 @@ export function PieDataDistributionChart() {
         left: "center",
         z: 0,
         textStyle: {
-          fontSize: window.innerWidth < 768 ? 14 : 16,
+          fontSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? 14 : 16,
         }
       },
       tooltip: {
@@ -98,14 +98,14 @@ export function PieDataDistributionChart() {
         z: 4,
       },
       legend: {
-        orient: window.innerWidth < 768 ? "horizontal" : "vertical",
-        left: window.innerWidth < 768 ? "center" : 5,
-        top: window.innerWidth < 768 ? 'bottom' : '42.5%',
-        bottom: window.innerWidth < 768 ? 10 : undefined,
+        orient: (typeof window !== 'undefined' && window.innerWidth < 768) ? "horizontal" : "vertical",
+        left: (typeof window !== 'undefined' && window.innerWidth < 768) ? "center" : 5,
+        top: (typeof window !== 'undefined' && window.innerWidth < 768) ? 'bottom' : '42.5%',
+        bottom: (typeof window !== 'undefined' && window.innerWidth < 768) ? 10 : undefined,
         type: "scroll",
         z: 0,
         textStyle: {
-          fontSize: window.innerWidth < 768 ? 12 : 14,
+          fontSize: (typeof window !== 'undefined' && window.innerWidth < 768) ? 12 : 14,
           color: '#333',
         },
       },
@@ -121,7 +121,7 @@ export function PieDataDistributionChart() {
           style={{ height: "100%", width: "100%" }}
           opts={{
             renderer: "svg",
-            devicePixelRatio: window.innerWidth < 768 ? 1 : 2
+            devicePixelRatio: (typeof window !== 'undefined' && window.innerWidth < 768) ? 1 : 2
           }}
         />
       </CardContent>

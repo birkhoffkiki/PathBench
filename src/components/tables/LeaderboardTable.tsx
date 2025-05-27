@@ -187,9 +187,11 @@ export function LeaderboardTable() {
                       const sortedResults = [...validResults].sort((a, b) => {
                         return b.average! - a.average!;
                       });
-                      const topThree = sortedResults.slice(0, 3);
-                      const rank = topThree.findIndex(r => r.modelName === model.name) + 1;
-                      const level = getPerformanceLevel(average, rank);
+
+                      // Get actual rank among all models (not just top 3)
+                      const rank = sortedResults.findIndex(r => r.modelName === model.name) + 1;
+                      const topThreeRank = rank <= 3 ? rank : 0; // Only use rank for top 3 for styling
+                      const level = getPerformanceLevel(average, topThreeRank);
 
                       return (
                         <div key={task.id} className="flex justify-between">
@@ -204,7 +206,7 @@ export function LeaderboardTable() {
                               'bg-gray-100 text-gray-500 border-gray-300'
                             }`}
                           >
-                            {rank > 0 ? `#${rank}` : 'N/A'}
+                            {rank > 0 && average !== null ? `#${rank}` : 'N/A'}
                           </Badge>
                         </div>
                       );
@@ -269,7 +271,7 @@ export function LeaderboardTable() {
                   return { modelName: model.name, average };
                 });
 
-                // Sort valid results and get top 3
+                // Sort valid results and get rankings
                 const validResults = taskResults.filter(r => r.average !== null);
                 const sortedResults = [...validResults].sort((a, b) => {
                   // For DFS, OS, and DSS tasks, higher C-Index is better
@@ -307,8 +309,8 @@ export function LeaderboardTable() {
                     {models.map(model => {
                       const result = taskResults.find(r => r.modelName === model.name);
                       const average = result?.average ?? null;
-                      const rank = topThree.findIndex(r => r.modelName === model.name) + 1;
-                      const performanceLevel = getPerformanceLevel(average, rank);
+                      const topThreeRank = topThree.findIndex(r => r.modelName === model.name) + 1;
+                      const performanceLevel = getPerformanceLevel(average, topThreeRank);
 
                       return (
                         <TableCell key={model.name} className="text-center px-4 py-4">
@@ -323,7 +325,7 @@ export function LeaderboardTable() {
                             `}>
                               {typeof average === 'number' ? average.toFixed(3) : 'N/A'}
                             </div>
-                            {rank > 0 && rank <= 3 && getPerformanceBadge(rank)}
+                            {topThreeRank > 0 && topThreeRank <= 3 && getPerformanceBadge(topThreeRank)}
                           </div>
                         </TableCell>
                       );

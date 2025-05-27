@@ -55,7 +55,9 @@ export function ModelTable() {
   // Function to handle row click
   const handleRowClick = (model: Model) => {
     const link = getModelLink(model.citation);
-    window.open(link, '_blank', 'noopener,noreferrer');
+    if (typeof window !== 'undefined') {
+      window.open(link, '_blank', 'noopener,noreferrer');
+    }
   };
 
   // Helper function to parse parameter values for sorting

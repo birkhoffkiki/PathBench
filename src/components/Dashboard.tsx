@@ -28,27 +28,11 @@ import { FaGithub } from 'react-icons/fa';
 // Direct data imports for Performance tab
 import { models } from "@/data/models";
 import { tasks } from "@/data/tasks";
+import type { Task } from "@/types";
 
 
 
-const PARTNERS = [
-  {
-    id: 1,
-    name: "smartlab logo",
-    url: "https://smartlab.cse.ust.hk/",
-    logo: "/images/smartlab.svg",
-    bgColor: "bg-white-50"
 
-  },
-  {
-    id: 2,
-    name: "ust logo",
-    url: "https://hkust.edu.hk/",
-    logo: "/images/ust_logo.svg",
-    bgColor: "bg-white-50"
-
-  },
-];
 
 // Performance Content Component
 
@@ -56,7 +40,7 @@ function PerformanceContent() {
 
   // Group tasks by organ and sort alphabetically
   const tasksByOrgan = useMemo(() => {
-    const organMap = new Map<string, any[]>();
+    const organMap = new Map<string, Task[]>();
 
     tasks.forEach(task => {
       if (!organMap.has(task.organ)) {
@@ -67,7 +51,7 @@ function PerformanceContent() {
 
     // Sort organs alphabetically and tasks within each organ
     const sortedOrgans = Array.from(organMap.keys()).sort();
-    const result: { organ: string; tasks: any[] }[] = [];
+    const result: { organ: string; tasks: Task[] }[] = [];
 
     sortedOrgans.forEach(organ => {
       const organTasks = organMap.get(organ)!.sort((a, b) => a.name.localeCompare(b.name));
@@ -181,79 +165,168 @@ export function Dashboard() {
   };
 
   return (
-    <div className="container mx-auto py-3 sm:py-6 max-w-7xl">
-      <header className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
-        <div>
-
-          <div className="mb-2">
-            <Image
-              src={getImagePath("/images/pathbench.svg")}
-              alt="PathBench Logo"
-              width={300}
-              height={300}
-              className="h-16 sm:h-20 object-contain"
-            />
+    <div className="container mx-auto py-3 sm:py-6 max-w-[1600px]">
+      <header className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-gray-100">
+        {/* Mobile layout - stacked vertically */}
+        <div className="flex flex-col sm:hidden gap-3">
+          <div className="text-center">
+            <div className="mb-2">
+              <Image
+                src={getImagePath("/images/pathbench.svg")}
+                alt="PathBench Logo"
+                width={300}
+                height={300}
+                className="h-16 object-contain mx-auto"
+              />
+            </div>
+            <p className="text-muted-foreground text-xs leading-tight">
+              A Multi-task, Multi-organ Benchmark for Real-world Clinical Performance Evaluation of Pathology Foundation Models
+            </p>
           </div>
-          <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
-            A Multi-task, Multi-organ Benchmark for Real-world Clinical Performance Evaluation of Pathology Foundation Models
-          </p>
-        </div>
 
-        <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
-          {/* arXiv and GitHub links - matching partner logo style */}
-          <a
-            href="https://arxiv.org/abs/2505.20202"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative p-1 sm:p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
-            title="View arXiv Paper"
-          >
-            <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <SiArxiv className="h-12 w-12 sm:h-16 sm:w-16 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
-            <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
-          </a>
-
-          <a
-            href="https://github.com/birkhoffkiki/PathBench"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group relative p-1 sm:p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
-            title="View GitHub Repository"
-          >
-            <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <FaGithub className="h-12 w-12 sm:h-16 sm:w-16 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
-            <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
-          </a>
-
-          {/* Partner logos - smartlab with reduced padding */}
-          {PARTNERS.map((partner) => (
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            {/* Mobile logo layout */}
             <a
-              key={partner.id}
-              href={partner.url}
+              href="https://arxiv.org/abs/2505.20202"
               target="_blank"
               rel="noopener noreferrer"
-              className={`
-                group relative
-                ${partner.id === 1 ? 'p-0' : 'p-1 sm:p-2'} rounded-lg
-                transition-all duration-300
-                hover:scale-105 hover:shadow-md
-                ${partner.bgColor}
-                touch-target
-              `}
-              title={`Visit ${partner.name}`}
+              className="group relative p-2 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="View arXiv Paper"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <SiArxiv className="h-12 w-12 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+
+            <a
+              href="https://github.com/birkhoffkiki/PathBench"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-2 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="View GitHub Repository"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <FaGithub className="h-12 w-12 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+
+            <a
+              href="https://smartlab.cse.ust.hk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-2 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="Visit SmartLab"
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
               <Image
-                src={getImagePath(partner.logo)}
-                alt={partner.name}
+                src={getImagePath("/images/smartlab.svg")}
+                alt="SmartLab Logo"
                 width={250}
                 height={250}
-                className="h-16 sm:h-20 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+                className="h-12 w-12 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
               />
-
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
             </a>
-          ))}
+
+            <a
+              href="https://hkust.edu.hk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-2 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="Visit HKUST"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Image
+                src={getImagePath("/images/ust_logo.svg")}
+                alt="HKUST Logo"
+                width={250}
+                height={250}
+                className="h-12 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+              />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+          </div>
+        </div>
+
+        {/* Desktop layout - side by side */}
+        <div className="hidden sm:flex justify-between items-center gap-4">
+          <div>
+            <div className="mb-2">
+              <Image
+                src={getImagePath("/images/pathbench.svg")}
+                alt="PathBench Logo"
+                width={300}
+                height={300}
+                className="h-20 object-contain"
+              />
+            </div>
+            <p className="text-muted-foreground text-sm leading-tight">
+              A Multi-task, Multi-organ Benchmark for Real-world Clinical Performance Evaluation of Pathology Foundation Models
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Desktop logo layout */}
+            <a
+              href="https://arxiv.org/abs/2505.20202"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="View arXiv Paper"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <SiArxiv className="h-14 w-14 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+
+            <a
+              href="https://github.com/birkhoffkiki/PathBench"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="View GitHub Repository"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <FaGithub className="h-14 w-14 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+
+            <a
+              href="https://smartlab.cse.ust.hk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="Visit SmartLab"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Image
+                src={getImagePath("/images/smartlab.svg")}
+                alt="SmartLab Logo"
+                width={250}
+                height={250}
+                className="h-14 w-14 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+              />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+
+            <a
+              href="https://hkust.edu.hk/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              title="Visit HKUST"
+            >
+              <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Image
+                src={getImagePath("/images/ust_logo.svg")}
+                alt="HKUST Logo"
+                width={250}
+                height={250}
+                className="h-14 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+              />
+              <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
+            </a>
+          </div>
         </div>
       </header>
 
