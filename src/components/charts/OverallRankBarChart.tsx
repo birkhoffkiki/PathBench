@@ -25,6 +25,8 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
 
     if (filteredPerformances.length === 0 || !selectedMetric) {
       return {
+        // Disable animations for empty state
+        animation: false,
         title: {
           text: "No data available",
           left: "center",
@@ -36,37 +38,44 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       };
     }
 
-
-    const tasks = [...new Set(filteredPerformances.map(p => p.taskId))]
+    // Filter tasks that have the selected metric
+    const tasks = [...new Set(filteredPerformances.filter(p => p.metrics[selectedMetric] !== undefined && p.metrics[selectedMetric] !== null).map(p => p.taskId))]
       .map(id => {
         const task = getTaskById(id);
 
         return {
           id,
-          name: task ? `${task.name} (${task.datasetSource})` : id
+          name: task ? `${task.name} (${task.cohort})` : id
         };
       })
       .sort((a, b) => a.name.localeCompare(b.name));
 
 
+    // Pre-calculate all model scores for each task to avoid repeated calculations
+    const taskScores = new Map();
+    tasks.forEach(task => {
+      const scores = filteredModels.map(m => {
+        const performance = filteredPerformances.find(p => p.taskId === task.id && p.modelID === m.name);
+        const score = performance && performance.metrics[selectedMetric]
+          ? performance.metrics[selectedMetric].reduce((sum, val) => sum + val, 0) / performance.metrics[selectedMetric].length
+          : -Infinity;
+        return { modelName: m.name, score };
+      }).sort((a, b) => b.score - a.score);
+
+      taskScores.set(task.id, scores);
+    });
+
+    // Calculate model stats more efficiently
     const modelStats = filteredModels.map(model => {
       const rankings: number[] = [];
       let totalRank = 0;
       let validTasks = 0;
 
       tasks.forEach(task => {
-        const taskPerformances = filteredPerformances
-          .filter(p => p.taskId === task.id)
-          .map(p => ({
-            modelId: p.modelId,
-            score: p.metrics[selectedMetric]
-              ? p.metrics[selectedMetric].reduce((sum, val) => sum + val, 0) / p.metrics[selectedMetric].length
-              : -Infinity
-          }))
-          .sort((a, b) => b.score - a.score);
+        const taskPerformances = taskScores.get(task.id);
+        const rank = taskPerformances.findIndex((p: { modelName: string; score: number }) => p.modelName === model.name) + 1;
 
-        const rank = taskPerformances.findIndex(p => p.modelId === model.id) + 1;
-        if (rank > 0) {
+        if (rank > 0 && taskPerformances[rank - 1].score !== -Infinity) {
           rankings.push(rank);
           totalRank += rank;
           validTasks += 1;
@@ -96,20 +105,33 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
     };
 
 
+    // Optimize heatmap data generation
     const heatmapData: [number, number, number][] = [];
-    modelStats.forEach((model, modelIndex) => {
-      model.rankings.forEach((rank, taskIndex) => {
+    let maxRank = 1;
+
+    // Pre-allocate array size for better performance
+    const estimatedSize = modelStats.length * tasks.length;
+    heatmapData.length = 0; // Clear array
+
+    for (let modelIndex = 0; modelIndex < modelStats.length; modelIndex++) {
+      const model = modelStats[modelIndex];
+      for (let taskIndex = 0; taskIndex < model.rankings.length; taskIndex++) {
+        const rank = model.rankings[taskIndex];
         if (rank > 0) {
           heatmapData.push([taskIndex, modelIndex, rank]);
+          if (rank > maxRank) maxRank = rank;
         }
-      });
-    });
-
+      }
+    }
 
     const totalModels = filteredModels.length;
 
+    // Calculate the maximum average rank to set proper Y-axis range
+    const maxAverageRank = Math.max(...modelStats.map(m => m.averageRank));
+    const yAxisMax = Math.max(totalModels, Math.ceil(maxAverageRank));
+
     const barData = modelStats.map((model, index) => {
-      const displayValue = totalModels - model.averageRank + 1;
+      const displayValue = yAxisMax - model.averageRank + 1;
 
       return {
         value: displayValue > 0 ? displayValue : 0,
@@ -126,7 +148,21 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       };
     });
 
+    // Fixed heights for consistent display
+    const barChartHeight = 350;
+    const fixedCellHeight = 40; // Fixed cell height for all metrics
+    const heatmapHeight = tasks.length * fixedCellHeight;
+    const totalHeight = barChartHeight + heatmapHeight + 200; // Add padding
+
     return {
+      // Drastically reduce animations for heatmap performance
+      animation: true,
+      animationDuration: 200, // Much faster
+      animationEasing: 'linear', // Simpler easing
+      animationDelay: 0, // No stagger delay
+      animationDurationUpdate: 100, // Very fast updates
+      animationEasingUpdate: 'linear',
+
       title: {
         text: `Model Rankings (${selectedMetric})`,
         left: "center",
@@ -159,13 +195,13 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       grid: [{
         left: '8%',
         right: '8%',
-        top: 120,
-        height: 350,
+        top: 140,
+        height: barChartHeight,
       }, {
         left: '8%',
         right: '8%',
-        top: 520,
-        bottom: '8%'
+        top: 120 + barChartHeight + 50,
+        height: heatmapHeight
       }],
       xAxis: [{
         type: 'category',
@@ -199,12 +235,11 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         },
         inverse: false,
         gridIndex: 0,
+        max: yAxisMax,
         axisLabel: {
           fontSize: 16,
-
           formatter: function(value: number) {
-
-            const rankValue = totalModels - value + 1;
+            const rankValue = yAxisMax - value + 1;
             return rankValue.toFixed(1);
           }
         },
@@ -234,18 +269,27 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
       }],
       visualMap: {
         min: 1,
-        max: filteredModels.length,
-        calculable: true,
+        max: totalModels,
+        calculable: false,
         orient: 'vertical',
         left: 'right',
         top: 340,
         textStyle: {
-          fontSize: 16
+          fontSize: 14
         },
-
-        inRange: {
-          color: ['#f6eff7', '#bdc9e1', '#67a9cf', '#02818a']
-        }
+        itemGap: 6,
+        itemWidth: 20,
+        itemHeight: 14,
+        pieces: [
+          { value: 1, color: '#FFD700', label: '1st' },
+          { value: 2, color: '#C0C0C0', label: '2nd' },
+          { value: 3, color: '#CD7F32', label: '3rd' },
+          { min: 4, max: Math.min(10, totalModels), color: '#E3F2FD', label: totalModels <= 10 ? '4+' : '4-10' },
+          ...(totalModels > 10 ? [
+            { min: 11, max: Math.min(15, totalModels), color: '#90CAF9', label: totalModels <= 15 ? '11+' : '11-15' },
+            ...(totalModels > 15 ? [{ min: 16, max: totalModels, color: '#1976D2', label: '16+' }] : [])
+          ] : [])
+        ]
       },
       series: [
         {
@@ -271,27 +315,24 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
           name: 'Rankings',
           type: 'heatmap',
           data: heatmapData.map(([x, y, v]) => [y, x, v]),
+          // Optimize heatmap rendering
+          animation: false, // Disable animation for heatmap specifically
           itemStyle: {
-            borderWidth: 1,
-            borderColor: 'rgba(255,255,255,0.6)',
+            borderWidth: 0.5, // Thinner borders for better performance
+            borderColor: 'rgba(255,255,255,0.3)',
           },
           label: {
             show: true,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter: (params: any) => String((params.data as [number, number, number])[2]),
-            fontSize: 16,
-            fontWeight: 'bold',
+            fontSize: 14, // Restore original font size
+            fontWeight: 'bold', // Restore bold weight
             color: '#000',
-            textBorderColor: 'rgba(255,255,255,0.5)',
+            textBorderColor: 'rgba(255,255,255,0.5)', // Restore text border
             textBorderWidth: 2
           },
           emphasis: {
-            itemStyle: {
-              shadowBlur: 10,
-              shadowColor: 'rgba(0, 0, 0, 0.5)',
-              borderWidth: 2,
-              borderColor: '#ffffff'
-            }
+            disabled: true // Disable emphasis effects for better performance
           },
           xAxisIndex: 1,
           yAxisIndex: 1
@@ -307,11 +348,19 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
 
 
   const containerHeight = useMemo(() => {
-    const tasks = [...new Set(getFilteredPerformances().map(p => p.taskId))];
-    const minHeightPerTask = 50;
-    const totalTaskHeight = tasks.length * minHeightPerTask;
-    return Math.max(800, totalTaskHeight + 450);
-  }, [getFilteredPerformances]);
+    const filteredPerformances = getFilteredPerformances();
+    // Only count tasks that have the selected metric
+    const tasksWithMetric = [...new Set(filteredPerformances.filter(p =>
+      selectedMetric && p.metrics[selectedMetric] !== undefined && p.metrics[selectedMetric] !== null
+    ).map(p => p.taskId))];
+
+    const barChartHeight = 350;
+    const fixedCellHeight = 40; // Same fixed height as in chart options
+    const heatmapHeight = tasksWithMetric.length * fixedCellHeight;
+    const totalHeight = barChartHeight + heatmapHeight + 300; // Add padding for title, labels, etc.
+
+    return Math.max(800, totalHeight);
+  }, [getFilteredPerformances, selectedMetric]);
 
   return (
     <Card className="w-full overflow-hidden">
@@ -325,17 +374,22 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
         className="overflow-auto"
         style={{
           height: `calc(100vh - 200px)`,
-          maxHeight: `${containerHeight - 100}px`,
+          maxHeight: `${containerHeight}px`,
         }}
       >
         <ReactECharts
           option={chartOptions}
           style={{
-            height: "100%",
+            height: `${containerHeight - 100}px`,
             width: "100%",
             minHeight: `${containerHeight - 100}px`
           }}
-          opts={{ renderer: "svg" }}
+          opts={{
+            renderer: "canvas", // Canvas is faster for heatmaps
+            devicePixelRatio: 1 // Reduce pixel ratio for better performance
+          }}
+          notMerge={true}
+          lazyUpdate={true}
         />
       </CardContent>
     </Card>

@@ -10,7 +10,7 @@ import type { EChartsOption, PieSeriesOption } from "echarts";
 export function PieDataDistributionChart() {
   const {
     allTasks,
-    getOrganById
+    allPerformances
   } = useEvaluation();
 
   const chartOptions = useMemo((): EChartsOption => {
@@ -25,28 +25,27 @@ export function PieDataDistributionChart() {
       };
     }
 
-    // 按organId分组并汇总wsis数量
-    const organWsisCounts: Record<string, number> = {};
+    // 按organ分组并计算任务数量
+    const organTaskCounts: Record<string, number> = {};
     allTasks.forEach(task => {
-      const organId = task.organId;
-      organWsisCounts[organId] = (organWsisCounts[organId] || 0) + task.wsis;
+      const organ = task.organ;
+      organTaskCounts[organ] = (organTaskCounts[organ] || 0) + 1;
     });
 
     // 格式化数据用于饼图
-    const data = Object.entries(organWsisCounts).map(([organId, wsisCount]) => {
-      const organ = getOrganById(organId);
+    const data = Object.entries(organTaskCounts).map(([organ, taskCount]) => {
       return {
-        name: organ ? organ.name : organId,
-        value: wsisCount,
+        name: organ,
+        value: taskCount,
       };
     });
 
-    //  WSI总数
-    const totalWsis = Object.values(organWsisCounts).reduce((sum, count) => sum + count, 0);
+    //  任务总数
+    const totalTasks = Object.values(organTaskCounts).reduce((sum, count) => sum + count, 0);
 
     // 创建饼图系列
     const pieSeries: PieSeriesOption = {
-      name: "WSIs Distribution",
+      name: "Task Distribution",
       type: "pie",
       radius: ["45%", "75%"],
       center: ["65%", "60%"],
@@ -74,15 +73,25 @@ export function PieDataDistributionChart() {
     };
 
     return {
+      // Optimize animations for better performance
+      animation: true,
+      animationDuration: 600,
+      animationEasing: 'cubicOut',
+      animationDelay: function (idx: number) {
+        return idx * 50;
+      },
+      animationDurationUpdate: 300,
+      animationEasingUpdate: 'cubicOut',
+
       title: {
-        text: "WSI Distribution by Organ",
+        text: "Task Distribution by Organ",
         top: '4.5%',
         left: "center",
         z: 0,
       },
       tooltip: {
         trigger: "item",
-        formatter: "{a} <br/>{b}: {c} WSIs ({d}%)",
+        formatter: "{a} <br/>{b}: {c} Tasks ({d}%)",
         z: 4,
       },
       legend: {
@@ -92,13 +101,13 @@ export function PieDataDistributionChart() {
         type: "scroll",
         z: 0,
         textStyle: {
-          fontSize: 14, 
-          color: '#333', 
+          fontSize: 14,
+          color: '#333',
         },
       },
       series: [pieSeries],
     };
-  }, [allTasks, getOrganById]);
+  }, [allTasks]);
 
   return (
     <Card className="w-full h-[300px]">

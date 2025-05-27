@@ -13,7 +13,6 @@ interface TaskDistributionChartProps {
 export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionChartProps) {
   const {
     getFilteredTasks,
-    getOrganById,
   } = useEvaluation();
 
   const chartOptions = useMemo((): EChartsOption => {
@@ -35,15 +34,14 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       // Count tasks by organ
       const organCounts: Record<string, number> = {};
       filteredTasks.forEach(task => {
-        const organId = task.organId;
-        organCounts[organId] = (organCounts[organId] || 0) + 1;
+        const organ = task.organ;
+        organCounts[organ] = (organCounts[organ] || 0) + 1;
       });
 
       // Format data for pie chart
-      const data = Object.entries(organCounts).map(([organId, count]) => {
-        const organ = getOrganById(organId);
+      const data = Object.entries(organCounts).map(([organ, count]) => {
         return {
-          name: organ ? organ.name : organId,
+          name: organ,
           value: count,
         };
       });
@@ -78,6 +76,16 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       };
 
       return {
+        // Optimize animations for better performance
+        animation: true,
+        animationDuration: 600,
+        animationEasing: 'cubicOut',
+        animationDelay: function (idx: number) {
+          return idx * 50;
+        },
+        animationDurationUpdate: 300,
+        animationEasingUpdate: 'cubicOut',
+
         title: {
           text: "Task Distribution by Organ",
           top: '4.5%',
@@ -94,8 +102,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
           type: "scroll",
           z: 0,
           textStyle: {
-            fontSize: 14, 
-            color: '#333', 
+            fontSize: 14,
+            color: '#333',
           },
         },
         series: [pieSeries],
@@ -146,6 +154,16 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       };
 
       return {
+        // Optimize animations for better performance
+        animation: true,
+        animationDuration: 600,
+        animationEasing: 'cubicOut',
+        animationDelay: function (idx: number) {
+          return idx * 50;
+        },
+        animationDurationUpdate: 300,
+        animationEasingUpdate: 'cubicOut',
+
         title: {
           text: "Task Distribution by Type",
           top: '4.5%',
@@ -162,14 +180,14 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
           type: "scroll",
           z: 0,
           textStyle: {
-            fontSize: 14, 
-            color: '#333', 
+            fontSize: 14,
+            color: '#333',
           },
         },
         series: [pieSeries],
       };
     }
-  }, [getFilteredTasks, getOrganById, chartType]);
+  }, [getFilteredTasks, chartType]);
 
   return (
     <Card className="w-full h-[300px]">

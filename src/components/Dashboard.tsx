@@ -1,15 +1,15 @@
-
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { ModelFilter } from "@/components/filters/ModelFilter";
 import { TaskTypeFilter } from "@/components/filters/TaskTypeFilter";
 import { OrganFilter } from "@/components/filters/OrganFilter";
 import Image from 'next/image';
+import { useEvaluation } from "@/context/EvaluationContext";
 
 import { TaskDistributionChart } from "@/components/charts/TaskDistributionChart";
-import { PerformanceBarChart } from "@/components/charts/PerformanceBarChart";
 import { OverallRankBarChart } from "@/components/charts/OverallRankBarChart"
 
 import { PieDataDistributionChart } from "@/components/charts/PieDataDistributionChart";
@@ -20,8 +20,14 @@ import { TaskTable } from "@/components/tables/TaskTable";
 import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardTable } from "@/components/tables/LeaderboardTable";
+import { DetailedPerformanceChart } from "@/components/charts/DetailedPerformanceChart";
+import { LazyLoad } from "@/components/ui/LazyLoad";
 import { SiArxiv } from 'react-icons/si';
 import { FaGithub } from 'react-icons/fa';
+
+// Direct data imports for Performance tab
+import { models } from "@/data/models";
+import { tasks } from "@/data/tasks";
 
 
 
@@ -44,8 +50,98 @@ const PARTNERS = [
   },
 ];
 
+// Performance Content Component
+
+function PerformanceContent() {
+
+  // Group tasks by organ and sort alphabetically
+  const tasksByOrgan = useMemo(() => {
+    const organMap = new Map<string, any[]>();
+
+    tasks.forEach(task => {
+      if (!organMap.has(task.organ)) {
+        organMap.set(task.organ, []);
+      }
+      organMap.get(task.organ)!.push(task);
+    });
+
+    // Sort organs alphabetically and tasks within each organ
+    const sortedOrgans = Array.from(organMap.keys()).sort();
+    const result: { organ: string; tasks: any[] }[] = [];
+
+    sortedOrgans.forEach(organ => {
+      const organTasks = organMap.get(organ)!.sort((a, b) => a.name.localeCompare(b.name));
+      result.push({ organ, tasks: organTasks });
+    });
+
+    return result;
+  }, []);
+
+
+
+  return (
+    <div className="space-y-4 sm:space-y-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Detailed Performance</h1>
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">
+            Comprehensive performance analysis across all tasks and metrics
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <div className="text-xs sm:text-sm text-gray-500">
+            <span className="font-medium">{models.length}</span> models •
+            <span className="font-medium ml-1">{tasksByOrgan.reduce((total, organ) => total + organ.tasks.length, 0)}</span> tasks
+          </div>
+        </div>
+      </div>
+
+      {/* Performance Charts by Organ - Optimized with lazy loading */}
+      {tasksByOrgan.map(({ organ, tasks: organTasks }) => (
+        <div key={organ} className="space-y-4">
+          <h2 className="text-2xl font-bold text-gray-900 border-b pb-2">
+            {organ}
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {organTasks.map((task) => (
+              <LazyLoad
+                key={task.id}
+                height={450}
+                rootMargin="200px"
+                threshold={0.1}
+                placeholder={
+                  <div className="w-full h-[450px] bg-gray-50 border border-gray-200 rounded-lg animate-pulse">
+                    <div className="p-6">
+                      <div className="h-6 bg-gray-200 rounded mb-2 w-3/4"></div>
+                      <div className="h-4 bg-gray-200 rounded mb-6 w-1/2"></div>
+                      <div className="space-y-4">
+                        <div className="h-8 bg-gray-200 rounded w-full"></div>
+                        <div className="h-8 bg-gray-200 rounded w-5/6"></div>
+                        <div className="h-8 bg-gray-200 rounded w-4/6"></div>
+                        <div className="h-8 bg-gray-200 rounded w-3/6"></div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                <DetailedPerformanceChart
+                  taskId={task.id}
+                  taskName={task.name}
+                  organ={organ}
+                />
+              </LazyLoad>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export function Dashboard() {
+  const { getTaskById, getAvailableMetrics } = useEvaluation();
   // Get basePath from environment variable
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
@@ -59,6 +155,30 @@ export function Dashboard() {
 
   const [selectedMetric, setSelectedMetric] = useState<string>("AUC");
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>();
+
+  const availableMetrics = getAvailableMetrics();
+
+  useEffect(() => {
+    if (availableMetrics.length === 1 && selectedMetric !== availableMetrics[0]) {
+      setSelectedMetric(availableMetrics[0]);
+    }
+  }, [availableMetrics, selectedMetric]);
+
+  // 根据任务类型设置默认指标
+  const handleTaskSelect = (taskId: string | undefined) => {
+    setSelectedTaskId(taskId);
+    if (!taskId) return;
+    const task = getTaskById(taskId);
+    if (task) {
+      if (task.taskType === 'DFS Prediction' || task.taskType === 'OS Prediction' || task.taskType === 'DSS Prediction') {
+        setSelectedMetric('C-Index');
+      } else if (task.taskType === 'Classification') {
+        setSelectedMetric('AUC');
+      } else if (task.taskType === 'Report Generation') {
+        setSelectedMetric('BLEU');
+      }
+    }
+  };
 
   return (
     <div className="container mx-auto py-6">
@@ -190,7 +310,7 @@ export function Dashboard() {
 
           <div className="my-6">
             <h2 className="text-2xl font-bold mb-4">All Tasks</h2>
-            <TaskTable onSelectTask={setSelectedTaskId} selectedTaskId={selectedTaskId} />
+            <TaskTable onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
           </div>
 
           {selectedTaskId && (
@@ -200,30 +320,16 @@ export function Dashboard() {
 
         <TabsContent value="leaderboard">
           <div className="my-6">
-            <h2 className="text-2xl font-bold mb-4">Overall Performance</h2>
             <LeaderboardTable />
           </div>
         </TabsContent>
 
         <TabsContent value="performance" className="space-y-6">
-          <PerformanceBarChart
-            selectedMetric={selectedMetric}
-            selectedTaskId={selectedTaskId}
-          />
-
-          <div className="my-6">
-            <h2 className="text-2xl font-bold mb-4">Tasks</h2>
-            <TaskTable onSelectTask={setSelectedTaskId} selectedTaskId={selectedTaskId} />
-          </div>
-
-          {selectedTaskId && (
-            <TaskDescription taskId={selectedTaskId} />
-          )}
+          <PerformanceContent />
         </TabsContent>
 
         <TabsContent value="models">
           <div className="my-6">
-            <h2 className="text-2xl font-bold mb-4">Model Details</h2>
             <ModelTable />
           </div>
         </TabsContent>

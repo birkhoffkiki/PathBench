@@ -2,7 +2,6 @@
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from "react";
 import { Task, Model, Organ, Performance } from "@/types";
-import { organs } from "../data/organs";
 import {models} from "../data/models";
 import {tasks} from "../data/tasks";
 import {performances} from "../data/performance";
@@ -31,12 +30,13 @@ interface EvaluationContextType {
 
   // Getter methods
   getTaskById: (taskId: string) => Task | undefined;
-  getModelById: (modelId: string) => Model | undefined;
+  getModelById: (modelName: string) => Model | undefined;
   getOrganById: (organId: string) => Organ | undefined;
   getFilteredTasks: () => Task[];
   getFilteredModels: () => Model[];
   getFilteredPerformances: () => Performance[];
   getAvailableMetrics: () => string[];
+  getAllAvailableMetrics: () => string[]; // New method for all metrics regardless of filters
 }
 
 const EvaluationContext = createContext<EvaluationContextType | undefined>(undefined);
@@ -77,61 +77,80 @@ export function EvaluationProvider({ children }: { children: React.ReactNode }) 
     return Array.from(new Set(tasks.map(task => task.taskType)));
   }, []);
 
+  // Create organs from tasks
+  const allOrgans = useMemo(() => {
+    const organSet = new Set(tasks.map(task => task.organ));
+    return Array.from(organSet).map(organ => ({
+      id: organ.toLowerCase(),
+      name: organ,
+      description: `${organ} related tasks`
+    }));
+  }, []);
+
   // Getter methods
   const getTaskById = useCallback((taskId: string) => {
     return tasks.find(task => task.id === taskId);
   }, []);
 
-  const getModelById = useCallback((modelId: string) => {
-    return models.find(model => model.id === modelId);
+  const getModelById = useCallback((modelName: string) => {
+    return models.find(model => model.name === modelName);
   }, []);
 
   const getOrganById = useCallback((organId: string) => {
-    return organs.find(organ => organ.id === organId);
-  }, []);
+    return allOrgans.find(organ => organ.id === organId);
+  }, [allOrgans]);
 
-  const getFilteredTasks = useCallback(() => {
+  // Cache filtered data for better performance
+  const filteredTasks = useMemo(() => {
     return tasks.filter(task => {
       // If no filters are applied, include all tasks
       if (selectedOrganIds.length === 0 && selectedTaskTypes.length === 0) {
         return true;
       }
 
-      // Check organ filter
-      const organMatch = selectedOrganIds.length === 0 || selectedOrganIds.includes(task.organId);
+      // Check organ filter - match by organ name (case insensitive)
+      const organMatch = selectedOrganIds.length === 0 ||
+        selectedOrganIds.includes(task.organ.toLowerCase());
 
       // Check task type filter
-      const taskTypeMatch = selectedTaskTypes.length === 0 || selectedTaskTypes.includes(task.taskType);
+      const taskTypeMatch = selectedTaskTypes.length === 0 ||
+        selectedTaskTypes.includes(task.taskType);
 
       return organMatch && taskTypeMatch;
     });
   }, [selectedOrganIds, selectedTaskTypes]);
 
-  const getFilteredModels = useCallback(() => {
+  const filteredModels = useMemo(() => {
     return selectedModelIds.length > 0
-      ? models.filter(model => selectedModelIds.includes(model.id))
+      ? models.filter(model => selectedModelIds.includes(model.name))
       : models;
   }, [selectedModelIds]);
 
-  const getFilteredPerformances = useCallback(() => {
-    const filteredTasks = getFilteredTasks();
-    const filteredModels = getFilteredModels();
-
+  const filteredPerformances = useMemo(() => {
     return performances.filter(performance =>
       filteredTasks.some(task => task.id === performance.taskId) &&
-      filteredModels.some(model => model.id === performance.modelId)
+      filteredModels.some(model => model.name === performance.modelID)
     );
-  }, [getFilteredTasks, getFilteredModels]);
+  }, [filteredTasks, filteredModels]);
+
+  // Getter functions that return cached data
+  const getFilteredTasks = useCallback(() => filteredTasks, [filteredTasks]);
+  const getFilteredModels = useCallback(() => filteredModels, [filteredModels]);
+  const getFilteredPerformances = useCallback(() => filteredPerformances, [filteredPerformances]);
 
   const getAvailableMetrics = useCallback(() => {
-    const filteredTasks = getFilteredTasks();
     const allMetrics = filteredTasks.flatMap(task => task.evaluationMetrics);
     return Array.from(new Set(allMetrics));
-  }, [getFilteredTasks]);
+  }, [filteredTasks]);
+
+  const getAllAvailableMetrics = useCallback(() => {
+    const allMetrics = tasks.flatMap(task => task.evaluationMetrics);
+    return Array.from(new Set(allMetrics));
+  }, []);
 
   const value = {
     // Raw data
-    allOrgans: organs,
+    allOrgans,
     allTasks: tasks,
     allModels: models,
     allPerformances: performances,
@@ -157,6 +176,7 @@ export function EvaluationProvider({ children }: { children: React.ReactNode }) 
     getFilteredModels,
     getFilteredPerformances,
     getAvailableMetrics,
+    getAllAvailableMetrics,
   };
 
   return (

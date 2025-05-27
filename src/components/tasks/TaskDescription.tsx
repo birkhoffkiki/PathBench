@@ -29,7 +29,7 @@ export function TaskDescription({ taskId }: TaskDescriptionProps) {
     const baseDescription = descriptions[task.taskType] || 'This task evaluates model performance on specific pathological criteria.';
 
     // Add organ-specific details
-    const organDetails = `It focuses on ${task.organId.toLowerCase()} tissue samples from ${task.datasetSource} dataset.`;
+    const organDetails = `It focuses on ${task.organ.toLowerCase()} tissue samples from ${task.cohort} cohort.`;
 
     // Add metrics information
     const metricsDetails = `Performance is evaluated using ${task.evaluationMetrics.join(', ')}.`;
@@ -45,7 +45,7 @@ export function TaskDescription({ taskId }: TaskDescriptionProps) {
       <CardHeader>
         <CardTitle>{task.name}</CardTitle>
         <CardDescription>
-          {task.taskType.replace('_', ' ')} task for {task.organId}
+          {task.taskType.replace('_', ' ')} task for {task.organ}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -56,12 +56,12 @@ export function TaskDescription({ taskId }: TaskDescriptionProps) {
           <h4 className="text-sm font-medium">Dataset Information</h4>
           <div className="grid grid-cols-2 gap-2 mt-2">
             <div>
-              <span className="text-xs text-muted-foreground">Source:</span>
-              <p className="text-sm">{task.datasetSource_full}</p>
+              <span className="text-xs text-muted-foreground">Cohort:</span>
+              <p className="text-sm">{task.cohort}</p>
             </div>
             <div>
-              <span className="text-xs text-muted-foreground">Samples:</span>
-              <p className="text-sm">{task.cases || 'N/A'}</p>
+              <span className="text-xs text-muted-foreground">Organ:</span>
+              <p className="text-sm">{task.organ}</p>
             </div>
             <div>
               <span className="text-xs text-muted-foreground">Task Type:</span>

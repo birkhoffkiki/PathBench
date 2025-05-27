@@ -24,41 +24,35 @@ export type Filters = {
 
 
 export interface Task {
-  updateTime: string;
   id: string;
   name: string;
-  cases: number;
-  wsis: number;
-  level: string;
-  organId: string;
-  cohort: string;
+  organ: string;
   taskType: string;
-  datasetSource: string;
-  datasetSource_full: string;
-  sampleCount?: number;
+  cohort: string;
   evaluationMetrics: string[];
   description?: string;
 }
 
 export interface Model {
-  id: string;
   name: string;
-  modelType: string;
-  dim: number;
-  parameters: number;
-  trainingData: string;
-  description: string;
+  citation: string;
+  slides: string;
+  patches: string;
+  parameters: string;
   architecture: string;
-  code: string;
-  code_name: IconType;
-  paper: string;
-  paper_pub: IconType;
+  pretraining_strategy: string;
+  pretraining_data_source: string;
+  stain: string;
+  released_date: string;
+  publication: string;
 }
 
 export interface Performance {
   id: string;
+  modelID: string;
+  organ: string;
+  task_name: string;
   cohort: string;
   taskId: string;
-  modelId: string;
   metrics: Record<string, number[]>;
 }

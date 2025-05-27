@@ -70,6 +70,20 @@ const PARTNERS = [
     width: 150,
     height: 150,
   },
+  {
+    name: "",
+    logo: '/images/hebeisiyuan.png',
+    url: "https://www.hbydsy.com/",
+    width: 150,
+    height: 150,
+  },
+  {
+    name: "",
+    logo: '/images/USTC_Hospital.png',
+    url: "https://www.ahslyy.com.cn/",
+    width: 150,
+    height: 150,
+  }
 ];
 
 

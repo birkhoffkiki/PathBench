@@ -11,7 +11,7 @@ interface TaskListProps {
 }
 
 export function TaskList({ onSelectTask, selectedTaskId }: TaskListProps) {
-  const { getFilteredTasks, getOrganById } = useEvaluation();
+  const { getFilteredTasks } = useEvaluation();
 
   const filteredTasks = getFilteredTasks();
 
@@ -31,7 +31,7 @@ export function TaskList({ onSelectTask, selectedTaskId }: TaskListProps) {
                 <TableHead>Name</TableHead>
                 <TableHead>Organ</TableHead>
                 <TableHead>Task Type</TableHead>
-                <TableHead>Dataset Source</TableHead>
+                <TableHead>Cohort</TableHead>
                 <TableHead>Metrics</TableHead>
               </TableRow>
             </TableHeader>
@@ -44,7 +44,6 @@ export function TaskList({ onSelectTask, selectedTaskId }: TaskListProps) {
                 </TableRow>
               ) : (
                 filteredTasks.map((task) => {
-                  const organ = getOrganById(task.organId);
                   return (
                     <TableRow
                       key={task.id}
@@ -54,9 +53,9 @@ export function TaskList({ onSelectTask, selectedTaskId }: TaskListProps) {
                       onClick={() => onSelectTask(task.id)}
                     >
                       <TableCell className="font-medium">{task.name}</TableCell>
-                      <TableCell>{organ?.name || task.organId}</TableCell>
+                      <TableCell>{task.organ}</TableCell>
                       <TableCell className="capitalize">{task.taskType.replace('_', ' ')}</TableCell>
-                      <TableCell>{task.datasetSource}</TableCell>
+                      <TableCell>{task.cohort}</TableCell>
                       <TableCell>{task.evaluationMetrics.join(", ")}</TableCell>
                     </TableRow>
                   );

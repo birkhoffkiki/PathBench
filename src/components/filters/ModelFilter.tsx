@@ -20,14 +20,14 @@ export function ModelFilter() {
       <CardContent className="max-h-[180px] overflow-y-auto">
         <div className="space-y-3">
           {allModels.map(model => (
-            <div key={model.id} className="flex items-center space-x-2">
+            <div key={model.name} className="flex items-center space-x-2">
               <Checkbox
-                id={`model-${model.id}`}
-                checked={selectedModelIds.includes(model.id)}
-                onCheckedChange={() => toggleModelSelection(model.id)}
+                id={`model-${model.name}`}
+                checked={selectedModelIds.includes(model.name)}
+                onCheckedChange={() => toggleModelSelection(model.name)}
               />
               <Label
-                htmlFor={`model-${model.id}`}
+                htmlFor={`model-${model.name}`}
                 className="text-sm font-normal"
               >
                 {model.name}

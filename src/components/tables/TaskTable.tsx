@@ -114,17 +114,18 @@ import { ChevronUp, ChevronDown } from "lucide-react"; // You'll need to install
 interface TaskTableProps {
   onSelectTask: (taskId: string | undefined) => void;
   selectedTaskId?: string;
+  useAllTasks?: boolean; // New prop to control whether to use all tasks or filtered tasks
 }
 
-type SortField = "name" | "organ" | "taskType" | "cohort" | "cases" | "wsis" | "updateTime";
+type SortField = "name" | "organ" | "taskType" | "cohort";
 type SortOrder = "asc" | "desc";
 
-export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
-  const { getFilteredTasks, getOrganById } = useEvaluation();
+export function TaskTable({ onSelectTask, selectedTaskId, useAllTasks = false }: TaskTableProps) {
+  const { getFilteredTasks, allTasks } = useEvaluation();
   const [sortField, setSortField] = useState<SortField>("name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
-  const tasks = getFilteredTasks();
+  const tasks = useAllTasks ? allTasks : getFilteredTasks();
 
   const sortedTasks = [...tasks].sort((a, b) => {
     let compareA, compareB;
@@ -135,8 +136,8 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
         compareB = b.name?.toLowerCase();
         break;
       case "organ":
-        compareA = getOrganById(a.organId)?.name?.toLowerCase();
-        compareB = getOrganById(b.organId)?.name?.toLowerCase();
+        compareA = a.organ?.toLowerCase();
+        compareB = b.organ?.toLowerCase();
         break;
       case "taskType":
         compareA = a.taskType?.toLowerCase();
@@ -146,18 +147,6 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
         compareA = a.cohort?.toLowerCase();
         compareB = b.cohort?.toLowerCase();
         break;
-      case "cases":
-        compareA = a.cases || 0;
-        compareB = b.cases || 0;
-        break;
-      case "wsis":
-        compareA = a.wsis || 0;
-        compareB = b.wsis || 0;
-        break;
-      case "updateTime":
-        compareA = a.updateTime || "";
-        compareB = b.updateTime || "";
-        break;
       default:
         return 0;
     }
@@ -165,7 +154,7 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
     if (compareA === compareB) return 0;
     if (compareA === null || compareA === undefined) return 1;
     if (compareB === null || compareB === undefined) return -1;
-    
+
     const comparison = compareA < compareB ? -1 : 1;
     return sortOrder === "asc" ? comparison : -comparison;
   });
@@ -190,7 +179,7 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead onClick={() => handleSort("name")} className="cursor-pointer hover:bg-muted/50">
+              <TableHead onClick={() => handleSort("name")} className="cursor-pointer hover:bg-muted/50 w-96">
                 Task Name <SortIcon field="name" />
               </TableHead>
               <TableHead onClick={() => handleSort("organ")} className="cursor-pointer hover:bg-muted/50">
@@ -203,22 +192,11 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
                 Cohort <SortIcon field="cohort" />
               </TableHead>
               <TableHead>Metrics</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead onClick={() => handleSort("cases")} className="cursor-pointer hover:bg-muted/50">
-                Cases <SortIcon field="cases" />
-              </TableHead>
-              <TableHead onClick={() => handleSort("wsis")} className="cursor-pointer hover:bg-muted/50">
-                WSIs <SortIcon field="wsis" />
-              </TableHead>
-              <TableHead onClick={() => handleSort("updateTime")} className="cursor-pointer hover:bg-muted/50">
-                Update Time <SortIcon field="updateTime" />
-              </TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {sortedTasks.map((task, index) => {
-              const organ = getOrganById(task.organId);
               const isSelected = task.id === selectedTaskId;
 
               return (
@@ -230,8 +208,8 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
                     hover:bg-muted/30
                   `}
                 >
-                  <TableCell className="font-medium">{task.name}</TableCell>
-                  <TableCell>{organ?.name || task.organId}</TableCell>
+                  <TableCell className="font-medium w-48">{task.name}</TableCell>
+                  <TableCell>{task.organ}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="capitalize">
                       {task.taskType.replace('_', ' ')}
@@ -247,10 +225,6 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
                       ))}
                     </div>
                   </TableCell>
-                  <TableCell>{task.datasetSource}</TableCell>
-                  <TableCell>{task.cases || 'N/A'}</TableCell>
-                  <TableCell>{task.wsis || 'N/A'}</TableCell>
-                  <TableCell>{task.updateTime || 'N/A'}</TableCell>
                   <TableCell className="text-right">
                   <Button
                     variant={isSelected ? "default" : "ghost"}
@@ -263,7 +237,7 @@ export function TaskTable({ onSelectTask, selectedTaskId }: TaskTableProps) {
                       }
                     }}
                   >
-                    View
+                    {isSelected ? "Hide" : "View"}
                   </Button>
                 </TableCell>
                 </TableRow>
