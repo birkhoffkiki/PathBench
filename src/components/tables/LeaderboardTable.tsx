@@ -137,9 +137,9 @@ export function LeaderboardTable() {
   return (
     <Card className="shadow-sm">
       <CardHeader className="pb-3">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <CardTitle className="text-xl font-semibold">Overall Performance Leaderboard</CardTitle>
-          <div className="flex gap-4 text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <CardTitle className="text-lg sm:text-xl font-semibold">Overall Performance Leaderboard</CardTitle>
+          <div className="flex gap-4 text-xs sm:text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
               <span className="font-medium">{allModels.length}</span> Models
             •
@@ -147,13 +147,83 @@ export function LeaderboardTable() {
             </span>
           </div>
         </div>
-        <div className="text-sm text-muted-foreground mt-2">
+        <div className="text-xs sm:text-sm text-muted-foreground mt-2">
           Click column headers to sort • Rankings based on average performance across datasets • Showing top 5 performing models
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <Table>
+        {/* Mobile Card Layout */}
+        <div className="block sm:hidden">
+          <div className="space-y-3 p-4">
+            {models.map((model, modelIndex) => (
+              <Card key={model.name} className="border border-gray-200 mobile-card">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <h3 className="font-semibold text-gray-900 text-sm">{model.name}</h3>
+                    <Badge variant="outline" className="text-xs">
+                      Rank #{modelIndex + 1}
+                    </Badge>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {sortedTasks.slice(0, 4).map((task) => {
+                      const performance = performances.find(p =>
+                        p.modelID === model.name && p.taskId === task.id
+                      );
+                      const metrics = getMetricsArray(performance, task.taskType);
+                      const average = calculateAverage(metrics);
+
+                      // Calculate rankings for current task
+                      const taskResults = models.map(m => {
+                        const perf = performances.find(p =>
+                          p.modelID === m.name && p.taskId === task.id
+                        );
+                        const mets = getMetricsArray(perf, task.taskType);
+                        const avg = calculateAverage(mets);
+                        return { modelName: m.name, average: avg };
+                      });
+
+                      // Sort valid results and get rank
+                      const validResults = taskResults.filter(r => r.average !== null);
+                      const sortedResults = [...validResults].sort((a, b) => {
+                        return b.average! - a.average!;
+                      });
+                      const topThree = sortedResults.slice(0, 3);
+                      const rank = topThree.findIndex(r => r.modelName === model.name) + 1;
+                      const level = getPerformanceLevel(average, rank);
+
+                      return (
+                        <div key={task.id} className="flex justify-between">
+                          <span className="text-gray-600 truncate">{task.name}</span>
+                          <Badge
+                            variant={level === 'none' ? 'secondary' : 'default'}
+                            className={`text-xs ${
+                              level === 'gold' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                              level === 'silver' ? 'bg-gray-100 text-gray-800 border-gray-300' :
+                              level === 'bronze' ? 'bg-orange-100 text-orange-800 border-orange-300' :
+                              level === 'standard' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                              'bg-gray-100 text-gray-500 border-gray-300'
+                            }`}
+                          >
+                            {rank > 0 ? `#${rank}` : 'N/A'}
+                          </Badge>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  {sortedTasks.length > 4 && (
+                    <div className="mt-2 text-xs text-gray-500">
+                      +{sortedTasks.length - 4} more tasks
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Table Layout */}
+        <div className="hidden sm:block overflow-x-auto mobile-table-scroll">
+          <Table className="min-w-[800px]">
             <TableHeader>
               <TableRow className="bg-muted/30">
                 <TableHead

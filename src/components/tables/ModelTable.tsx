@@ -195,9 +195,9 @@ export function ModelTable() {
   return (
     <Card className="shadow-sm">
       <CardHeader className="pb-4">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <CardTitle className="text-xl font-semibold">Pathology Foundation Models</CardTitle>
-          <div className="flex gap-4 text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+          <CardTitle className="text-lg sm:text-xl font-semibold">Pathology Foundation Models</CardTitle>
+          <div className="flex gap-4 text-xs sm:text-sm text-muted-foreground">
             <span className="flex items-center gap-1">
               <span className="font-medium">{filteredAndSortedModels.length}</span> Models
             </span>
@@ -209,16 +209,67 @@ export function ModelTable() {
             placeholder="Search models..."
             value={searchTerm}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 text-sm"
           />
         </div>
       </CardHeader>
       <CardContent className="p-0">
-        <div className="overflow-x-auto" style={{ minWidth: '1200px' }}>
-          <Table className="w-full table-fixed" style={{ minWidth: '1200px' }}>
+        {/* Mobile Card Layout */}
+        <div className="block xl:hidden">
+          <div className="space-y-4 p-4">
+            {filteredAndSortedModels.map((model) => (
+              <Card
+                key={model.name}
+                className="border border-gray-200 cursor-pointer hover:shadow-md transition-shadow mobile-card"
+                onClick={() => handleRowClick(model)}
+              >
+                <CardContent className="p-4">
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-start">
+                      <h3 className="font-semibold text-gray-900 text-sm">{model.name}</h3>
+                      <Badge variant="outline" className="text-xs">
+                        {model.architecture}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <span className="text-gray-500">Parameters:</span>
+                        <div className="font-medium">{model.parameters}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Slides:</span>
+                        <div className="font-medium">{model.slides}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Patches:</span>
+                        <div className="font-medium">{model.patches}</div>
+                      </div>
+                      <div>
+                        <span className="text-gray-500">Released:</span>
+                        <div className="font-medium">{model.released_date}</div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-gray-100">
+                      <div className="text-xs text-gray-500 mb-1">Publication:</div>
+                      <div className="text-sm font-medium text-blue-600 truncate">
+                        {model.publication}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop Table Layout */}
+        <div className="hidden lg:block overflow-x-auto mobile-table-scroll">
+          <Table className="min-w-[1000px]">
             <TableHeader>
               <TableRow className="bg-gray-50/50">
-                <TableHead className="font-semibold w-[140px] px-3 py-4 text-base">
+                <TableHead className="font-semibold px-3 py-4 text-base w-[15%]">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -229,7 +280,7 @@ export function ModelTable() {
                     {getSortIcon('name')}
                   </Button>
                 </TableHead>
-                <TableHead className="font-semibold w-[100px] px-3 py-4 text-base">
+                <TableHead className="font-semibold px-3 py-4 text-base w-[10%]">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -240,7 +291,7 @@ export function ModelTable() {
                     {getSortIcon('architecture')}
                   </Button>
                 </TableHead>
-                <TableHead className="font-semibold w-[100px] px-3 py-4 text-base">
+                <TableHead className="font-semibold px-3 py-4 text-base w-[10%]">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -251,7 +302,7 @@ export function ModelTable() {
                     {getSortIcon('pretraining_strategy')}
                   </Button>
                 </TableHead>
-                <TableHead className="font-semibold w-[90px] px-3 py-4 text-center text-base">
+                <TableHead className="font-semibold px-3 py-4 text-center text-base w-[8%]">
                   <div className="flex justify-center">
                     <Button
                       variant="ghost"
@@ -264,11 +315,11 @@ export function ModelTable() {
                     </Button>
                   </div>
                 </TableHead>
-                <TableHead className="font-semibold w-[80px] px-3 py-4 text-center text-base">Slides</TableHead>
-                <TableHead className="font-semibold w-[80px] px-3 py-4 text-center text-base">Patches</TableHead>
-                <TableHead className="font-semibold w-[180px] px-3 py-4 text-base">Data Source</TableHead>
-                <TableHead className="font-semibold w-[80px] px-3 py-4 text-base">Stain</TableHead>
-                <TableHead className="font-semibold w-[110px] px-3 py-4 text-center text-base">
+                <TableHead className="font-semibold px-3 py-4 text-center text-base w-[7%]">Slides</TableHead>
+                <TableHead className="font-semibold px-3 py-4 text-center text-base w-[7%]">Patches</TableHead>
+                <TableHead className="font-semibold px-3 py-4 text-base w-[20%]">Data Source</TableHead>
+                <TableHead className="font-semibold px-3 py-4 text-base w-[8%]">Stain</TableHead>
+                <TableHead className="font-semibold px-3 py-4 text-center text-base w-[8%]">
                   <div className="flex justify-center">
                     <Button
                       variant="ghost"
@@ -281,7 +332,7 @@ export function ModelTable() {
                     </Button>
                   </div>
                 </TableHead>
-                <TableHead className="font-semibold w-[120px] px-3 py-4 text-center text-base">
+                <TableHead className="font-semibold px-3 py-4 text-center text-base w-[7%]">
                   <div className="flex justify-center">
                     <Button
                       variant="ghost"
@@ -306,20 +357,20 @@ export function ModelTable() {
                   }`}
                   title={`Click to view ${model.name} publication`}
                 >
-                  <TableCell className="font-semibold text-gray-900 w-[140px] px-3 py-4">
-                    <div className="truncate text-base" title={model.name}>
+                  <TableCell className="font-semibold text-gray-900 px-3 py-4 w-[15%]">
+                    <div className="text-base truncate" title={model.name}>
                       {model.name}
                     </div>
                   </TableCell>
-                  <TableCell className="w-[100px] px-3 py-4">
+                  <TableCell className="px-3 py-4 w-[10%]">
                     <Badge
                       variant="outline"
-                      className={`${getArchitectureBadgeColor(model.architecture)} font-medium text-sm`}
+                      className={`${getArchitectureBadgeColor(model.architecture)} font-medium text-sm truncate`}
                     >
                       {model.architecture}
                     </Badge>
                   </TableCell>
-                  <TableCell className="w-[100px] px-3 py-4">
+                  <TableCell className="px-3 py-4 w-[10%]">
                     <div className="flex flex-wrap gap-1">
                       {model.pretraining_strategy.split(', ').map((strategy, idx) => {
                         // Handle line breaks for long strategy names
@@ -339,43 +390,43 @@ export function ModelTable() {
                       })}
                     </div>
                   </TableCell>
-                  <TableCell className="text-base font-medium w-[90px] px-3 py-4 text-center">
-                    {model.parameters}
+                  <TableCell className="text-base font-medium px-3 py-4 text-center w-[8%]">
+                    <div className="truncate">{model.parameters}</div>
                   </TableCell>
-                  <TableCell className="text-base w-[80px] px-3 py-4 text-center">
-                    {model.slides}
+                  <TableCell className="text-base px-3 py-4 text-center w-[7%]">
+                    <div className="truncate">{model.slides}</div>
                   </TableCell>
-                  <TableCell className="text-base w-[80px] px-3 py-4 text-center">
-                    {model.patches}
+                  <TableCell className="text-base px-3 py-4 text-center w-[7%]">
+                    <div className="truncate">{model.patches}</div>
                   </TableCell>
-                  <TableCell className="w-[180px] px-3 py-4">
-                    <div className="text-base leading-tight break-words" title={model.pretraining_data_source}>
+                  <TableCell className="px-3 py-4 w-[20%]">
+                    <div className="text-base leading-tight truncate" title={model.pretraining_data_source}>
                       {model.pretraining_data_source}
                     </div>
                   </TableCell>
-                  <TableCell className="w-[80px] px-3 py-4">
+                  <TableCell className="px-3 py-4 w-[8%]">
                     <div className="flex flex-wrap gap-1">
                       {model.stain.split(', ').map((stain, idx) => (
                         <Badge
                           key={idx}
                           variant="outline"
-                          className="bg-emerald-50 text-emerald-700 border-emerald-200 text-sm whitespace-nowrap"
+                          className="bg-emerald-50 text-emerald-700 border-emerald-200 text-sm truncate"
                         >
                           {stain}
                         </Badge>
                       ))}
                     </div>
                   </TableCell>
-                  <TableCell className="text-base w-[110px] px-3 py-4 text-center">
-                    {model.released_date}
+                  <TableCell className="text-base px-3 py-4 text-center w-[8%]">
+                    <div className="truncate">{model.released_date}</div>
                   </TableCell>
-                  <TableCell className="w-[120px] px-3 py-4 text-center">
+                  <TableCell className="px-3 py-4 text-center w-[7%]">
                     {model.publication !== '-' ? (() => {
                       const { displayName, colorClass } = getPublicationInfo(model.publication);
                       return (
                         <Badge
                           variant="outline"
-                          className={`${colorClass} font-medium text-sm whitespace-nowrap`}
+                          className={`${colorClass} font-medium text-sm truncate`}
                         >
                           {displayName}
                         </Badge>

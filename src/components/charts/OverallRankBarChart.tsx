@@ -364,29 +364,29 @@ export function OverallRankBarChart({ selectedMetric }: PerformanceBarChartProps
 
   return (
     <Card className="w-full overflow-hidden">
-      <CardHeader>
-        <CardTitle>Model Ranking Analysis</CardTitle>
-        <CardDescription>
+      <CardHeader className="pb-3 sm:pb-6">
+        <CardTitle className="text-lg sm:text-xl">Model Ranking Analysis</CardTitle>
+        <CardDescription className="text-xs sm:text-sm">
           {`Top: Average rankings across tasks | Bottom: Detailed rankings per task (${selectedMetric || "Select a metric"})`}
         </CardDescription>
       </CardHeader>
       <CardContent
-        className="overflow-auto"
+        className="overflow-auto p-2 sm:p-6"
         style={{
-          height: `calc(100vh - 200px)`,
-          maxHeight: `${containerHeight}px`,
+          height: `calc(100vh - 150px)`,
+          maxHeight: `${Math.min(containerHeight, window.innerWidth < 768 ? 600 : containerHeight)}px`,
         }}
       >
         <ReactECharts
           option={chartOptions}
           style={{
-            height: `${containerHeight - 100}px`,
+            height: `${Math.min(containerHeight - 100, window.innerWidth < 768 ? 500 : containerHeight - 100)}px`,
             width: "100%",
-            minHeight: `${containerHeight - 100}px`
+            minHeight: `${Math.min(containerHeight - 100, window.innerWidth < 768 ? 500 : containerHeight - 100)}px`
           }}
           opts={{
             renderer: "canvas", // Canvas is faster for heatmaps
-            devicePixelRatio: 1 // Reduce pixel ratio for better performance
+            devicePixelRatio: window.innerWidth < 768 ? 1 : 2 // Lower pixel ratio on mobile for better performance
           }}
           notMerge={true}
           lazyUpdate={true}

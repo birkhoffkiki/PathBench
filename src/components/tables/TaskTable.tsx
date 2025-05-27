@@ -176,26 +176,97 @@ export function TaskTable({ onSelectTask, selectedTaskId, useAllTasks = false }:
   return (
     <Card>
       <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead onClick={() => handleSort("name")} className="cursor-pointer hover:bg-muted/50 w-96">
-                Task Name <SortIcon field="name" />
-              </TableHead>
-              <TableHead onClick={() => handleSort("organ")} className="cursor-pointer hover:bg-muted/50">
-                Organ <SortIcon field="organ" />
-              </TableHead>
-              <TableHead onClick={() => handleSort("taskType")} className="cursor-pointer hover:bg-muted/50">
-                Type <SortIcon field="taskType" />
-              </TableHead>
-              <TableHead onClick={() => handleSort("cohort")} className="cursor-pointer hover:bg-muted/50">
-                Cohort <SortIcon field="cohort" />
-              </TableHead>
-              <TableHead>Metrics</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+        {/* Mobile Card Layout */}
+        <div className="block md:hidden">
+          <div className="space-y-3 p-4">
+            {sortedTasks.map((task) => {
+              const isSelected = task.id === selectedTaskId;
+
+              return (
+                <Card
+                  key={task.id}
+                  className={`border cursor-pointer transition-all mobile-card ${
+                    isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                  onClick={() => {
+                    if (isSelected) {
+                      onSelectTask(undefined);
+                    } else {
+                      onSelectTask(task.id);
+                    }
+                  }}
+                >
+                  <CardContent className="p-4">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-start">
+                        <h3 className="font-semibold text-gray-900 text-sm leading-tight">{task.name}</h3>
+                        <Button
+                          variant={isSelected ? "default" : "outline"}
+                          size="sm"
+                          className="text-xs px-2 py-1 h-6"
+                        >
+                          {isSelected ? "Hide" : "View"}
+                        </Button>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                          <span className="text-gray-500">Organ:</span>
+                          <div className="font-medium">{task.organ}</div>
+                        </div>
+                        <div>
+                          <span className="text-gray-500">Cohort:</span>
+                          <div className="font-medium">{task.cohort}</div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">Type:</div>
+                        <Badge variant="outline" className="text-xs capitalize">
+                          {task.taskType.replace('_', ' ')}
+                        </Badge>
+                      </div>
+
+                      <div>
+                        <div className="text-xs text-gray-500 mb-1">Metrics:</div>
+                        <div className="flex flex-wrap gap-1">
+                          {task.evaluationMetrics.map(metric => (
+                            <Badge key={metric} variant="secondary" className="text-xs">
+                              {metric.replace('_', ' ')}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Desktop Table Layout */}
+        <div className="hidden md:block overflow-x-auto mobile-table-scroll">
+          <Table className="min-w-[900px]">
+            <TableHeader>
+              <TableRow>
+                <TableHead onClick={() => handleSort("name")} className="cursor-pointer hover:bg-muted/50 w-96">
+                  Task Name <SortIcon field="name" />
+                </TableHead>
+                <TableHead onClick={() => handleSort("organ")} className="cursor-pointer hover:bg-muted/50">
+                  Organ <SortIcon field="organ" />
+                </TableHead>
+                <TableHead onClick={() => handleSort("taskType")} className="cursor-pointer hover:bg-muted/50">
+                  Type <SortIcon field="taskType" />
+                </TableHead>
+                <TableHead onClick={() => handleSort("cohort")} className="cursor-pointer hover:bg-muted/50">
+                  Cohort <SortIcon field="cohort" />
+                </TableHead>
+                <TableHead>Metrics</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
             {sortedTasks.map((task, index) => {
               const isSelected = task.id === selectedTaskId;
 
@@ -243,8 +314,9 @@ export function TaskTable({ onSelectTask, selectedTaskId, useAllTasks = false }:
                 </TableRow>
               );
             })}
-          </TableBody>
-        </Table>
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

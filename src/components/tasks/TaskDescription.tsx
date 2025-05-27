@@ -41,35 +41,35 @@ export function TaskDescription({ taskId }: TaskDescriptionProps) {
   };
 
   return (
-    <Card className="w-full mt-4">
-      <CardHeader>
-        <CardTitle>{task.name}</CardTitle>
-        <CardDescription>
+    <Card className="w-full mt-3 sm:mt-4">
+      <CardHeader className="pb-3 sm:pb-6">
+        <CardTitle className="text-lg sm:text-xl">{task.name}</CardTitle>
+        <CardDescription className="text-sm sm:text-base">
           {task.taskType.replace('_', ' ')} task for {task.organ}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">
+      <CardContent className="space-y-4">
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
           {getTaskDescription()}
         </p>
-        <div className="mt-4">
-          <h4 className="text-sm font-medium">Dataset Information</h4>
-          <div className="grid grid-cols-2 gap-2 mt-2">
-            <div>
+        <div>
+          <h4 className="text-sm sm:text-base font-medium mb-3">Dataset Information</h4>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-2">
+            <div className="space-y-1">
               <span className="text-xs text-muted-foreground">Cohort:</span>
-              <p className="text-sm">{task.cohort}</p>
+              <p className="text-sm font-medium">{task.cohort}</p>
             </div>
-            <div>
+            <div className="space-y-1">
               <span className="text-xs text-muted-foreground">Organ:</span>
-              <p className="text-sm">{task.organ}</p>
+              <p className="text-sm font-medium">{task.organ}</p>
             </div>
-            <div>
+            <div className="space-y-1">
               <span className="text-xs text-muted-foreground">Task Type:</span>
-              <p className="text-sm capitalize">{task.taskType.replace('_', ' ')}</p>
+              <p className="text-sm font-medium capitalize">{task.taskType.replace('_', ' ')}</p>
             </div>
-            <div>
+            <div className="space-y-1">
               <span className="text-xs text-muted-foreground">Metrics:</span>
-              <p className="text-sm">{task.evaluationMetrics.join(', ')}</p>
+              <p className="text-sm font-medium">{task.evaluationMetrics.join(', ')}</p>
             </div>
           </div>
         </div>

@@ -100,11 +100,11 @@ function PerformanceContent() {
 
       {/* Performance Charts by Organ - Optimized with lazy loading */}
       {tasksByOrgan.map(({ organ, tasks: organTasks }) => (
-        <div key={organ} className="space-y-4">
-          <h2 className="text-2xl font-bold text-gray-900 border-b pb-2">
+        <div key={organ} className="space-y-3 sm:space-y-4">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 border-b pb-2">
             {organ}
           </h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
             {organTasks.map((task) => (
               <LazyLoad
                 key={task.id}
@@ -181,8 +181,8 @@ export function Dashboard() {
   };
 
   return (
-    <div className="container mx-auto py-6">
-      <header className="pb-6 mb-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="container mx-auto py-3 sm:py-6 max-w-7xl">
+      <header className="pb-4 sm:pb-6 mb-4 sm:mb-6 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-4">
         <div>
 
           <div className="mb-2">
@@ -191,25 +191,25 @@ export function Dashboard() {
               alt="PathBench Logo"
               width={300}
               height={300}
-              className="h-20 object-contain"
+              className="h-16 sm:h-20 object-contain"
             />
           </div>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-xs sm:text-sm leading-tight">
             A Multi-task, Multi-organ Benchmark for Real-world Clinical Performance Evaluation of Pathology Foundation Models
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
           {/* arXiv and GitHub links - matching partner logo style */}
           <a
             href="https://arxiv.org/abs/2505.20202"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md"
+            className="group relative p-1 sm:p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
             title="View arXiv Paper"
           >
             <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <SiArxiv className="h-16 w-16 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+            <SiArxiv className="h-12 w-12 sm:h-16 sm:w-16 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
             <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
           </a>
 
@@ -217,11 +217,11 @@ export function Dashboard() {
             href="https://github.com/birkhoffkiki/PathBench"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md"
+            className="group relative p-1 sm:p-1.5 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
             title="View GitHub Repository"
           >
             <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-            <FaGithub className="h-16 w-16 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+            <FaGithub className="h-12 w-12 sm:h-16 sm:w-16 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
             <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
           </a>
 
@@ -234,10 +234,11 @@ export function Dashboard() {
               rel="noopener noreferrer"
               className={`
                 group relative
-                ${partner.id === 1 ? 'p-0' : 'p-2'} rounded-lg
+                ${partner.id === 1 ? 'p-0' : 'p-1 sm:p-2'} rounded-lg
                 transition-all duration-300
                 hover:scale-105 hover:shadow-md
                 ${partner.bgColor}
+                touch-target
               `}
               title={`Visit ${partner.name}`}
             >
@@ -245,9 +246,9 @@ export function Dashboard() {
               <Image
                 src={getImagePath(partner.logo)}
                 alt={partner.name}
-                width={partner.id === 1 ? 100 : 250}
+                width={250}
                 height={250}
-                className="h-20 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+                className="h-16 sm:h-20 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
               />
 
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
@@ -257,45 +258,44 @@ export function Dashboard() {
       </header>
 
       <Tabs defaultValue="overview">
+        <div className="w-full overflow-x-auto pb-2">
+          <TabsList className="bg-gray-50 p-1 sm:p-1.5 rounded-xl border border-gray-100 w-auto space-x-0.5 sm:space-x-1 min-w-max flex">
+            <TabsTrigger
+              value="overview"
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-2 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600 whitespace-nowrap"
+            >
+              <span className="text-xs sm:text-sm font-medium">Overview</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="leaderboard"
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-2 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600 whitespace-nowrap"
+            >
+              <span className="text-xs sm:text-sm font-medium">Leaderboard</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="performance"
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-2 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600 whitespace-nowrap"
+            >
+              <span className="text-xs sm:text-sm font-medium">Performance</span>
+            </TabsTrigger>
+            <TabsTrigger
+              value="models"
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-2 sm:px-6 py-1.5 sm:py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600 whitespace-nowrap"
+            >
+              <span className="text-xs sm:text-sm font-medium">Models</span>
+            </TabsTrigger>
+          </TabsList>
+        </div>
 
-        <TabsList className="bg-gray-50 p-1.5 rounded-xl border border-gray-100 w-auto space-x-1">
-          <TabsTrigger
-            value="overview"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-6 py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600"
-          >
-            <span className="text-sm font-medium">Overview</span>
-          </TabsTrigger>
-          <TabsTrigger
-            value="leaderboard"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-6 py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600"
-          >
-            <span className="text-sm font-medium">Leaderboard</span>
-          </TabsTrigger>
-          <TabsTrigger
-            value="performance"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-6 py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600"
-          >
-            <span className="text-sm font-medium">Performance</span>
-          </TabsTrigger>
-          <TabsTrigger
-            value="models"
-            className="data-[state=active]:bg-white data-[state=active]:shadow-sm data-[state=active]:text-gray-900 px-6 py-2 rounded-lg transition-all hover:bg-gray-100/70 text-gray-600"
-          >
-            <span className="text-sm font-medium">Models</span>
-          </TabsTrigger>
-        </TabsList>
 
-
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <TabsContent value="overview" className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <PieDataDistributionChart />
             <TaskDistributionChart chartType="organ" />
             <TaskDistributionChart chartType="taskType" />
           </div>
 
-
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">
             <ModelFilter />
             <TaskTypeFilter />
             <OrganFilter />
@@ -308,8 +308,8 @@ export function Dashboard() {
             <OverallRankBarChart selectedMetric={selectedMetric} />
           </div>
 
-          <div className="my-6">
-            <h2 className="text-2xl font-bold mb-4">All Tasks</h2>
+          <div className="my-4 sm:my-6">
+            <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">All Tasks</h2>
             <TaskTable onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
           </div>
 
@@ -319,17 +319,17 @@ export function Dashboard() {
         </TabsContent>
 
         <TabsContent value="leaderboard">
-          <div className="my-6">
+          <div className="my-4 sm:my-6">
             <LeaderboardTable />
           </div>
         </TabsContent>
 
-        <TabsContent value="performance" className="space-y-6">
+        <TabsContent value="performance" className="space-y-4 sm:space-y-6">
           <PerformanceContent />
         </TabsContent>
 
         <TabsContent value="models">
-          <div className="my-6">
+          <div className="my-4 sm:my-6">
             <ModelTable />
           </div>
         </TabsContent>

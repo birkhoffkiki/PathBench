@@ -88,6 +88,9 @@ export function PieDataDistributionChart() {
         top: '4.5%',
         left: "center",
         z: 0,
+        textStyle: {
+          fontSize: window.innerWidth < 768 ? 14 : 16,
+        }
       },
       tooltip: {
         trigger: "item",
@@ -95,13 +98,14 @@ export function PieDataDistributionChart() {
         z: 4,
       },
       legend: {
-        orient: "vertical",
-        left: 5,
-        top: '42.5%',
+        orient: window.innerWidth < 768 ? "horizontal" : "vertical",
+        left: window.innerWidth < 768 ? "center" : 5,
+        top: window.innerWidth < 768 ? 'bottom' : '42.5%',
+        bottom: window.innerWidth < 768 ? 10 : undefined,
         type: "scroll",
         z: 0,
         textStyle: {
-          fontSize: 14,
+          fontSize: window.innerWidth < 768 ? 12 : 14,
           color: '#333',
         },
       },
@@ -110,12 +114,15 @@ export function PieDataDistributionChart() {
   }, [allTasks]);
 
   return (
-    <Card className="w-full h-[300px]">
-      <CardContent className="h-[300px]">
+    <Card className="w-full h-[250px] sm:h-[300px]">
+      <CardContent className="h-[250px] sm:h-[300px] p-2 sm:p-6">
         <ReactECharts
           option={chartOptions}
           style={{ height: "100%", width: "100%" }}
-          opts={{ renderer: "svg" }}
+          opts={{
+            renderer: "svg",
+            devicePixelRatio: window.innerWidth < 768 ? 1 : 2
+          }}
         />
       </CardContent>
     </Card>

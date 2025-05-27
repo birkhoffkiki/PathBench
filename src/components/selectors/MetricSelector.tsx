@@ -16,15 +16,22 @@ export function MetricSelector({ value, onChange }: MetricSelectorProps) {
 
   return (
     <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-sm font-medium">Select Metric</CardTitle>
+      <CardHeader className="pb-2 sm:pb-3">
+        <CardTitle className="text-xs sm:text-sm font-medium">Select Metric</CardTitle>
       </CardHeader>
       <CardContent>
-        <RadioGroup value={value} onValueChange={onChange} className="flex flex-col gap-2">
+        <RadioGroup value={value} onValueChange={onChange} className="flex flex-col gap-1 sm:gap-2">
           {metrics.map(metric => (
-            <div key={metric} className="flex items-center space-x-2 py-1">
-              <RadioGroupItem value={metric} id={`metric-${metric}`} />
-              <Label htmlFor={`metric-${metric}`} className="cursor-pointer">
+            <div key={metric} className="flex items-center space-x-2 py-0.5 sm:py-1 touch-target">
+              <RadioGroupItem
+                value={metric}
+                id={`metric-${metric}`}
+                className="h-3 w-3 sm:h-4 sm:w-4"
+              />
+              <Label
+                htmlFor={`metric-${metric}`}
+                className="cursor-pointer text-xs sm:text-sm leading-tight"
+              >
                 {metric.replace('_', ' ')}
               </Label>
             </div>

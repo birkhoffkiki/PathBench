@@ -17,7 +17,7 @@ const visionData: VisionSlide[] = [
       "Diverse, global datasets: Cover the top-10 cancers in collaboration with hospitals around the world.",
       "Strict privacy guardrails: No public data leaks—models are evaluated securely without raw data exposure."
     ],
-    icon: <Network className="w-5 h-5 text-blue-500/70" /> 
+    icon: <Network className="w-5 h-5 text-blue-500/70" />
   },
   {
     title: "Rigorous, Reproducible Science",
@@ -63,47 +63,47 @@ export function VisionCarousel() {
 
   return (
     <Card className="shadow-lg w-full bg-gradient-to-br from-slate-40/80 to-slate-100/80 dark:from-slate-900/80 dark:to-slate-800/80">
-      <CardContent className="p-6 w-full">
+      <CardContent className="p-4 sm:p-6 w-full">
         {/* 标题部分 */}
-        <h3 className="text-2xl font-semibold mb-4 text-primary text-center">Our Vision</h3>
-        <div className="italic font-semibold text-left mb-8 text-primary/70">
+        <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-primary text-center">Our Vision</h3>
+        <div className="italic font-semibold text-left mb-6 sm:mb-8 text-primary/70 text-sm sm:text-base">
           To create the world's most rigorous, clinically grounded benchmark for pathology foundation models—free from bias, noise, and shortcuts.
         </div>
 
-        {/* 整个轮播组件容器 - 增加高度以适应原始字体大小 */}
-        <div className="relative h-[280px] flex items-center">
+        {/* 整个轮播组件容器 - 响应式高度 */}
+        <div className="relative h-[320px] sm:h-[280px] flex items-center">
           {/* 导航按钮 - 位于内容区域外部 */}
           <div className="absolute left-0 top-0 bottom-0 flex items-center z-30">
             <button
               onClick={prevSlide}
-              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1.5 transition-all shadow-md ml-1"
+              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1 sm:p-1.5 transition-all shadow-md ml-0.5 sm:ml-1 touch-target"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="w-5 h-5 text-primary/80" />
-            </button>
-          </div>
-          
-          <div className="absolute right-0 top-0 bottom-0 flex items-center z-30">
-            <button
-              onClick={nextSlide}
-              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1.5 transition-all shadow-md mr-1"
-              aria-label="Next slide"
-            >
-              <ChevronRight className="w-5 h-5 text-primary/80" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-primary/80" />
             </button>
           </div>
 
-          {/* 轮播内容 - 有明确的左右边距 */}
-          <div className="relative w-full h-[230px] overflow-hidden mx-8">
+          <div className="absolute right-0 top-0 bottom-0 flex items-center z-30">
+            <button
+              onClick={nextSlide}
+              className="bg-primary/10 hover:bg-primary/20 rounded-full p-1 sm:p-1.5 transition-all shadow-md mr-0.5 sm:mr-1 touch-target"
+              aria-label="Next slide"
+            >
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-primary/80" />
+            </button>
+          </div>
+
+          {/* 轮播内容 - 响应式边距 */}
+          <div className="relative w-full h-[270px] sm:h-[230px] overflow-hidden mx-6 sm:mx-8">
             {visionData.map((slide, index) => (
               <div
                 key={index}
                 className={cn(
                   "absolute top-0 left-0 w-full h-full transition-all duration-500 ease-in-out",
-                  currentSlide === index 
-                    ? "opacity-100 translate-x-0" 
-                    : currentSlide > index 
-                      ? "opacity-0 -translate-x-full" 
+                  currentSlide === index
+                    ? "opacity-100 translate-x-0"
+                    : currentSlide > index
+                      ? "opacity-0 -translate-x-full"
                       : "opacity-0 translate-x-full"
                 )}
                 style={{
@@ -111,14 +111,14 @@ export function VisionCarousel() {
                   visibility: Math.abs(currentSlide - index) <= 1 ? 'visible' : 'hidden'
                 }}
               >
-                <div className="p-4 h-full">
-                  <h4 className="font-medium text-lg text-foreground mb-4 text-left flex items-center gap-2">
+                <div className="p-2 sm:p-4 h-full">
+                  <h4 className="font-medium text-base sm:text-lg text-foreground mb-3 sm:mb-4 text-left flex items-center gap-2">
                     {slide.icon}
                     <span>{slide.title}</span>
                   </h4>
-                  <ul className="space-y-3 text-base pl-6 list-disc">
+                  <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base pl-4 sm:pl-6 list-disc">
                     {slide.content.map((item, i) => (
-                      <li key={i} className="text-muted-foreground">
+                      <li key={i} className="text-muted-foreground leading-relaxed">
                         {item}
                       </li>
                     ))}
@@ -138,9 +138,9 @@ export function VisionCarousel() {
                   setIsAutoPlaying(false);
                 }}
                 className={cn(
-                  "w-3 h-3 rounded-full transition-all duration-300",
-                  index === currentSlide 
-                    ? "bg-primary/70 w-6" 
+                  "w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 touch-target",
+                  index === currentSlide
+                    ? "bg-primary/70 w-4 sm:w-6"
                     : "bg-primary/20 hover:bg-primary/40"
                 )}
                 aria-label={`Go to slide ${index + 1}`}

@@ -39,12 +39,12 @@ export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProp
   const animationDuration = Math.min(15 + partners.length * speed, 40);
 
   return (
-    <div className="w-full py-4">
-      <h3 className="text-xl font-bold mb-6">Collaborators</h3>
+    <div className="w-full py-2 sm:py-4">
+      <h3 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6">Collaborators</h3>
 
       <div className="relative overflow-hidden">
         {/* 使用Tailwind的animate-scroll类和更快的动画速度 */}
-        <div className="inline-flex items-center py-4 animate-scroll"
+        <div className="inline-flex items-center py-2 sm:py-4 animate-scroll"
              style={{
                animationDuration: `${animationDuration}s`
              }}
@@ -55,15 +55,15 @@ export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProp
               href={partner.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 hover:bg-gray-50/50
-                     transition-colors p-2 rounded-md border mx-4
-                     flex-grow-0 flex-shrink-0"
+              className="flex items-center space-x-1 sm:space-x-2 hover:bg-gray-50/50
+                     transition-colors p-1 sm:p-2 rounded-md border mx-2 sm:mx-4
+                     flex-grow-0 flex-shrink-0 touch-target"
             >
               <div
                 className="relative flex-shrink-0"
                 style={{
-                  width: partner.width * 0.7,
-                  height: partner.height * 0.7
+                  width: partner.width * (window.innerWidth < 768 ? 0.5 : 0.7),
+                  height: partner.height * (window.innerWidth < 768 ? 0.5 : 0.7)
                 }}
               >
                 <Image
@@ -74,7 +74,7 @@ export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProp
                 />
               </div>
               {partner.name && (
-                <span className="text-sm font-medium whitespace-nowrap">
+                <span className="text-xs sm:text-sm font-medium whitespace-nowrap">
                   {partner.name}
                 </span>
               )}
@@ -82,9 +82,9 @@ export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProp
           ))}
         </div>
 
-        {/* 渐变遮罩 */}
-        <div className="absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10"></div>
-        <div className="absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10"></div>
+        {/* 渐变遮罩 - 响应式宽度 */}
+        <div className="absolute left-0 top-0 h-full w-8 sm:w-16 bg-gradient-to-r from-white dark:from-gray-900 to-transparent z-10"></div>
+        <div className="absolute right-0 top-0 h-full w-8 sm:w-16 bg-gradient-to-l from-white dark:from-gray-900 to-transparent z-10"></div>
       </div>
     </div>
   );

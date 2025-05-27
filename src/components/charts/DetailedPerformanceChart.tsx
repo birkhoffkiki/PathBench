@@ -297,20 +297,20 @@ const SingleCohortChart = memo(function SingleCohortChart({
 
   return (
     <Card className="w-full shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-      <CardHeader className="pb-2 pt-4">
-        <CardTitle className="text-lg text-gray-900">{taskName}</CardTitle>
-        <p className="text-sm text-gray-600">
+      <CardHeader className="pb-2 pt-3 sm:pt-4">
+        <CardTitle className="text-base sm:text-lg text-gray-900 leading-tight">{taskName}</CardTitle>
+        <p className="text-xs sm:text-sm text-gray-600">
           {organ} • {modelStats.length} models • {selectedMetric} • {cohort}
         </p>
       </CardHeader>
-      <CardContent className="pb-2 pt-2">
-        <div className="h-[350px]">
+      <CardContent className="pb-2 pt-2 px-2 sm:px-6">
+        <div className="h-[250px] sm:h-[350px]">
           <ReactECharts
             option={chartOptions}
             style={{ height: '100%', width: '100%' }}
             opts={{
               renderer: 'canvas', // Canvas is faster for complex charts
-              devicePixelRatio: 1 // Reduce pixel ratio for better performance
+              devicePixelRatio: window.innerWidth < 768 ? 1 : 2 // Lower pixel ratio on mobile for better performance
             }}
             notMerge={true}
             lazyUpdate={true}

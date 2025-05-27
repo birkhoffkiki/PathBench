@@ -124,27 +124,25 @@ export function Footer() {
   }, [buildInfo.buildTimestamp]);
 
   return (
-    <footer className="w-full mt-12 border-t">
-
-
+    <footer className="w-full mt-8 sm:mt-12 border-t">
       <div className="w-full">
-        <div className="flex flex-col gap-8 w-full">
+        <div className="flex flex-col gap-6 sm:gap-8 w-full">
           <VisionCarousel />
 
           <Card className="shadow-none w-full">
-            <CardContent className="p-6 w-full">
-              <h3 className="text-2xl font-semibold mb-4 text-primary">Join US</h3>
-              <div className="space-y-6 text-muted-foreground">
-                <div className="space-y-2 text-xm">
-                  <h3>As a collaborator, you'll:</h3>
-                  <ul className="space-y-1 pl-4 list-disc">
+            <CardContent className="p-4 sm:p-6 w-full">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-primary">Join US</h3>
+              <div className="space-y-4 sm:space-y-6 text-muted-foreground">
+                <div className="space-y-2 text-sm sm:text-base">
+                  <h3 className="font-medium">As a collaborator, you'll:</h3>
+                  <ul className="space-y-1 pl-4 list-disc text-xs sm:text-sm">
                     <li>🔎 Save time: Access a unified evaluation hub—no more stitching together disjointed </li>
                     <li>📈 Boost credibility: Prove your model's robustness against the most stringent clinical standards.</li>
                     <li>🌍 Reduce bias: Help expand datasets to underrepresented populations and improve equity in AI diagnostics.</li>
                     <li>🤝 Shape the future: Co-author benchmarks that become the gold standard for model evaluation and clinical adoption.</li>
                   </ul>
-                  <h3>How to Contribute:</h3>
-                  <ul className="space-y-1 pl-4 list-disc">
+                  <h3 className="font-medium">How to Contribute:</h3>
+                  <ul className="space-y-1 pl-4 list-disc text-xs sm:text-sm">
                     <li>🤖 Model evaluation: You could send us your model to evalute its performance on this benchmark. </li>
                     <li>🗃️ Contribute Task: You could contribute data to help expand the tasks of benchmark.</li>
                   </ul>
@@ -155,11 +153,10 @@ export function Footer() {
 
 
           <Card className="shadow-none w-full">
-            <CardContent className="p-6 w-full">
-              <h3 className="text-2xl font-semibold mb-4 text-primary">Contact Information</h3>
+            <CardContent className="p-4 sm:p-6 w-full">
+              <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-primary">Contact Information</h3>
 
-
-              <div className="space-y-3 text-xm text-muted-foreground mb-8">
+              <div className="space-y-3 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
                 <p className="font-medium text-foreground">Prof. <a href="https://scholar.google.com/citations?user=Z_t5DjwAAAAJ&hl=zh-CN&oi=ao" className="text-primary hover:underline">Hao CHEN</a></p>
                 <div className="space-y-1">
                   <p>Department of Computer Science and Engineering, Hong Kong University of Science and Technology</p>
@@ -168,8 +165,7 @@ export function Footer() {
                 </div>
               </div>
 
-
-              <div className="space-y-3 text-xm text-muted-foreground mb-8">
+              <div className="space-y-3 text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
                 <p className="font-medium text-foreground">Mr. <a href="https://scholar.google.com/citations?user=VyKdUTUAAAAJ&hl=zh-CN&oi=ao" className="text-primary hover:underline">Jiabo MA (PhD Student)</a></p>
                 <div className="space-y-1">
                   <p>Department of Computer Science and Engineering, Hong Kong University of Science and Technology</p>
@@ -177,8 +173,7 @@ export function Footer() {
                 </div>
               </div>
 
-
-              <div className="space-y-3 text-xl text-muted-foreground">
+              <div className="space-y-3 text-sm sm:text-base text-muted-foreground">
                 <p>If you're interested in evaluating foundation models or contributing datasets, please don't hesitate to reach out. Let's work together to advance the progress of digital and intelligent pathology.</p>
               </div>
             </CardContent>
@@ -186,39 +181,37 @@ export function Footer() {
         </div>
 
 
-        <div className="w-full my-8">
+        <div className="w-full my-6 sm:my-8">
           <Card className="shadow-none rounded-none border-x-0 border-t-0">
-            <CardContent className="container mx-auto p-4">
+            <CardContent className="container mx-auto p-2 sm:p-4">
               <PartnersScroller partners={PARTNERS} speed={25} />
             </CardContent>
           </Card>
         </div>
 
-
         <div
-        ref={clustrmapsContainerRef}
-        style={{
-          width: '200px',
-          height: '150px',
-          overflow: 'hidden',
-          margin: '0 auto',
-        }}
-      >
-      </div>
+          ref={clustrmapsContainerRef}
+          style={{
+            width: '150px',
+            height: '120px',
+            overflow: 'hidden',
+            margin: '0 auto',
+          }}
+          className="sm:w-[200px] sm:h-[150px]"
+        >
+        </div>
 
-
-        <div className="flex justify-center mt-4 pb-6">
-          <p className="text-xs text-muted-foreground" suppressHydrationWarning>
+        <div className="flex justify-center mt-3 sm:mt-4 pb-4 sm:pb-6 px-4">
+          <p className="text-xs text-muted-foreground text-center" suppressHydrationWarning>
             © {currentYear || "2025"} SmartLab, Hong Kong University of Science and Technology — All Rights Reserved
           </p>
         </div>
 
-
-      <div className="flex justify-center pb-4">
-        <p className="text-xs text-muted-foreground" suppressHydrationWarning>
-          Last updated: {buildInfo.buildTimestamp} UTC
-        </p>
-      </div>
+        <div className="flex justify-center pb-3 sm:pb-4 px-4">
+          <p className="text-xs text-muted-foreground text-center" suppressHydrationWarning>
+            Last updated: {buildInfo.buildTimestamp} UTC
+          </p>
+        </div>
 
       </div>
     </footer>

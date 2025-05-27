@@ -55,8 +55,8 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
       // 清空容器以确保没有重复内容
       container.innerHTML = '';
 
-      const containerWidth = 850;
-      const containerHeight = 500; // 增加高度匹配人体图
+      const containerWidth = window.innerWidth < 768 ? 320 : 850;
+      const containerHeight = window.innerWidth < 768 ? 300 : 500; // 响应式高度匹配人体图
 
       window.sapien.createHumanBody({
         title: 'Cases by Major Primary Site',
@@ -64,13 +64,13 @@ export function HumanBodyVisualization({ basePath = '' }: HumanBodyVisualization
         width: containerWidth,
         height: containerHeight,
         data: processedData,
-        labelSize: '14px',
+        labelSize: window.innerWidth < 768 ? '12px' : '14px',
         primarySiteKey: 'key',
         fileCountKey: 'fileCount',
         caseCountKey: 'caseCount',
         tickInterval: 5,
-        offsetLeft: 250,
-        offsetTop: 50,
+        offsetLeft: window.innerWidth < 768 ? 50 : 250,
+        offsetTop: window.innerWidth < 768 ? 20 : 50,
         clickHandler: (e: { key: string }) => {
           console.log("Clicked:", e.key);
         },
