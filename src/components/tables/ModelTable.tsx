@@ -38,6 +38,7 @@ export function ModelTable() {
       'gigapath': 'https://www.nature.com/articles/s41586-024-07441-w',
       'hibou': 'https://arxiv.org/abs/2406.05074',
       'gpfm': 'https://arxiv.org/abs/2407.18449',
+      'hoptimus0': 'https://huggingface.co/bioptimus/H-optimus-0',
       'hoptimus1': 'https://huggingface.co/bioptimus/H-optimus-1',
       'plip': 'https://www.nature.com/articles/s41591-023-02504-3',
       'conch': 'https://www.nature.com/articles/s41591-024-02856-4',

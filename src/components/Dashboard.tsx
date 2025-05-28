@@ -19,6 +19,7 @@ import { TaskDistributionChart } from "@/components/charts/TaskDistributionChart
 import { OverallRankBarChart } from "@/components/charts/OverallRankBarChart"
 
 import { PieDataDistributionChart } from "@/components/charts/PieDataDistributionChart";
+import { DatasetInfoTable } from "@/components/tables/DatasetInfoTable";
 
 import { ModelTable } from "@/components/tables/ModelTable";
 import { MetricSelector } from "@/components/selectors/MetricSelector";
@@ -593,6 +594,11 @@ export function Dashboard() {
             <TaskDistributionChart chartType="taskType" />
             <TaskDistributionChart chartType="organ" />
             <PieDataDistributionChart selectedMetrics={selectedMetrics} />
+          </div>
+
+          {/* Dataset Information Table */}
+          <div className="w-full">
+            <DatasetInfoTable />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">

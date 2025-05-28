@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Performance } from "@/types/index";
+import { Performance, Task } from "@/types/index";
 import { useState } from "react";
 import { ChevronUp, ChevronDown, ChevronsUpDown } from "lucide-react";
 
@@ -45,7 +45,7 @@ export function LeaderboardTable() {
   };
 
   // Calculate top 5 models for each task
-  const calculateTaskTopModels = (task: any) => {
+  const calculateTaskTopModels = (task: Task) => {
     const taskResults = allModels.map(model => {
       const performance = performances.find(p =>
         p.modelID === model.name && p.taskId === task.id

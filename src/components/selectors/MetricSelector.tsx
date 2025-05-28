@@ -70,11 +70,11 @@ export function MetricSelector({ value, onChange }: MetricSelectorProps) {
         <CardTitle className="text-xs sm:text-sm font-medium">Select Metric</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col gap-1 sm:gap-2">
+        <div className="space-y-2 sm:space-y-3">
           {allMetrics.map(metric => {
             const isAvailable = metrics.includes(metric);
             return (
-              <div key={metric} className="flex items-center space-x-2 py-0.5 sm:py-1 touch-target">
+              <div key={metric} className="flex items-center space-x-2">
                 <Checkbox
                   id={`metric-${metric}`}
                   checked={value.includes(metric)}

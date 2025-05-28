@@ -4,6 +4,7 @@ import { useEvaluation } from "@/context/EvaluationContext";
 import React, { useMemo, useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { Performance } from "@/types";
 import type { EChartsOption, PieSeriesOption } from "echarts";
 
 
@@ -58,7 +59,7 @@ export function PieDataDistributionChart({ selectedMetrics = [] }: PieDataDistri
     // 如果没有选择metrics或选择了所有metrics，显示所有可用的metrics
     // 如果选择了特定metrics，只显示选中的metrics
     const allAvailableMetrics = new Set<string>();
-    filteredPerformances.forEach((performance: any) => {
+    filteredPerformances.forEach((performance: Performance) => {
       if (filteredTaskIds.has(performance.taskId)) {
         Object.keys(performance.metrics).forEach(metric => {
           if (performance.metrics[metric] && performance.metrics[metric].length > 0) {
@@ -76,7 +77,7 @@ export function PieDataDistributionChart({ selectedMetrics = [] }: PieDataDistri
     const metricsToShow = isOverallMode ? allMetricsArray : selectedMetrics;
 
     // 统计每个评估指标在filtered tasks中的实际分布
-    filteredPerformances.forEach((performance: any) => {
+    filteredPerformances.forEach((performance: Performance) => {
       // 只处理filtered tasks中的performance
       if (filteredTaskIds.has(performance.taskId)) {
         Object.keys(performance.metrics).forEach(metric => {
