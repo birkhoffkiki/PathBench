@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { ModelFilter } from "@/components/filters/ModelFilter";
@@ -376,6 +376,24 @@ export function Dashboard() {
   const [selectedMetrics, setSelectedMetrics] = useState<string[]>([]);
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>();
 
+  // Responsive state management for partner icons
+  const [isNarrowDesktop, setIsNarrowDesktop] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsNarrowDesktop(width >= 1200 && width < 1600); // 1200-1600px范围
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+
+
+
+
   // 根据任务类型设置默认指标
   const handleTaskSelect = (taskId: string | undefined) => {
     setSelectedTaskId(taskId);
@@ -493,17 +511,17 @@ export function Dashboard() {
             </p>
           </div>
 
-          <div className="flex items-center gap-3 flex-wrap">
+          <div className={`flex items-center ${isNarrowDesktop ? 'gap-1' : 'gap-3'} flex-wrap`}>
             {/* Desktop logo layout */}
             <a
               href="https://arxiv.org/abs/2505.20202"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              className={`group relative ${isNarrowDesktop ? 'p-2' : 'p-3'} rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target`}
               title="View arXiv Paper"
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <SiArxiv className="h-14 w-14 text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+              <SiArxiv className={`${isNarrowDesktop ? 'h-10 w-10' : 'h-14 w-14'} text-red-600 contrast-125 brightness-95 hover:contrast-100 transition-filter`} />
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
             </a>
 
@@ -511,11 +529,11 @@ export function Dashboard() {
               href="https://github.com/birkhoffkiki/PathBench"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              className={`group relative ${isNarrowDesktop ? 'p-2' : 'p-3'} rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target`}
               title="View GitHub Repository"
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <FaGithub className="h-14 w-14 text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter" />
+              <FaGithub className={`${isNarrowDesktop ? 'h-10 w-10' : 'h-14 w-14'} text-gray-800 contrast-125 brightness-95 hover:contrast-100 transition-filter`} />
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
             </a>
 
@@ -523,7 +541,7 @@ export function Dashboard() {
               href="https://smartlab.cse.ust.hk/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              className={`group relative ${isNarrowDesktop ? 'p-2' : 'p-3'} rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target`}
               title="Visit SmartLab"
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -532,7 +550,7 @@ export function Dashboard() {
                 alt="SmartLab Logo"
                 width={250}
                 height={250}
-                className="h-14 w-14 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+                className={`${isNarrowDesktop ? 'h-10 w-10' : 'h-14 w-14'} object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter`}
               />
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
             </a>
@@ -541,7 +559,7 @@ export function Dashboard() {
               href="https://hkust.edu.hk/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-3 rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target"
+              className={`group relative ${isNarrowDesktop ? 'p-1' : 'p-3'} rounded-lg bg-white-50 transition-all duration-300 hover:scale-105 hover:shadow-md touch-target`}
               title="Visit HKUST"
             >
               <div className="absolute inset-0 rounded-lg bg-white/50 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -550,7 +568,7 @@ export function Dashboard() {
                 alt="HKUST Logo"
                 width={250}
                 height={250}
-                className="h-14 object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter"
+                className={`${isNarrowDesktop ? 'h-10' : 'h-14'} object-contain contrast-125 brightness-95 hover:contrast-100 transition-filter`}
               />
               <div className="absolute inset-0 rounded-lg pointer-events-none mix-blend-overlay opacity-30 group-hover:opacity-50 transition-opacity bg-gradient-to-br from-white/30 to-transparent" />
             </a>

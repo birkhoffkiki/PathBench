@@ -18,12 +18,16 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
   // Use React state for responsive design instead of window object
   const [isMobile, setIsMobile] = useState(false);
   const [isMediumScreen, setIsMediumScreen] = useState(false);
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
+  const [isNarrowDesktop, setIsNarrowDesktop] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
       setIsMobile(width < 768);
       setIsMediumScreen(width >= 768 && width < 1024);
+      setIsNarrowScreen(width >= 768 && width < 1024);
+      setIsNarrowDesktop(width >= 1200 && width < 1600); // 新增：1200-1600px范围
     };
 
     checkScreenSize();
@@ -66,8 +70,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Organ Distribution",
         type: "pie",
-        radius: isMobile ? ["35%", "65%"] : isMediumScreen ? ["40%", "70%"] : ["45%", "75%"], // Responsive sizes: mobile, medium, desktop
-        center: isMobile ? ["65%", "55%"] : ["60%", "55%"], // Move down for more space from title
+        radius: isMobile ? ["35%", "65%"] : isNarrowDesktop ? ["45%", "70%"] : isNarrowScreen ? ["30%", "60%"] : ["45%", "75%"], // Responsive sizes: mobile, narrow desktop, narrow, desktop
+        center: isMobile ? ["70%", "55%"] : isNarrowDesktop ? ["70%", "55%"] : isNarrowScreen ? ["75%", "55%"] : ["65%", "55%"], // Move further right to avoid label overlap
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -153,8 +157,8 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Task Type Distribution",
         type: "pie",
-        radius: isMobile ? ["35%", "65%"] : isMediumScreen ? ["35%", "65%"] : ["45%", "75%"], // Responsive sizes: mobile, medium, desktop
-        center: isMobile ? ["65%", "55%"] : ["70%", "55%"], // Move down and right for better spacing
+        radius: isMobile ? ["35%", "65%"] : isNarrowDesktop ? ["45%", "70%"] : isNarrowScreen ? ["20%", "50%"] : ["45%", "75%"], // Responsive sizes: mobile, narrow desktop, narrow, desktop
+        center: isMobile ? ["70%", "55%"] : isNarrowDesktop ? ["70%", "55%"] : isNarrowScreen ? ["75%", "55%"] : ["70%", "55%"], // Move down and right for better spacing
         avoidLabelOverlap: true,
         itemStyle: {
           borderRadius: 10,
@@ -204,7 +208,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         },
         legend: {
           orient: "vertical",
-          left: isMobile ? 5 : 2.5,
+          left: isMobile ? 5 : 0,
           top: isMobile ? '37.5%' : '37.5%', // Move down to match pie chart center
           bottom: undefined,
           type: "scroll",
@@ -220,7 +224,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         series: [pieSeries],
       };
     }
-  }, [getFilteredTasks, chartType, isMobile, isMediumScreen]);
+  }, [getFilteredTasks, chartType, isMobile, isMediumScreen, isNarrowScreen, isNarrowDesktop]);
 
   return (
     <Card className="w-full h-[250px] sm:h-[350px]">

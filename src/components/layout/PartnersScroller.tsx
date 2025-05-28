@@ -16,6 +16,8 @@ interface PartnersScrollerProps {
 
 export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProps) {
   const [duplicatedPartners, setDuplicatedPartners] = useState<Partner[]>([]);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
 
   // Get basePath from environment variable
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
@@ -27,6 +29,19 @@ export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProp
     }
     return imagePath;
   };
+
+  // Check screen size for responsive design
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsNarrowScreen(width >= 768 && width < 1024);
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   // 确保我们有足够的项目进行滚动
   useEffect(() => {
@@ -62,8 +77,8 @@ export function PartnersScroller({ partners, speed = 0.1 }: PartnersScrollerProp
               <div
                 className="relative flex-shrink-0"
                 style={{
-                  width: partner.width * (window.innerWidth < 768 ? 0.5 : 0.7),
-                  height: partner.height * (window.innerWidth < 768 ? 0.5 : 0.7)
+                  width: partner.width * (isMobile ? 0.4 : isNarrowScreen ? 0.45 : 0.7),
+                  height: partner.height * (isMobile ? 0.4 : isNarrowScreen ? 0.45 : 0.7)
                 }}
               >
                 <Image

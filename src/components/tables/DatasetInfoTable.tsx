@@ -42,22 +42,29 @@ export function DatasetInfoTable() {
   if (!isVisible) {
     return (
       <Card className="w-full shadow-sm border border-gray-200">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+        <CardContent className="p-3 sm:p-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 min-w-0">
               <h3 className="text-lg font-semibold text-gray-900">Dataset Information</h3>
-              <div className="text-sm text-gray-500">
-                {totalCases.toLocaleString()} cases • {totalSlides.toLocaleString()} slides • {totalHospitals} hospitals • {totalOrgans} organs
+              <div className="text-sm text-gray-500 break-words">
+                <span className="inline-block">{totalCases.toLocaleString()} cases</span>
+                <span className="mx-1">•</span>
+                <span className="inline-block">{totalSlides.toLocaleString()} slides</span>
+                <span className="mx-1">•</span>
+                <span className="inline-block">{totalHospitals} hospitals</span>
+                <span className="mx-1 hidden sm:inline">•</span>
+                <span className="inline-block hidden sm:inline">{totalOrgans} organs</span>
               </div>
             </div>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setIsVisible(true)}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 shrink-0 self-start sm:self-auto"
             >
               <FaEye className="w-4 h-4" />
-              Show Details
+              <span className="hidden sm:inline">Show Details</span>
+              <span className="sm:hidden">Details</span>
             </Button>
           </div>
         </CardContent>
@@ -67,13 +74,13 @@ export function DatasetInfoTable() {
 
   return (
     <Card className="w-full shadow-sm border border-gray-200">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div>
+      <CardHeader className="pb-3 p-3 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="min-w-0">
             <CardTitle className="text-lg font-semibold text-gray-900">
               Dataset Information
             </CardTitle>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-gray-600 mt-1 break-words">
               In-house data used for the benchmark across {totalOrgans} organs and {totalHospitals} hospitals
             </p>
           </div>
@@ -81,40 +88,41 @@ export function DatasetInfoTable() {
             variant="outline"
             size="sm"
             onClick={() => setIsVisible(false)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 shrink-0 self-start sm:self-auto"
           >
             <FaEyeSlash className="w-4 h-4" />
-            Hide
+            <span className="hidden sm:inline">Hide</span>
+            <span className="sm:hidden">Hide</span>
           </Button>
         </div>
       </CardHeader>
-      <CardContent className="pt-0">
+      <CardContent className="pt-0 p-3 sm:p-6">
         {/* Total Summary */}
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-6 border border-blue-200">
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 border border-blue-200">
           <div className="text-center">
-            <h4 className="text-lg font-semibold text-gray-900 mb-3">Dataset Overview</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-white rounded-lg p-3 shadow-sm">
-                <div className="text-2xl font-bold text-blue-600">{totalCases.toLocaleString()}</div>
-                <div className="text-sm text-gray-600">Total Cases</div>
+            <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">Dataset Overview</h4>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+              <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-blue-600">{totalCases.toLocaleString()}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Total Cases</div>
               </div>
-              <div className="bg-white rounded-lg p-3 shadow-sm">
-                <div className="text-2xl font-bold text-green-600">{totalSlides.toLocaleString()}</div>
-                <div className="text-sm text-gray-600">Total Slides</div>
+              <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-green-600">{totalSlides.toLocaleString()}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Total Slides</div>
               </div>
-              <div className="bg-white rounded-lg p-3 shadow-sm">
-                <div className="text-2xl font-bold text-purple-600">{totalHospitals}</div>
-                <div className="text-sm text-gray-600">Hospitals</div>
+              <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-purple-600">{totalHospitals}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Hospitals</div>
               </div>
-              <div className="bg-white rounded-lg p-3 shadow-sm">
-                <div className="text-2xl font-bold text-orange-600">{totalOrgans}</div>
-                <div className="text-sm text-gray-600">Organs</div>
+              <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
+                <div className="text-lg sm:text-2xl font-bold text-orange-600">{totalOrgans}</div>
+                <div className="text-xs sm:text-sm text-gray-600">Organs</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
           {Object.entries(
             datasetInfo.reduce((acc, item) => {
               if (!acc[item.organ]) {
@@ -134,29 +142,29 @@ export function DatasetInfoTable() {
                 className="bg-white border border-gray-200 rounded-lg overflow-hidden"
                 style={{ borderTopColor: organColors[organ], borderTopWidth: '3px' }}
               >
-                <div className="p-3 bg-gray-50 border-b border-gray-200">
+                <div className="p-2 sm:p-3 bg-gray-50 border-b border-gray-200">
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-3 h-3 rounded-full"
+                      className="w-3 h-3 rounded-full shrink-0"
                       style={{ backgroundColor: organColors[organ] }}
                     />
-                    <h4 className="font-semibold text-gray-900 text-sm">{organ}</h4>
+                    <h4 className="font-semibold text-gray-900 text-sm truncate">{organ}</h4>
                   </div>
-                  <div className="mt-1 text-xs text-gray-600">
+                  <div className="mt-1 text-xs text-gray-600 break-words">
                     {hospitalCount} hospital{hospitalCount > 1 ? 's' : ''} • {items.length} cohort{items.length > 1 ? 's' : ''}
                   </div>
                 </div>
 
-                <div className="p-3 space-y-2">
+                <div className="p-2 sm:p-3 space-y-2">
                   {items.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center text-xs">
-                      <div className="flex-1">
-                        <div className="font-medium text-gray-900">{item.source}</div>
-                        <div className="text-gray-500 truncate">{item.cohort.replace('-Cohort', '')}</div>
+                    <div key={index} className="flex justify-between items-start text-xs gap-2">
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-gray-900 truncate">{item.source}</div>
+                        <div className="text-gray-500 truncate text-xs">{item.cohort.replace('-Cohort', '')}</div>
                       </div>
-                      <div className="text-right ml-2">
-                        <div className="font-medium text-gray-900">{item.caseNumber.toLocaleString()}</div>
-                        <div className="text-gray-500">{item.slidesNumber.toLocaleString()}</div>
+                      <div className="text-right shrink-0">
+                        <div className="font-medium text-gray-900 text-xs">{item.caseNumber.toLocaleString()}</div>
+                        <div className="text-gray-500 text-xs">{item.slidesNumber.toLocaleString()}</div>
                       </div>
                     </div>
                   ))}

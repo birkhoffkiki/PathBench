@@ -21,12 +21,16 @@ export function PieDataDistributionChart({ selectedMetrics = [] }: PieDataDistri
   // Use React state for responsive design instead of window object
   const [isMobile, setIsMobile] = useState(false);
   const [isMediumScreen, setIsMediumScreen] = useState(false);
+  const [isNarrowScreen, setIsNarrowScreen] = useState(false);
+  const [isNarrowDesktop, setIsNarrowDesktop] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
       const width = window.innerWidth;
       setIsMobile(width < 768);
       setIsMediumScreen(width >= 768 && width < 1024);
+      setIsNarrowScreen(width >= 768 && width < 1024);
+      setIsNarrowDesktop(width >= 1200 && width < 1600); // 新增：1200-1600px范围
     };
 
     checkScreenSize();
@@ -116,8 +120,8 @@ export function PieDataDistributionChart({ selectedMetrics = [] }: PieDataDistri
     const pieSeries: PieSeriesOption = {
       name: "Task Distribution",
       type: "pie",
-      radius: isMobile ? ["35%", "65%"] : isMediumScreen ? ["40%", "70%"] : ["45%", "75%"], // Responsive sizes: mobile, medium, desktop
-      center: isMobile ? ["65%", "55%"] : ["60%", "55%"], // Move down for more space from title
+      radius: isMobile ? ["35%", "65%"] : isNarrowDesktop ? ["45%", "70%"] : isNarrowScreen ? ["30%", "60%"] : ["45%", "75%"], // Responsive sizes: mobile, narrow desktop, narrow, desktop
+      center: isMobile ? ["70%", "55%"] : isNarrowDesktop ? ["65%", "52.5%"] : isNarrowScreen ? ["75%", "55%"] : ["65%", "55%"], // Move down for more space from title
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 10,
@@ -184,7 +188,7 @@ export function PieDataDistributionChart({ selectedMetrics = [] }: PieDataDistri
       },
       series: [pieSeries],
     };
-  }, [getFilteredTasks, getFilteredPerformances, selectedMetrics, isMobile, isMediumScreen]);
+  }, [getFilteredTasks, getFilteredPerformances, selectedMetrics, isMobile, isMediumScreen, isNarrowScreen, isNarrowDesktop]);
 
   return (
     <Card className="w-full h-[250px] sm:h-[350px]">
