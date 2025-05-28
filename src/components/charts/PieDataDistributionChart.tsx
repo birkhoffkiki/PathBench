@@ -3,30 +3,41 @@
 import { useEvaluation } from "@/context/EvaluationContext";
 import React, { useMemo, useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { EChartsOption, PieSeriesOption } from "echarts";
 
 
-export function PieDataDistributionChart() {
+interface PieDataDistributionChartProps {
+  selectedMetrics?: string[];
+}
+
+export function PieDataDistributionChart({ selectedMetrics = [] }: PieDataDistributionChartProps) {
   const {
-    allTasks
+    getFilteredTasks,
+    getFilteredPerformances
   } = useEvaluation();
 
   // Use React state for responsive design instead of window object
   const [isMobile, setIsMobile] = useState(false);
+  const [isMediumScreen, setIsMediumScreen] = useState(false);
 
   useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsMediumScreen(width >= 768 && width < 1024);
     };
 
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
   const chartOptions = useMemo((): EChartsOption => {
-    if (allTasks.length === 0) {
+    const filteredTasks = getFilteredTasks();
+    const filteredPerformances = getFilteredPerformances();
+
+    if (filteredTasks.length === 0 || filteredPerformances.length === 0) {
       return {
         title: {
           text: "No tasks available",
@@ -37,32 +48,74 @@ export function PieDataDistributionChart() {
       };
     }
 
-    // 按评估指标分组并计算任务数量
-    const metricTaskCounts: Record<string, number> = {};
+    // 按评估指标分组并计算任务数量 - 基于实际的performance数据
+    const metricTaskSets: Record<string, Set<string>> = {};
 
-    // 统计每个评估指标的任务数量
-    allTasks.forEach(task => {
-      task.evaluationMetrics.forEach(metric => {
-        metricTaskCounts[metric] = (metricTaskCounts[metric] || 0) + 1;
-      });
+    // 获取所有filtered tasks的ID集合
+    const filteredTaskIds = new Set(filteredTasks.map(task => task.id));
+
+    // 确定要显示的metrics
+    // 如果没有选择metrics或选择了所有metrics，显示所有可用的metrics
+    // 如果选择了特定metrics，只显示选中的metrics
+    const allAvailableMetrics = new Set<string>();
+    filteredPerformances.forEach((performance: any) => {
+      if (filteredTaskIds.has(performance.taskId)) {
+        Object.keys(performance.metrics).forEach(metric => {
+          if (performance.metrics[metric] && performance.metrics[metric].length > 0) {
+            allAvailableMetrics.add(metric);
+          }
+        });
+      }
+    });
+
+    const allMetricsArray = Array.from(allAvailableMetrics);
+    const isOverallMode = selectedMetrics.length === 0 ||
+                         (selectedMetrics.length === allMetricsArray.length &&
+                          selectedMetrics.every(m => allMetricsArray.includes(m)));
+
+    const metricsToShow = isOverallMode ? allMetricsArray : selectedMetrics;
+
+    // 统计每个评估指标在filtered tasks中的实际分布
+    filteredPerformances.forEach((performance: any) => {
+      // 只处理filtered tasks中的performance
+      if (filteredTaskIds.has(performance.taskId)) {
+        Object.keys(performance.metrics).forEach(metric => {
+          // 只统计要显示的metrics
+          if (metricsToShow.includes(metric)) {
+            // 检查这个metric是否有有效数据
+            if (performance.metrics[metric] && performance.metrics[metric].length > 0) {
+              // 使用Set来确保每个task只被计算一次
+              if (!metricTaskSets[metric]) {
+                metricTaskSets[metric] = new Set();
+              }
+              metricTaskSets[metric].add(performance.taskId);
+            }
+          }
+        });
+      }
+    });
+
+    // 转换Set为数字计数
+    const finalMetricCounts: Record<string, number> = {};
+    Object.entries(metricTaskSets).forEach(([metric, taskSet]) => {
+      finalMetricCounts[metric] = taskSet.size;
     });
 
     // 格式化数据用于饼图
-    const data = Object.entries(metricTaskCounts).map(([metric, taskCount]) => {
+    const data = Object.entries(finalMetricCounts).map(([metric, taskCount]) => {
       return {
         name: metric,
         value: taskCount,
       };
     });
 
-    //  任务总数
-    const totalTasks = Object.values(metricTaskCounts).reduce((sum, count) => sum + count, 0);
+
 
     // 创建饼图系列
     const pieSeries: PieSeriesOption = {
       name: "Task Distribution",
       type: "pie",
-      radius: isMobile ? ["35%", "65%"] : ["45%", "75%"], // Moderate size for better balance
+      radius: isMobile ? ["35%", "65%"] : isMediumScreen ? ["40%", "70%"] : ["45%", "75%"], // Responsive sizes: mobile, medium, desktop
       center: isMobile ? ["65%", "55%"] : ["60%", "55%"], // Move down for more space from title
       avoidLabelOverlap: true,
       itemStyle: {
@@ -130,7 +183,7 @@ export function PieDataDistributionChart() {
       },
       series: [pieSeries],
     };
-  }, [allTasks, isMobile]);
+  }, [getFilteredTasks, getFilteredPerformances, selectedMetrics, isMobile, isMediumScreen]);
 
   return (
     <Card className="w-full h-[250px] sm:h-[350px]">

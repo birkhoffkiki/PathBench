@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-// 修改这里的basePath来调整部署路径
 export const basePath = '/PathBench';
 
 const nextConfig = {

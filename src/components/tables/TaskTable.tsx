@@ -109,7 +109,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ChevronUp, ChevronDown } from "lucide-react"; // You'll need to install lucide-react
+import React from "react";
+import { ChevronUp, ChevronDown, Eye, EyeOff, Activity, Target, Database } from "lucide-react";
+import { TaskDescription } from "@/components/tasks/TaskDescription";
+import { getOrganColor, getOrganColorWithOpacity } from "@/utils/organColors";
 
 interface TaskTableProps {
   onSelectTask: (taskId: string | undefined) => void;
@@ -174,72 +177,104 @@ export function TaskTable({ onSelectTask, selectedTaskId, useAllTasks = false }:
   };
 
   return (
-    <Card>
+    <Card className="w-full shadow-lg border-0 bg-white">
       <CardContent className="p-0">
         {/* Mobile Card Layout */}
         <div className="block md:hidden">
           <div className="space-y-3 p-4">
             {sortedTasks.map((task) => {
               const isSelected = task.id === selectedTaskId;
+              const organColor = getOrganColor(task.organ);
 
               return (
-                <Card
-                  key={task.id}
-                  className={`border cursor-pointer transition-all mobile-card ${
-                    isSelected ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => {
-                    if (isSelected) {
-                      onSelectTask(undefined);
-                    } else {
-                      onSelectTask(task.id);
-                    }
-                  }}
-                >
-                  <CardContent className="p-4">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-start">
-                        <h3 className="font-semibold text-gray-900 text-sm leading-tight">{task.name}</h3>
-                        <Button
-                          variant={isSelected ? "default" : "outline"}
-                          size="sm"
-                          className="text-xs px-2 py-1 h-6"
-                        >
-                          {isSelected ? "Hide" : "View"}
-                        </Button>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3 text-xs">
-                        <div>
-                          <span className="text-gray-500">Organ:</span>
-                          <div className="font-medium">{task.organ}</div>
+                <div key={task.id} className="space-y-0">
+                  <Card
+                    className={`
+                      ${isSelected ? "ring-2 ring-blue-500 bg-gradient-to-r from-blue-50/50 to-indigo-50/30 shadow-lg border-blue-200" : "bg-white shadow-sm hover:shadow-md border-gray-200 hover:border-blue-300"}
+                      transition-all duration-300 border-l-4 ${isSelected ? "border-l-blue-500" : "border-l-gray-300"}
+                    `}
+                  >
+                    <CardContent className="p-5">
+                      <div className="space-y-4">
+                        {/* Header */}
+                        <div className="flex justify-between items-start gap-3">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-bold text-gray-900 text-base leading-tight mb-2 line-clamp-2">{task.name}</h3>
+                            <div className="flex items-center gap-2">
+                              <Badge variant="outline" className="capitalize text-xs font-medium bg-gray-50 border-gray-300">
+                                <Activity className="w-3 h-3 mr-1" />
+                                {task.taskType.replace('_', ' ')}
+                              </Badge>
+                            </div>
+                          </div>
+                          <Button
+                            variant={isSelected ? "default" : "outline"}
+                            size="sm"
+                            className="text-xs px-3 py-1.5 h-auto font-medium shrink-0 shadow-sm"
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent card click
+                              if (isSelected) {
+                                onSelectTask(undefined);
+                              } else {
+                                onSelectTask(task.id);
+                              }
+                            }}
+                          >
+                            {isSelected ? <EyeOff className="w-3 h-3 mr-1" /> : <Eye className="w-3 h-3 mr-1" />}
+                            {isSelected ? "Hide" : "View"}
+                          </Button>
                         </div>
-                        <div>
-                          <span className="text-gray-500">Cohort:</span>
-                          <div className="font-medium">{task.cohort}</div>
+
+                        {/* Info Grid */}
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+                              <Target className="w-3 h-3" />
+                              <span>Organ</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="w-3 h-3 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: organColor }}
+                              ></div>
+                              <span className="font-semibold text-gray-900 text-sm">{task.organ}</span>
+                            </div>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+                              <Database className="w-3 h-3" />
+                              <span>Cohort</span>
+                            </div>
+                            <div className="font-semibold text-gray-900 text-sm">{task.cohort}</div>
+                          </div>
+                        </div>
+
+                        {/* Metrics */}
+                        <div className="space-y-2">
+                          <div className="text-xs text-gray-500 font-medium">Evaluation Metrics</div>
+                          <div className="flex flex-wrap gap-1.5">
+                            {task.evaluationMetrics.map(metric => (
+                              <Badge key={metric} variant="secondary" className="text-xs font-medium bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">
+                                {metric.replace('_', ' ')}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
 
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Type:</div>
-                        <Badge variant="outline" className="text-xs capitalize">
-                          {task.taskType.replace('_', ' ')}
-                        </Badge>
+                  {/* Expandable Task Description for Mobile */}
+                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    isSelected ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+                  }`}>
+                    {isSelected && (
+                      <div className="pt-2">
+                        <TaskDescription taskId={task.id} />
                       </div>
-
-                      <div>
-                        <div className="text-xs text-gray-500 mb-1">Metrics:</div>
-                        <div className="flex flex-wrap gap-1">
-                          {task.evaluationMetrics.map(metric => (
-                            <Badge key={metric} variant="secondary" className="text-xs">
-                              {metric.replace('_', ' ')}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                    )}
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -247,71 +282,107 @@ export function TaskTable({ onSelectTask, selectedTaskId, useAllTasks = false }:
 
         {/* Desktop Table Layout */}
         <div className="hidden md:block overflow-x-auto mobile-table-scroll">
-          <Table className="min-w-[900px]">
+          <Table className="w-full table-fixed">
             <TableHeader>
-              <TableRow>
-                <TableHead onClick={() => handleSort("name")} className="cursor-pointer hover:bg-muted/50 w-96">
-                  Task Name <SortIcon field="name" />
+              <TableRow className="bg-gradient-to-r from-gray-50 to-gray-100/50 border-b-2 border-gray-200">
+                <TableHead onClick={() => handleSort("name")} className="cursor-pointer hover:bg-gray-100/70 transition-colors duration-200 w-[28%] font-bold text-gray-700 text-sm py-3 px-2">
+                  <div className="flex items-center gap-1">
+                    <Activity className="w-4 h-4" />
+                    Task Name <SortIcon field="name" />
+                  </div>
                 </TableHead>
-                <TableHead onClick={() => handleSort("organ")} className="cursor-pointer hover:bg-muted/50">
-                  Organ <SortIcon field="organ" />
+                <TableHead onClick={() => handleSort("organ")} className="cursor-pointer hover:bg-gray-100/70 transition-colors duration-200 w-[12%] font-bold text-gray-700 text-sm py-3 px-2">
+                  <div className="flex items-center gap-1">
+                    <Target className="w-4 h-4" />
+                    Organ <SortIcon field="organ" />
+                  </div>
                 </TableHead>
-                <TableHead onClick={() => handleSort("taskType")} className="cursor-pointer hover:bg-muted/50">
-                  Type <SortIcon field="taskType" />
+                <TableHead onClick={() => handleSort("taskType")} className="cursor-pointer hover:bg-gray-100/70 transition-colors duration-200 w-[18%] font-bold text-gray-700 text-sm py-3 px-2">
+                  <div className="flex items-center gap-1">
+                    <Database className="w-4 h-4" />
+                    Type <SortIcon field="taskType" />
+                  </div>
                 </TableHead>
-                <TableHead onClick={() => handleSort("cohort")} className="cursor-pointer hover:bg-muted/50">
+                <TableHead onClick={() => handleSort("cohort")} className="cursor-pointer hover:bg-gray-100/70 transition-colors duration-200 w-[12%] font-bold text-gray-700 text-sm py-3 px-2">
                   Cohort <SortIcon field="cohort" />
                 </TableHead>
-                <TableHead>Metrics</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="font-bold text-gray-700 text-sm py-3 px-2 w-[20%]">Metrics</TableHead>
+                <TableHead className="text-center font-bold text-gray-700 text-sm py-3 px-2 w-[10%]">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
             {sortedTasks.map((task, index) => {
               const isSelected = task.id === selectedTaskId;
+              const organColor = getOrganColor(task.organ);
 
               return (
-                <TableRow
-                  key={task.id}
-                  className={`
-                    ${isSelected ? "bg-muted/50" : ""}
-                    ${!isSelected && index % 2 === 0 ? "bg-muted/10" : ""}
-                    hover:bg-muted/30
-                  `}
-                >
-                  <TableCell className="font-medium w-48">{task.name}</TableCell>
-                  <TableCell>{task.organ}</TableCell>
-                  <TableCell>
-                    <Badge variant="outline" className="capitalize">
-                      {task.taskType.replace('_', ' ')}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="font-medium">{task.cohort}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-wrap gap-1">
-                      {task.evaluationMetrics.map(metric => (
-                        <Badge key={metric} variant="secondary" className="text-xs">
-                          {metric.replace('_', ' ')}
-                        </Badge>
-                      ))}
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-right">
-                  <Button
-                    variant={isSelected ? "default" : "ghost"}
-                    size="sm"
-                    onClick={() => {
-                      if (isSelected) {
-                        onSelectTask(undefined); // Deselect the task when already selected
-                      } else {
-                        onSelectTask(task.id); // Select the task when not selected
-                      }
-                    }}
+                <React.Fragment key={task.id}>
+                  <TableRow
+                    className={`
+                      ${isSelected ? "bg-blue-50/50 border-l-4 border-l-blue-500" : ""}
+                      ${!isSelected && index % 2 === 0 ? "bg-gray-50/30" : "bg-white"}
+                      hover:bg-blue-50/30 transition-all duration-200 border-b border-gray-200/60
+                    `}
                   >
-                    {isSelected ? "Hide" : "View"}
-                  </Button>
-                </TableCell>
-                </TableRow>
+                    <TableCell className="font-semibold text-gray-900 py-3 px-2">
+                      <div className="line-clamp-2 leading-tight text-sm">{task.name}</div>
+                    </TableCell>
+                    <TableCell className="py-3 px-2">
+                      <div className="flex items-center gap-1.5">
+                        <div
+                          className="w-3 h-3 rounded-full flex-shrink-0"
+                          style={{ backgroundColor: organColor }}
+                        ></div>
+                        <span className="font-medium text-gray-700 text-sm truncate">{task.organ}</span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="py-3 px-2">
+                      <Badge variant="outline" className="capitalize font-medium bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100 text-xs">
+                        {task.taskType.replace('_', ' ')}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-medium text-gray-700 py-3 px-2 text-sm truncate">{task.cohort}</TableCell>
+                    <TableCell className="py-3 px-2">
+                      <div className="flex flex-wrap gap-1">
+                        {task.evaluationMetrics.map(metric => (
+                          <Badge key={metric} variant="secondary" className="text-xs font-medium bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100">
+                            {metric.replace('_', ' ')}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center py-3 px-2">
+                    <Button
+                      variant={isSelected ? "default" : "outline"}
+                      size="sm"
+                      className="font-medium shadow-sm hover:shadow-md transition-all duration-200 text-xs px-2 py-1"
+                      onClick={() => {
+                        if (isSelected) {
+                          onSelectTask(undefined); // Deselect the task when already selected
+                        } else {
+                          onSelectTask(task.id); // Select the task when not selected
+                        }
+                      }}
+                    >
+                      {isSelected ? <EyeOff className="w-3 h-3 mr-1" /> : <Eye className="w-3 h-3 mr-1" />}
+                      {isSelected ? "Hide" : "View"}
+                    </Button>
+                  </TableCell>
+                  </TableRow>
+
+                  {/* Expandable Task Description for Desktop */}
+                  {isSelected && (
+                    <TableRow key={`${task.id}-description`} className="bg-gradient-to-r from-blue-50/30 to-indigo-50/20">
+                      <TableCell colSpan={6} className="p-0">
+                        <div className="overflow-hidden transition-all duration-300 ease-in-out">
+                          <div className="p-6 bg-gradient-to-r from-blue-50/40 to-indigo-50/30 border-l-4 border-l-blue-500">
+                            <TaskDescription taskId={task.id} />
+                          </div>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </React.Fragment>
               );
             })}
             </TableBody>

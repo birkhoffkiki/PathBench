@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { ModelFilter } from "@/components/filters/ModelFilter";
@@ -17,7 +17,6 @@ import { PieDataDistributionChart } from "@/components/charts/PieDataDistributio
 import { ModelTable } from "@/components/tables/ModelTable";
 import { MetricSelector } from "@/components/selectors/MetricSelector";
 import { TaskTable } from "@/components/tables/TaskTable";
-import { TaskDescription } from "@/components/tasks/TaskDescription";
 import { Footer } from "@/components/layout/Footer";
 import { LeaderboardTable } from "@/components/tables/LeaderboardTable";
 import { DetailedPerformanceChart } from "@/components/charts/DetailedPerformanceChart";
@@ -125,7 +124,7 @@ function PerformanceContent() {
 }
 
 export function Dashboard() {
-  const { getTaskById, getAvailableMetrics } = useEvaluation();
+  const { getTaskById } = useEvaluation();
   // Get basePath from environment variable
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
 
@@ -137,16 +136,8 @@ export function Dashboard() {
     return imagePath;
   };
 
-  const [selectedMetric, setSelectedMetric] = useState<string>("AUC");
+  const [selectedMetrics, setSelectedMetrics] = useState<string[]>([]);
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>();
-
-  const availableMetrics = getAvailableMetrics();
-
-  useEffect(() => {
-    if (availableMetrics.length === 1 && selectedMetric !== availableMetrics[0]) {
-      setSelectedMetric(availableMetrics[0]);
-    }
-  }, [availableMetrics, selectedMetric]);
 
   // 根据任务类型设置默认指标
   const handleTaskSelect = (taskId: string | undefined) => {
@@ -155,11 +146,11 @@ export function Dashboard() {
     const task = getTaskById(taskId);
     if (task) {
       if (task.taskType === 'DFS Prediction' || task.taskType === 'OS Prediction' || task.taskType === 'DSS Prediction') {
-        setSelectedMetric('C-Index');
+        setSelectedMetrics(['C-Index']);
       } else if (task.taskType === 'Classification') {
-        setSelectedMetric('AUC');
+        setSelectedMetrics(['AUC']);
       } else if (task.taskType === 'Report Generation') {
-        setSelectedMetric('BLEU');
+        setSelectedMetrics(['BLEU']);
       }
     }
   };
@@ -365,7 +356,7 @@ export function Dashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             <TaskDistributionChart chartType="taskType" />
             <TaskDistributionChart chartType="organ" />
-            <PieDataDistributionChart />
+            <PieDataDistributionChart selectedMetrics={selectedMetrics} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-4 sm:mb-6">
@@ -373,22 +364,18 @@ export function Dashboard() {
             <TaskTypeFilter />
             <OrganFilter />
             <MetricSelector
-              value={selectedMetric}
-              onChange={setSelectedMetric}
+              value={selectedMetrics}
+              onChange={setSelectedMetrics}
             />
           </div>
           <div className="grid w-full">
-            <OverallRankBarChart selectedMetric={selectedMetric} />
+            <OverallRankBarChart selectedMetrics={selectedMetrics} />
           </div>
 
           <div className="my-4 sm:my-6">
             <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">All Tasks</h2>
             <TaskTable onSelectTask={handleTaskSelect} selectedTaskId={selectedTaskId} />
           </div>
-
-          {selectedTaskId && (
-            <TaskDescription taskId={selectedTaskId} />
-          )}
         </TabsContent>
 
         <TabsContent value="leaderboard">

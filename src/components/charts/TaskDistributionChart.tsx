@@ -3,7 +3,7 @@
 import { useEvaluation } from "@/context/EvaluationContext";
 import React, { useMemo, useState, useEffect } from "react";
 import ReactECharts from "echarts-for-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import type { EChartsOption, PieSeriesOption } from "echarts";
 
 interface TaskDistributionChartProps {
@@ -17,15 +17,18 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
 
   // Use React state for responsive design instead of window object
   const [isMobile, setIsMobile] = useState(false);
+  const [isMediumScreen, setIsMediumScreen] = useState(false);
 
   useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 768);
+      setIsMediumScreen(width >= 768 && width < 1024);
     };
 
-    checkIsMobile();
-    window.addEventListener('resize', checkIsMobile);
-    return () => window.removeEventListener('resize', checkIsMobile);
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
   const chartOptions = useMemo((): EChartsOption => {
@@ -51,7 +54,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         organCounts[organ] = (organCounts[organ] || 0) + 1;
       });
 
-      // Format data for pie chart
+      // Format data for pie chart (let ECharts use default colors)
       const data = Object.entries(organCounts).map(([organ, count]) => {
         return {
           name: organ,
@@ -63,7 +66,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Organ Distribution",
         type: "pie",
-        radius: isMobile ? ["35%", "65%"] : ["45%", "75%"], // Donut chart - moderate size
+        radius: isMobile ? ["35%", "65%"] : isMediumScreen ? ["40%", "70%"] : ["45%", "75%"], // Responsive sizes: mobile, medium, desktop
         center: isMobile ? ["65%", "55%"] : ["60%", "55%"], // Move down for more space from title
         avoidLabelOverlap: true,
         itemStyle: {
@@ -150,7 +153,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
       const pieSeries: PieSeriesOption = {
         name: "Task Type Distribution",
         type: "pie",
-        radius: isMobile ? ["35%", "65%"] : ["45%", "75%"], // Moderate size for better balance
+        radius: isMobile ? ["35%", "65%"] : isMediumScreen ? ["35%", "65%"] : ["45%", "75%"], // Responsive sizes: mobile, medium, desktop
         center: isMobile ? ["65%", "55%"] : ["70%", "55%"], // Move down and right for better spacing
         avoidLabelOverlap: true,
         itemStyle: {
@@ -217,7 +220,7 @@ export function TaskDistributionChart({ chartType = "organ" }: TaskDistributionC
         series: [pieSeries],
       };
     }
-  }, [getFilteredTasks, chartType, isMobile]);
+  }, [getFilteredTasks, chartType, isMobile, isMediumScreen]);
 
   return (
     <Card className="w-full h-[250px] sm:h-[350px]">

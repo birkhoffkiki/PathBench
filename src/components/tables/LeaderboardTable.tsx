@@ -121,8 +121,8 @@ export function LeaderboardTable() {
 
   return (
     <Card className="shadow-lg border-0 bg-gradient-to-br from-slate-50 to-white">
-      <CardHeader className="pb-4 border-b border-slate-200/60">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+      <CardHeader className="pb-3 sm:pb-4 border-b border-slate-200/60">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
           <div className="space-y-1">
             <CardTitle className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">
               Performance Leaderboard
@@ -131,30 +131,30 @@ export function LeaderboardTable() {
               Comparative Analysis of Model Performance Across Tasks
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 text-xs sm:text-sm">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-lg border border-blue-200">
+          <div className="flex flex-row gap-3 sm:gap-3 text-xs sm:text-sm w-full sm:w-auto">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-lg border border-blue-200 flex-1 sm:flex-none justify-center sm:justify-start">
               <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
               <span className="font-semibold text-blue-700">{allModels.length}</span>
               <span className="text-blue-600">Models</span>
             </div>
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-lg border border-emerald-200">
+            <div className="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 rounded-lg border border-emerald-200 flex-1 sm:flex-none justify-center sm:justify-start">
               <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
               <span className="font-semibold text-emerald-700">{sortedTasks.length}</span>
               <span className="text-emerald-600">Tasks</span>
             </div>
           </div>
         </div>
-        <div className="text-xs sm:text-sm text-slate-500 mt-3 flex items-center gap-2">
+        <div className="text-xs sm:text-sm text-slate-500 mt-3 hidden sm:flex items-center gap-2">
           <div className="w-1 h-1 bg-slate-400 rounded-full"></div>
           <span>Click column headers to sort</span>
           <div className="w-1 h-1 bg-slate-400 rounded-full"></div>
           <span>Displaying top 5 performing models per task</span>
         </div>
       </CardHeader>
-      <CardContent className="p-0">
+      <CardContent className="p-0 pt-2 sm:pt-0">
         {/* Mobile Card Layout */}
         <div className="block sm:hidden">
-          <div className="space-y-4 p-4">
+          <div className="space-y-4 px-4 pt-2 pb-4">
             {sortedTasks.map((task) => (
               <Card key={task.id} className="border-0 shadow-md bg-gradient-to-br from-white to-slate-50">
                 <CardContent className="p-4">
