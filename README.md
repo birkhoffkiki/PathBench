@@ -138,12 +138,12 @@ Performance data includes:
 This work is based on our research paper:
 
 ```bibtex
-@article{pathbench2024,
-  title={PathBench: A comprehensive comparison benchmark for pathology foundation models towards precision oncology},
-  author={[Authors]},
-  journal={arXiv preprint arXiv:2505.20202},
-  year={2024}
-}
+@article{ma2025pathbench,
+      title={PathBench: A comprehensive comparison benchmark for pathology foundation models towards precision oncology},
+      author={Ma, Jiabo and Xu, Yingxue and Zhou, Fengtao and Wang, Yihui and Jin, Cheng and Guo, Zhengrui and Wu, Jianfeng and Tang, On Ki and Zhou, Huajun and Wang, Xi and Luo, Luyang and Zhang, Zhengyu and Cai, Du and Gao, Zizhao and Wang, Wei and Liu, Yueping and He, Jiankun and Cui, Jing and Li, Zhenhui and Zhang, Jing and Gao, Feng and Zhang, Xiuming and Liang, Li and Chan, Ronald Cheong Kin and Wang, Zhe and Chen, Hao},
+      journal={arXiv preprint arXiv:2505.20202},
+      year={2025}
+    }
 ```
 
 ## 🤝 Contributing
