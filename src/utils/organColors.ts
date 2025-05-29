@@ -1,8 +1,9 @@
-// Organ color mapping 
+// Organ color mapping
 const organColorMap: Record<string, string> = {
   'Breast': '#5470c6',   // Blue
   'Lung': '#91cc75',     // Green
   'Colon': '#fac858',    // Yellow
+  'Colorectal': '#fac858', // Yellow (same as Colon)
   'Brain': '#ee6666',    // Red
   'Stomach': '#73c0de',  // Light Blue
 };

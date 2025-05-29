@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { Users, FileText, Cross, Heart } from "lucide-react";
+import { getOrganColor } from "@/utils/organColors";
 
 // Dataset information based on the supplementary table
 const datasetInfo = [
@@ -21,14 +23,7 @@ const datasetInfo = [
   { organ: "Brain", source: "H1", cohort: "Glioma-Cohort", caseNumber: 677, slidesNumber: 1362 },
 ];
 
-// Color mapping for organs
-const organColors: Record<string, string> = {
-  "Lung": "#3B82F6", // Blue
-  "Stomach": "#10B981", // Green
-  "Colorectal": "#F59E0B", // Orange
-  "Breast": "#EF4444", // Red
-  "Brain": "#8B5CF6", // Purple
-};
+
 
 export function DatasetInfoTable() {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,14 +41,30 @@ export function DatasetInfoTable() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 min-w-0">
               <h3 className="text-lg font-semibold text-gray-900">Dataset Information</h3>
-              <div className="text-sm text-gray-500 break-words">
-                <span className="inline-block">{totalCases.toLocaleString()} cases</span>
-                <span className="mx-1">•</span>
-                <span className="inline-block">{totalSlides.toLocaleString()} slides</span>
-                <span className="mx-1">•</span>
-                <span className="inline-block">{totalHospitals} hospitals</span>
-                <span className="mx-1 hidden sm:inline">•</span>
-                <span className="inline-block hidden sm:inline">{totalOrgans} organs</span>
+              <div className="text-sm text-gray-500 break-words flex flex-wrap items-center gap-1">
+                <div className="inline-flex items-center gap-1">
+                  <Users className="w-3.5 h-3.5 text-blue-500" />
+                  <span className="font-semibold text-gray-700">{totalCases.toLocaleString()}</span>
+                  <span className="text-gray-500">cases</span>
+                </div>
+                <span className="text-gray-300">•</span>
+                <div className="inline-flex items-center gap-1">
+                  <FileText className="w-3.5 h-3.5 text-green-500" />
+                  <span className="text-gray-600">{totalSlides.toLocaleString()}</span>
+                  <span className="text-gray-500">slides</span>
+                </div>
+                <span className="text-gray-300">•</span>
+                <div className="inline-flex items-center gap-1">
+                  <Cross className="w-3.5 h-3.5 text-purple-500" />
+                  <span className="text-gray-600">{totalHospitals}</span>
+                  <span className="text-gray-500">hospitals</span>
+                </div>
+                <span className="text-gray-300 hidden sm:inline">•</span>
+                <div className="inline-flex items-center gap-1 hidden sm:flex">
+                  <Heart className="w-3.5 h-3.5 text-orange-500" />
+                  <span className="text-gray-600">{totalOrgans}</span>
+                  <span className="text-gray-500">organs</span>
+                </div>
               </div>
             </div>
             <Button
@@ -103,20 +114,32 @@ export function DatasetInfoTable() {
             <h4 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 sm:mb-3">Dataset Overview</h4>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
               <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
-                <div className="text-lg sm:text-2xl font-bold text-blue-600">{totalCases.toLocaleString()}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Total Cases</div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Users className="w-4 h-4 sm:w-5 sm:h-5 text-blue-500" />
+                  <div className="text-lg sm:text-2xl font-bold text-blue-600">{totalCases.toLocaleString()}</div>
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 text-center">Total Cases</div>
               </div>
               <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
-                <div className="text-lg sm:text-2xl font-bold text-green-600">{totalSlides.toLocaleString()}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Total Slides</div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-green-500" />
+                  <div className="text-lg sm:text-2xl font-bold text-green-600">{totalSlides.toLocaleString()}</div>
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 text-center">Total Slides</div>
               </div>
               <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
-                <div className="text-lg sm:text-2xl font-bold text-purple-600">{totalHospitals}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Hospitals</div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Cross className="w-4 h-4 sm:w-5 sm:h-5 text-purple-500" />
+                  <div className="text-lg sm:text-2xl font-bold text-purple-600">{totalHospitals}</div>
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 text-center">Hospitals</div>
               </div>
               <div className="bg-white rounded-lg p-2 sm:p-3 shadow-sm">
-                <div className="text-lg sm:text-2xl font-bold text-orange-600">{totalOrgans}</div>
-                <div className="text-xs sm:text-sm text-gray-600">Organs</div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <Heart className="w-4 h-4 sm:w-5 sm:h-5 text-orange-500" />
+                  <div className="text-lg sm:text-2xl font-bold text-orange-600">{totalOrgans}</div>
+                </div>
+                <div className="text-xs sm:text-sm text-gray-600 text-center">Organs</div>
               </div>
             </div>
           </div>
@@ -140,13 +163,13 @@ export function DatasetInfoTable() {
               <div
                 key={organ}
                 className="bg-white border border-gray-200 rounded-lg overflow-hidden"
-                style={{ borderTopColor: organColors[organ], borderTopWidth: '3px' }}
+                style={{ borderTopColor: getOrganColor(organ), borderTopWidth: '3px' }}
               >
                 <div className="p-2 sm:p-3 bg-gray-50 border-b border-gray-200">
                   <div className="flex items-center gap-2">
                     <div
                       className="w-3 h-3 rounded-full shrink-0"
-                      style={{ backgroundColor: organColors[organ] }}
+                      style={{ backgroundColor: getOrganColor(organ) }}
                     />
                     <h4 className="font-semibold text-gray-900 text-sm truncate">{organ}</h4>
                   </div>
@@ -162,19 +185,31 @@ export function DatasetInfoTable() {
                         <div className="font-medium text-gray-900 truncate">{item.source}</div>
                         <div className="text-gray-500 truncate text-xs">{item.cohort.replace('-Cohort', '')}</div>
                       </div>
-                      <div className="text-right shrink-0">
-                        <div className="font-medium text-gray-900 text-xs">{item.caseNumber.toLocaleString()}</div>
-                        <div className="text-gray-500 text-xs">{item.slidesNumber.toLocaleString()}</div>
+                      <div className="text-right shrink-0 space-y-1">
+                        <div className="flex items-center justify-end gap-1">
+                          <Users className="w-3 h-3 text-blue-500" />
+                          <span className="font-semibold text-gray-900 text-xs">{item.caseNumber.toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center justify-end gap-1">
+                          <FileText className="w-3 h-3 text-green-500" />
+                          <span className="text-gray-600 text-xs">{item.slidesNumber.toLocaleString()}</span>
+                        </div>
                       </div>
                     </div>
                   ))}
 
                   <div className="border-t border-gray-200 pt-2 mt-2">
-                    <div className="flex justify-between items-center text-xs font-semibold">
-                      <span className="text-gray-900">Total</span>
-                      <div className="text-right">
-                        <div className="text-gray-900">{totalCasesForOrgan.toLocaleString()}</div>
-                        <div className="text-gray-600">{totalSlidesForOrgan.toLocaleString()}</div>
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="text-gray-900 font-semibold">Total</span>
+                      <div className="text-right space-y-1">
+                        <div className="flex items-center justify-end gap-1">
+                          <Users className="w-3 h-3 text-blue-500" />
+                          <span className="font-bold text-gray-900 text-xs">{totalCasesForOrgan.toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center justify-end gap-1">
+                          <FileText className="w-3 h-3 text-green-500" />
+                          <span className="font-semibold text-gray-700 text-xs">{totalSlidesForOrgan.toLocaleString()}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
