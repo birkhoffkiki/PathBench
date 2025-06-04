@@ -48,7 +48,6 @@ export interface Model {
 }
 
 export interface Performance {
-  id: string;
   modelID: string;
   organ: string;
   task_name: string;

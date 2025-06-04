@@ -156,11 +156,12 @@ We welcome contributions to PathBench! Please see our contributing guidelines:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Adding New Models
-To add new models to the benchmark:
-1. Update `src/data/models.json` with model metadata
+### Adding New Model Results and Tasks
+This frontend code can be served as a static website for any leaderboard. To add new tasks to the benchmark:
+
+1. Update `src/data/tasks.ts` with task metadata
 2. Add performance data to `src/data/performance.json`
-3. Ensure proper task mapping in `src/data/tasks.ts`
+3. Ensure proper model mapping in `src/data/models.json`
 
 ## 📄 License
 
@@ -168,7 +169,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-For questions, suggestions, or collaborations:
-- **GitHub Issues**: [Create an issue](https://github.com/birkhoffkiki/PathBench/issues)
-- **Paper**: [arXiv:2505.20202](https://arxiv.org/abs/2505.20202)
-- **Demo**: [Live Application](https://birkhoffkiki.github.io/PathBench/)
+- Need instantaneous support?  Please open **GitHub Issues**: [Create an issue](https://github.com/birkhoffkiki/PathBench/issues)
+- Feeling academic?  Please cite our **Paper**: [arXiv:2505.20202](https://arxiv.org/abs/2505.20202)
+- Want to see it in action?  Please visit our **Demo**: [Live Application](https://birkhoffkiki.github.io/PathBench/)
+
+For inquiries regarding institutional collaborations, model benchmarking, or dataset contributions, please contact [jmabq@connect.ust.hk](mailto:jmabq@connect.ust.hk).
+
+For technical support, website development inquiries, or platform enhancement suggestions, please reach out at [cjinag@connect.ust.hk](mailto:cjinag@connect.ust.hk).
